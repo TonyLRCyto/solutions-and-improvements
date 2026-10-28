@@ -1,0 +1,86 @@
+---
+/**
+ * City page template. In production builds only cities with indexReady: true are generated.
+ * Drafts render in preview builds (always noindex) so the template can be reviewed.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Icon from '../../components/Icon.astro';
+import ProcessSteps from '../../components/ProcessSteps.astro';
+import ConsultCallout from '../../components/ConsultCallout.astro';
+import { cities, regionBySlug, type City } from '../../data/areas';
+import { featuredServices, commercialService } from '../../data/services';
+import { IS_PREVIEW } from '../../data/site';
+import { breadcrumbSchema } from '../../lib/seo';
+
+export function getStaticPaths() {
+  return cities
+    .filter((c) => c.indexReady || IS_PREVIEW)
+    .map((city) => ({ params: { city: city.slug }, props: { city } }));
+}
+
+const { city } = Astro.props as { city: City };
+const region = regionBySlug(city.region);
+const stateName = city.state === 'IN' ? 'Indiana' : 'Illinois';
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Service Areas', href: '/service-areas' },
+  { label: region.name, href: region.path },
+  { label: `${city.name}, ${city.state}` },
+];
+---
+<BaseLayout
+  title={`Construction & Remodeling in ${city.name}, ${stateName}`}
+  description={`Remodeling, additions and new construction in ${city.name}, ${stateName} (${city.county}) from Solutions and Improvements. Free consultation with an on-site visit.`}
+  path={city.path}
+  noindex={!city.indexReady}
+  draftNote={city.draft ? city.reviewNotes : undefined}
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? city.path })))]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={crumbs} />
+      <span class="kicker">{city.county}, {stateName}</span>
+      <h1>Construction &amp; remodeling in {city.name}</h1>
+      <p class="lede">{city.intro}</p>
+    </div>
+  </section>
+
+  <section class="section section--white section--tight" aria-labelledby="local-h">
+    <div class="container svc-body">
+      <div>
+        <span class="kicker">In {city.name}</span>
+        <h2 id="local-h" class="h-lg mt-1">What we do here</h2>
+      </div>
+      <ul class="example-list">
+        {city.localNotes.map((n, i) => <li><span>0{i + 1}</span>{n}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--paper section--tight" aria-labelledby="steps-h">
+    <div class="container">
+      <h2 id="steps-h" class="h-lg" style="margin-bottom:2rem">How projects begin</h2>
+      <ProcessSteps
+        steps={[
+          { title: 'Consultation & site visit', text: `We come out to ${city.name} to see the space and talk it through.` },
+          { title: 'Scope & proposal', text: 'We define the work and discuss estimate terms for your project.' },
+          { title: 'Planning & construction', text: 'Permits, scheduling and the build itself.' },
+        ]}
+      />
+    </div>
+  </section>
+
+  <section class="section section--white section--tight" aria-labelledby="svc-h">
+    <div class="container">
+      <h2 id="svc-h" class="kicker" style="margin-bottom:1rem">Services</h2>
+      <div class="related">
+        {featuredServices.map((s) => <a class="link-arrow" href={s.path}>{s.name}<Icon name="arrow" /></a>)}
+        <a class="link-arrow" href={commercialService.path}>{commercialService.name}<Icon name="arrow" /></a>
+      </div>
+      <p class="muted mt-2">Part of our <a href={region.path}>{region.name}</a> service area.</p>
+    </div>
+  </section>
+
+  <ConsultCallout heading={`Planning a project in ${city.name}?`} />
+</BaseLayout>

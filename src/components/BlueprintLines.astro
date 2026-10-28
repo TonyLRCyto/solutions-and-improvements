@@ -1,0 +1,39 @@
+---
+/**
+ * Decorative drawing lines for the hero / one process accent.
+ * Abstract rooflines and registration marks only: no dimensions, labels or plan stamps.
+ */
+interface Props {
+  variant?: 'hero' | 'process';
+}
+const { variant = 'hero' } = Astro.props;
+---
+{variant === 'hero' ? (
+  <svg class="blueprint-lines" viewBox="0 0 1440 1000" preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
+    <g fill="none" stroke="#86afec" stroke-width="1.2">
+      <polyline stroke-opacity=".2" points="560,430 640,355 722,432" />
+      <polyline stroke-opacity=".18" points="1030,150 1110,82 1200,150" />
+      <line stroke-opacity=".14" x1="540" y1="540" x2="640" y2="540" />
+      <line stroke-opacity=".12" x1="600" y1="430" x2="600" y2="680" />
+      <rect stroke-opacity=".1" x="580" y="570" width="60" height="100" />
+      <line stroke-opacity=".12" x1="1200" y1="902" x2="1380" y2="902" />
+    </g>
+    <g fill="none" stroke="#a4c4f6" stroke-opacity=".3">
+      <path d="M552 200h16m-8-8v16" />
+      <path d="M1320 200h16m-8-8v16" />
+      <path d="M552 952h16m-8-8v16" />
+    </g>
+  </svg>
+) : (
+  <svg class="blueprint-lines" viewBox="0 0 1440 700" preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
+    <g fill="none" stroke="#86afec" stroke-width="1.2">
+      <polyline stroke-opacity=".16" points="1010,260 1150,140 1290,260" />
+      <polyline stroke-opacity=".12" points="1090,330 1150,280 1210,330" />
+      <line stroke-opacity=".12" x1="980" y1="260" x2="1320" y2="260" />
+    </g>
+    <g fill="none" stroke="#a4c4f6" stroke-opacity=".28">
+      <path d="M960 90h16m-8-8v16" />
+      <path d="M1360 90h16m-8-8v16" />
+    </g>
+  </svg>
+)}

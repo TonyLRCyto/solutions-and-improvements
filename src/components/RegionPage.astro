@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import Icon from './Icon.astro';
+import ConsultCallout from './ConsultCallout.astro';
+import { regionBySlug, cities, regions, type Region } from '../data/areas';
+import { featuredServices, commercialService } from '../data/services';
+import { IS_PREVIEW } from '../data/site';
+import { breadcrumbSchema } from '../lib/seo';
+
+interface Props {
+  slug: Region['slug'];
+}
+const region = regionBySlug(Astro.props.slug);
+const other = regions.find((r) => r.slug !== region.slug)!;
+const regionCities = cities.filter((c) => c.region === region.slug && (c.indexReady || IS_PREVIEW));
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Service Areas', href: '/service-areas' }, { label: region.name }];
+---
+<BaseLayout
+  title={region.title}
+  description={region.description}
+  path={region.path}
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? region.path })))]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={crumbs} />
+      <span class="kicker">{region.short}</span>
+      <h1>{region.h1}</h1>
+      <p class="lede">{region.intro}</p>
+    </div>
+  </section>
+
+  <section class="section section--white section--tight" aria-labelledby="coverage-h">
+    <div class="container svc-body">
+      <div>
+        <span class="kicker">Coverage</span>
+        <h2 id="coverage-h" class="h-lg mt-1">Where we work</h2>
+      </div>
+      <div>
+        <ul class="example-list">
+          {region.coverage.map((c, i) => <li><span>0{i + 1}</span>{c}</li>)}
+        </ul>
+        {regionCities.length > 0 && (
+          <p class="city-links">
+            <span class="muted">Community pages:</span>
+            {regionCities.map((c) => <a href={c.path}>{c.name}, {c.state}</a>)}
+          </p>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--paper section--tight" aria-labelledby="notes-h">
+    <div class="container">
+      <h2 id="notes-h" class="visually-hidden">Working in {region.name}</h2>
+      <ul class="approach" style="grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))">
+        {region.notes.map((n) => <li><h3>{n.title}</h3><p>{n.text}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--white section--tight" aria-labelledby="svc-h">
+    <div class="container">
+      <h2 id="svc-h" class="kicker" style="margin-bottom:1rem">Services in {region.short}</h2>
+      <div class="related">
+        {featuredServices.map((s) => <a class="link-arrow" href={s.path}>{s.name}<Icon name="arrow" /></a>)}
+        <a class="link-arrow" href={commercialService.path}>{commercialService.name}<Icon name="arrow" /></a>
+        <a class="link-arrow" href="/services">All services<Icon name="arrow" /></a>
+      </div>
+      <p class="muted mt-2">Also serving <a href={other.path}>{other.name}</a>.</p>
+    </div>
+  </section>
+
+  <ConsultCallout heading={`Planning a project in ${region.short}?`} />
+</BaseLayout>

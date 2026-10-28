@@ -1,0 +1,27 @@
+---
+import Icon from './Icon.astro';
+import { cta, company } from '../data/site';
+interface Props {
+  heading?: string;
+  text?: string;
+  service?: string;
+  topic?: string;
+}
+const { heading = 'Start with a free consultation.', text = 'Tell us about the project. The consultation includes an on-site visit, and we follow up by phone or message.', service, topic } = Astro.props;
+const q = new URLSearchParams();
+if (service) q.set('service', service);
+if (topic) q.set('topic', topic);
+const href = `${cta.href}${q.size ? `?${q}` : ''}#consultation`;
+---
+<section class="panel-ink on-dark" aria-labelledby="cta-h">
+  <div class="container callout">
+    <div>
+      <h2 id="cta-h" class="h-lg">{heading}</h2>
+      <p class="muted mt-1" style="max-width:52ch">{text}</p>
+    </div>
+    <div class="stack">
+      <a class="btn btn--primary btn--lg" href={href} data-track="cta_consultation">{cta.label}<Icon name="arrow" /></a>
+      <p class="muted" style="font-size:.95rem">Or call <a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a></p>
+    </div>
+  </div>
+</section>

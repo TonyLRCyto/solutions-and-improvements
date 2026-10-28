@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import ConsultCallout from '../components/ConsultCallout.astro';
+import { galleryPhotos } from '../data/photos';
+import { breadcrumbSchema } from '../lib/seo';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Projects' }];
+const slug = (c: string) => c.toLowerCase().replace(/\s+/g, '-');
+// Only categories that actually have photos.
+const categories = [...new Set(galleryPhotos.map((p) => p.category))];
+---
+<BaseLayout
+  title="Projects"
+  description="Photos of kitchens, bathrooms, roofing and framing work by Solutions and Improvements, a construction and remodeling company in Northwest Indiana and South Chicagoland."
+  path="/projects"
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? '/projects' })))]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={crumbs} />
+      <span class="kicker">Projects</span>
+      <h1>Selected work</h1>
+      <p class="lede">Views from recent jobs and work in progress. Captions describe only what each photo shows.</p>
+    </div>
+  </section>
+
+  <section class="section section--white section--tight" aria-labelledby="gallery-h" style="padding-top:2.5rem">
+    <div class="container" data-gallery>
+      <h2 id="gallery-h" class="visually-hidden">Photo gallery</h2>
+      <div class="filters" role="group" aria-label="Filter photos by category" hidden data-filters>
+        <button type="button" aria-pressed="true" data-filter="all">All</button>
+        {categories.map((c) => <button type="button" aria-pressed="false" data-filter={slug(c)}>{c}</button>)}
+      </div>
+      <p class="visually-hidden" role="status" aria-live="polite" data-gallery-status></p>
+      <ul class="gallery">
+        {galleryPhotos.map((p, i) => (
+          <li data-cat={slug(p.category)} data-caption={`${p.caption} · ${p.category}`}>
+            <button type="button" data-open={i} aria-label={`Open larger view: ${p.caption}`}>
+              <span class="ph"><Photo photo={p} sizes="(max-width: 640px) calc(100vw - 2.5rem), (max-width: 1100px) 46vw, 30vw" widths={[300, 400, 540, 720, 900]} priority={i === 0} /></span>
+              <span class="cap"><small>{p.category}</small>{p.caption}</span>
+            </button>
+            <template data-full={i}>
+              <Photo photo={p} sizes="92vw" widths={[960, 1280, 1600, 2000]} />
+            </template>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <dialog class="lightbox" aria-label="Photo viewer" data-lightbox>
+    <figure>
+      <div data-lb-media></div>
+      <figcaption data-lb-caption></figcaption>
+    </figure>
+    <div class="lb-bar">
+      <button type="button" data-lb-prev aria-label="Previous photo"><Icon name="prev" /></button>
+      <span data-lb-count aria-live="polite"></span>
+      <button type="button" data-lb-next aria-label="Next photo"><Icon name="next" /></button>
+      <button type="button" data-lb-close>Close</button>
+    </div>
+  </dialog>
+
+  <ConsultCallout />
+</BaseLayout>
+<script>
+  import '../scripts/gallery.ts';
+</script>

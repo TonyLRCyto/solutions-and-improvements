@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Icon from '../../components/Icon.astro';
+import ConsultCallout from '../../components/ConsultCallout.astro';
+import { regions, cities } from '../../data/areas';
+import { IS_PREVIEW } from '../../data/site';
+import { breadcrumbSchema } from '../../lib/seo';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Service Areas' }];
+const visibleCities = cities.filter((c) => c.indexReady || IS_PREVIEW);
+---
+<BaseLayout
+  title="Service Areas: Northwest Indiana & South Chicagoland"
+  description="Solutions and Improvements works across Lake and Porter counties, Portage, La Porte and South Bend, Indiana, and south Chicago-area communities from Lansing to Mokena, Illinois."
+  path="/service-areas"
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? '/service-areas' })))]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={crumbs} />
+      <span class="kicker">Service areas</span>
+      <h1>Northwest Indiana and South Chicagoland.</h1>
+      <p class="lede">Founded in 1990 and based in Munster. We work east through South Bend and west across the state line to Mokena, and in the communities between.</p>
+    </div>
+  </section>
+
+  <section class="section section--white section--tight" aria-label="Regions">
+    <div class="container">
+      <div class="areas-grid">
+        {regions.map((r) => (
+          <article class:list={['area-card', { 'area-card--il': r.slug === 'illinois' }]} style="background:var(--paper)">
+            <span class="kicker">{r.short}</span>
+            <h2 class="h-lg">{r.name}</h2>
+            <p class="muted">{r.intro}</p>
+            <ul>{r.coverage.map((c) => <li style="background:#fff">{c}</li>)}</ul>
+            <a class="link-arrow" href={r.path}>About working in {r.short}<Icon name="arrow" /></a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {visibleCities.length > 0 && (
+    <section class="section section--paper section--tight" aria-labelledby="cities-h">
+      <div class="container">
+        <h2 id="cities-h" class="h-lg">Communities</h2>
+        {IS_PREVIEW && <p class="preview-flag mt-1">Preview: these six community pages are drafts and are excluded from the production build and sitemap until they have reviewed local content.</p>}
+        <div class="group-grid mt-2">
+          {regions.map((r) => (
+            <div class="group">
+              <h3>{r.name}</h3>
+              <ul>
+                {visibleCities.filter((c) => c.region === r.slug).map((c) => (
+                  <li><a href={c.path}>{c.name}, {c.state}<Icon name="arrow" /></a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <ConsultCallout text="Not sure if you’re in our area? Ask. We cover the broader region, not just the towns listed here." />
+</BaseLayout>

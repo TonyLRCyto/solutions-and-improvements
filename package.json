@@ -1,0 +1,31 @@
+{
+  "name": "solutions-and-improvements-site",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro build && astro preview",
+    "check": "astro check",
+    "build:production": "node scripts/build-production.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "test:form": "node scripts/test-form.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "14.4.2",
+    "astro": "7.4.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@types/node": "24.19.2",
+    "sharp": "0.35.5",
+    "typescript": "6.0.3",
+    "wrangler": "4.154.0"
+  },
+  "description": "Solutions and Improvements construction and remodeling website (Astro + Cloudflare Workers).",
+  "engines": {
+    "node": ">=22.23.4"
+  }
+}

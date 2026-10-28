@@ -1,0 +1,39 @@
+// Cloudflare Workers configuration for the Solutions and Improvements site.
+// Preview is the default. Production values live under env.production and are only used
+// when building with CLOUDFLARE_ENV=production (see README "Cloudflare").
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "solutions-and-improvements-preview",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-10-20",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "observability": { "enabled": true },
+  "ratelimits": [
+    { "name": "CONSULT_RATE_LIMITER", "namespace_id": "4401", "simple": { "limit": 6, "period": 60 } }
+  ],
+  "vars": {
+    "SITE_MODE": "preview",
+    "CONSULTATION_TO": "office@solutionsandimprovements.com",
+    "MAIL_PROVIDER": "none"
+  },
+  // No custom domain or route is attached here on purpose. Attach the live domain only at launch.
+  "env": {
+    "production": {
+      "name": "solutions-and-improvements",
+      "ratelimits": [
+        { "name": "CONSULT_RATE_LIMITER", "namespace_id": "4402", "simple": { "limit": 6, "period": 60 } }
+      ],
+      "vars": {
+        "SITE_MODE": "production",
+        "CONSULTATION_TO": "office@solutionsandimprovements.com",
+        "MAIL_PROVIDER": "none"
+      }
+    }
+  }
+}

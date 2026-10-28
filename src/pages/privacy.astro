@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { company } from '../data/site';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Privacy' }];
+---
+<BaseLayout
+  title="Privacy"
+  description="How Solutions and Improvements handles information sent through the website’s consultation form."
+  path="/privacy"
+  draftNote="Draft privacy note. Confirm the email provider, retention period and any analytics before launch."
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={crumbs} />
+      <span class="kicker">Privacy</span>
+      <h1>Privacy note</h1>
+      <p class="lede">What happens to the information you send us through this website.</p>
+    </div>
+  </section>
+  <section class="section section--white section--tight">
+    <div class="container prose">
+      <h2>What we collect</h2>
+      <p>The consultation form asks for your name, an email address and/or phone number, the project city or ZIP code, the type of project and property, a short description, and how you prefer to be contacted.</p>
+      <h2>How we use it</h2>
+      <p>We use it to respond to your request and arrange the consultation. We don’t sell it, and we don’t add you to a marketing list.</p>
+      <h2>How it’s handled</h2>
+      <ul>
+        <li>The website is hosted on Cloudflare. Like any web host, it processes technical request data such as your IP address, which we use to protect the form against abuse.</li>
+        <li>Form submissions are sent to our office email through an email delivery service.</li>
+        <li>We keep inquiries in our office email for as long as needed to respond and to keep records of our projects.</li>
+        <li>The site does not use advertising or analytics cookies.</li>
+      </ul>
+      <h2>Questions</h2>
+      <p>Email <a href={`mailto:${company.email}`}>{company.email}</a> or call <a href={company.phoneHref}>{company.phoneDisplay}</a> to ask about, correct or delete the information you sent us.</p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ConsultCallout from '../../components/ConsultCallout.astro';
+import { posts } from '../../data/posts';
+import { IS_PREVIEW } from '../../data/site';
+import { breadcrumbSchema } from '../../lib/seo';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Resources' }];
+const visible = posts.filter((p) => p.status === 'published' || IS_PREVIEW);
+---
+<BaseLayout
+  title="Resources"
+  description="Notes from Solutions and Improvements on planning remodeling and construction projects in Northwest Indiana and South Chicagoland."
+  path="/blog"
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? '/blog' })))]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={crumbs} />
+      <span class="kicker">Resources</span>
+      <h1>Planning notes</h1>
+      <p class="lede">Practical notes for planning a remodel or build.</p>
+    </div>
+  </section>
+  <section class="section section--white section--tight" aria-label="Articles">
+    <div class="container">
+      {visible.length > 0 ? (
+        <ul class="post-list">
+          {visible.map((p) => (
+            <li>
+              <a href={`/blog/${p.slug}`}>
+                <h2>{p.title}</h2>
+                <p class="muted">{p.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="muted">Have a question about your project? <a href="/contact">Ask us directly</a>.</p>
+      )}
+    </div>
+  </section>
+  <ConsultCallout />
+</BaseLayout>

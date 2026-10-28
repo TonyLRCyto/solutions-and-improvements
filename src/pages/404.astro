@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { cta, company } from '../data/site';
+import { featuredServices } from '../data/services';
+---
+<BaseLayout title="Page not found" description="The page you were looking for isn’t here." path="/404" noindex>
+  <section class="page-hero">
+    <div class="container">
+      <span class="kicker">404</span>
+      <h1>That page isn’t here.</h1>
+      <p class="lede">It may have moved when we rebuilt the site. These links should get you where you’re going.</p>
+      <div class="actions">
+        <a class="btn btn--primary btn--lg" href={cta.href}>{cta.label}<Icon name="arrow" /></a>
+        <a class="link-arrow" href="/">Home<Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+  <section class="section section--white section--tight">
+    <div class="container related">
+      {featuredServices.map((s) => <a class="link-arrow" href={s.path}>{s.name}<Icon name="arrow" /></a>)}
+      <a class="link-arrow" href="/services">All services<Icon name="arrow" /></a>
+      <a class="link-arrow" href="/projects">Projects<Icon name="arrow" /></a>
+      <a class="link-arrow" href="/service-areas">Service areas<Icon name="arrow" /></a>
+      <a class="link-arrow" href={company.phoneHref}>Call {company.phoneDisplay}<Icon name="arrow" /></a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,16 @@
+# Server-side runtime secrets for local development (copy to .dev.vars, which is git-ignored).
+# In Cloudflare, set these with `npx wrangler secret put NAME` (add `--env production` for production).
+# Never commit real values.
+
+# Email delivery (Resend adapter). Leave MAIL_PROVIDER=none to keep the honest "not sent" mode.
+MAIL_PROVIDER=none
+MAIL_API_KEY=
+# A sender on a domain verified with the provider, e.g. "Solutions and Improvements <website@solutionsandimprovements.com>"
+MAIL_FROM_VERIFIED=
+CONSULTATION_TO=office@solutionsandimprovements.com
+
+# Optional Turnstile secret (pairs with PUBLIC_TURNSTILE_SITE_KEY).
+TURNSTILE_SECRET_KEY=
+
+# Development only: return a clearly labelled mock result instead of "unavailable". Ignored in built sites.
+DEV_MOCK_DELIVERY=0

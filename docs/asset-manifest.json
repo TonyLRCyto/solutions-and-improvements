@@ -1,0 +1,190 @@
+{
+  "prepared_on": "2026-10-27",
+  "purpose": "Curated portable first-preview assets; not complete archive",
+  "photos": [
+    {
+      "id": "A",
+      "path": "assets/photos/roofing-opening-A-v3.jpg",
+      "pixels": [
+        2400,
+        1800
+      ],
+      "ratio": "4:3",
+      "role": "Homepage opening / Roofing",
+      "caption": "Roofing project",
+      "factual_limit": "Owner confirmed roofing only; town unknown. Not New Construction evidence.",
+      "source_filename": "opening-A-conventional-v3.png",
+      "source_pixels": [
+        3688,
+        2766
+      ],
+      "source_sha256": "93aae3ab7a74b312ffa4d8f7f6cbe25a9459e506415db346975b86cbd0d8af28",
+      "source_unchanged": true,
+      "operations": "Uniform downscale only; high-quality JPEG web-source export; no additional crop or creative edit",
+      "generative_ai": false,
+      "embedded_srgb": true,
+      "sha256": "f5a2b5fc328f49236ed673c75331654cf54c1661e097c9e3d2d66851912ac3d5",
+      "bytes": 1133587
+    },
+    {
+      "id": "B1",
+      "path": "assets/photos/bathroom-detail-B1.jpg",
+      "pixels": [
+        1600,
+        2000
+      ],
+      "ratio": "4:5",
+      "role": "Bathrooms / detail gallery",
+      "caption": "Bathroom detail",
+      "factual_limit": "Exact job scope and town unconfirmed; do not claim full bathroom renovation.",
+      "source_filename": "B1-detail-v1.jpg",
+      "source_pixels": [
+        2192,
+        2740
+      ],
+      "source_sha256": "8ca222972026810261dfa53d08f8077f33af73a745934ee79233f0d96db4bd57",
+      "source_unchanged": true,
+      "operations": "Uniform downscale only; high-quality JPEG web-source export; no additional crop or creative edit",
+      "generative_ai": false,
+      "embedded_srgb": true,
+      "sha256": "db009ec85b01a6c74fdc5d82e0a2b630ce62ecf52ca51f586a32e64b9122fdb7",
+      "bytes": 839743
+    },
+    {
+      "id": "K1",
+      "path": "assets/photos/kitchen-feature-K1.jpg",
+      "pixels": [
+        1600,
+        2000
+      ],
+      "ratio": "4:5",
+      "role": "Kitchen feature / service preview",
+      "caption": "Kitchen detail",
+      "factual_limit": "Exact contracted scope, town and relationship to K2 unconfirmed.",
+      "source_filename": "K1-placement-crop-v1.jpg",
+      "source_pixels": [
+        2800,
+        3500
+      ],
+      "source_sha256": "987784840b4de53c8ec5c6856c01933d2412aaf24ea4d465effa39c96111cffa",
+      "source_unchanged": true,
+      "operations": "Uniform downscale only; high-quality JPEG web-source export; no additional crop or creative edit",
+      "generative_ai": false,
+      "embedded_srgb": true,
+      "sha256": "8a926fedce2137345c660decec8e38ac32857403b8cf7aa813b0bc805f21e602",
+      "bytes": 615105
+    },
+    {
+      "id": "K2",
+      "path": "assets/photos/kitchen-wide-K2.jpg",
+      "pixels": [
+        2000,
+        1500
+      ],
+      "ratio": "4:3",
+      "role": "Kitchen supporting view / gallery",
+      "caption": "Kitchen view",
+      "factual_limit": "Do not assume a distinct named job or complete remodel scope.",
+      "source_filename": "K2-placement-crop-v1.jpg",
+      "source_pixels": [
+        3024,
+        2268
+      ],
+      "source_sha256": "88e761abadf510f3b8ce2f30d0a8245d92544211438241003fcfabe9dca76260",
+      "source_unchanged": true,
+      "operations": "Uniform downscale only; high-quality JPEG web-source export; no additional crop or creative edit",
+      "generative_ai": false,
+      "embedded_srgb": true,
+      "sha256": "16cf11a258d6ab5994ecec8499bb99aa0cf4b999894833d67f60db0698753f61",
+      "bytes": 765428
+    },
+    {
+      "id": "C-desktop",
+      "path": "assets/photos/framing-progress-C-desktop.jpg",
+      "pixels": [
+        2400,
+        1350
+      ],
+      "ratio": "16:9",
+      "role": "Additions process / desktop",
+      "caption": "Framing in progress",
+      "factual_limit": "Process placement approved; actual project type/town unknown; not completed case study.",
+      "source_filename": "C-desktop-16x9-v1.jpg",
+      "source_pixels": [
+        3936,
+        2214
+      ],
+      "source_sha256": "5e440420a174da6125609b8b3e779ec871b58ac3d810dd74486d986b569980fc",
+      "source_unchanged": true,
+      "operations": "Uniform downscale only; high-quality JPEG web-source export; no additional crop or creative edit",
+      "generative_ai": false,
+      "embedded_srgb": true,
+      "sha256": "7aa034bffb1df0faa167114760d41567c04e2f31c9c19b93fbd337e46451ebf3",
+      "bytes": 1210113
+    },
+    {
+      "id": "C-phone",
+      "path": "assets/photos/framing-progress-C-phone.jpg",
+      "pixels": [
+        1600,
+        2000
+      ],
+      "ratio": "4:5",
+      "role": "Same C process photo / phone",
+      "caption": "Framing in progress",
+      "factual_limit": "Same photograph as C-desktop, not another job.",
+      "source_filename": "C-phone-4x5-v1.jpg",
+      "source_pixels": [
+        2096,
+        2620
+      ],
+      "source_sha256": "304e92e56b95827e001d61052e62f0ec97bb026d417d8342e7f2813b04ddce40",
+      "source_unchanged": true,
+      "operations": "Uniform downscale only; high-quality JPEG web-source export; no additional crop or creative edit",
+      "generative_ai": false,
+      "embedded_srgb": true,
+      "sha256": "be8db7e46fc480f374f49e2dc44784db081c0bcbfb99bd82bb7df78585e9be25",
+      "bytes": 1203938
+    },
+    {
+      "id": "C-master",
+      "path": "assets/photos/framing-progress-C-full.jpg",
+      "pixels": [
+        2400,
+        1600
+      ],
+      "ratio": "3:2",
+      "role": "Same C process photo / flexible source",
+      "caption": "Framing in progress",
+      "factual_limit": "Same approved conventional edit; preserve actual content and approved placement meaning.",
+      "source_filename": "C-conventional-v1.jpg",
+      "source_pixels": [
+        3936,
+        2624
+      ],
+      "source_sha256": "234dc68b990b0108285a9339cf0106ebf7d91f5f598ff678063dd898a58a84c9",
+      "source_unchanged": true,
+      "operations": "Uniform downscale only; high-quality JPEG web-source export; no additional crop or creative edit",
+      "generative_ai": false,
+      "embedded_srgb": true,
+      "sha256": "a2c2b57b7629e76d10d2bb54bd49977b03bb353db0b64715acd84761ff733ee3",
+      "bytes": 1367656
+    }
+  ],
+  "brand": {
+    "logo": "assets/brand/solutions-and-improvements-logo.png",
+    "source_unchanged": true,
+    "sha256": "8d6ecfdb01e6213564ac1ed6c4a88605f55aae7f0ced9ff69d63135e5d0a370d",
+    "preserve": "Entire original business-name/star/check artwork and four white stars"
+  },
+  "font": {
+    "path": "assets/fonts/Manrope-Variable.ttf",
+    "license": "assets/fonts/OFL.txt",
+    "family": "Manrope",
+    "variable_weight": "200\u2013800",
+    "note": "Original supplied TTF; generate WOFF2/subsets in the build if useful, retaining license."
+  },
+  "new_construction_project_photo": "not_verified_pending_Andy",
+  "commercial_case_study_photos": "not_verified",
+  "photo_generation_permitted": false
+}

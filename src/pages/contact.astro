@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ConsultationForm from '../components/ConsultationForm.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import { company, financing } from '../data/site';
+import { allServices } from '../data/services';
+import { breadcrumbSchema } from '../lib/seo';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Contact' }];
+const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
+---
+<BaseLayout
+  title="Request a Free Consultation"
+  description="Request a free consultation with Solutions and Improvements. It includes an on-site visit. Call 219-433-4846 or email office@solutionsandimprovements.com."
+  path="/contact"
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? '/contact' })))]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumbs items={crumbs} />
+      <span class="kicker">Contact</span>
+      <h1>Request a free consultation.</h1>
+      <p class="lede">The consultation includes an on-site visit. Send the form, or call or email, and we’ll follow up by phone or message to arrange it.</p>
+    </div>
+  </section>
+
+  <section class="section section--white section--tight" id="consultation" aria-labelledby="form-h">
+    <div class="container consult">
+      <div class="consult-aside">
+        <h2 id="form-h" class="h-md">Tell us about the project</h2>
+        <p class="muted">A request doesn’t book a time automatically. We’ll reach out to schedule the visit.</p>
+        <div class="contact-alt">
+          <span class="kicker">Call or email</span>
+          <a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a>
+          <a href={`mailto:${company.email}`} data-track="email_click" style="font-size:1rem">{company.email}</a>
+        </div>
+        <div class="contact-alt">
+          <span class="kicker">Office</span>
+          <address style="font-style:normal">{company.adminAddress}<br /><span class="muted">{company.adminAddressNote}. Please call or email rather than visiting.</span></address>
+        </div>
+        <div class="contact-alt">
+          <span class="kicker">Financing</span>
+          <p class="muted">
+            {financing.url ? <a href={financing.url} rel="noopener">Ask us about financing through {financing.provider}</a> : <>Ask us about financing through {financing.provider}.</>}
+          </p>
+        </div>
+      </div>
+      <ConsultationForm idPrefix="contact" topics={topics} />
+    </div>
+  </section>
+
+  <section class="section section--paper section--tight" aria-labelledby="next-h">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">What happens next</span>
+        <h2 id="next-h" class="h-lg">Consultation &amp; site visit → Scope &amp; proposal → Planning &amp; construction</h2>
+      </div>
+      <ProcessSteps
+        steps={[
+          { title: 'Consultation & site visit', text: 'We follow up to arrange a visit, see the space and talk through the project.' },
+          { title: 'Scope & proposal', text: 'We define the work. We’ll tell you whether a detailed estimate is free or paid for your project before we start one.' },
+          { title: 'Planning & construction', text: 'Design and renders are in-house and can begin after a rendering deposit or signed contract. Then we schedule and build.' },
+        ]}
+      />
+    </div>
+  </section>
+</BaseLayout>

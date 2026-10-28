@@ -1,0 +1,17 @@
+---
+import type { ProcessStep } from '../data/services';
+interface Props {
+  steps: ProcessStep[];
+  headingLevel?: 'h3' | 'h4';
+}
+const { steps, headingLevel = 'h3' } = Astro.props;
+const H = headingLevel;
+---
+<ol class="steps">
+  {steps.map((s) => (
+    <li>
+      <H>{s.title}</H>
+      <p>{s.text}</p>
+    </li>
+  ))}
+</ol>

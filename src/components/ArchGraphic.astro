@@ -1,0 +1,92 @@
+---
+/**
+ * Original architectural line graphics used where verified project photography is not yet available
+ * (New Construction, Commercial & Multifamily). They are clearly drawings, not depictions of completed jobs:
+ * no dimensions, labels, stamps or text.
+ */
+interface Props {
+  kind: 'new-construction' | 'commercial';
+  class?: string;
+}
+const { kind, class: cls } = Astro.props;
+const id = `g-${kind}`;
+---
+<svg class={cls} viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label={kind === 'new-construction' ? 'Line drawing of a house frame, used as an illustration' : 'Line drawing of a multi-story building, used as an illustration'}>
+  <defs>
+    <pattern id={`${id}-minor`} width="25" height="25" patternUnits="userSpaceOnUse">
+      <path d="M25 0H0V25" fill="none" stroke="#8fb3ea" stroke-opacity=".07" />
+    </pattern>
+    <pattern id={`${id}-major`} width="125" height="125" patternUnits="userSpaceOnUse">
+      <path d="M125 0H0V125" fill="none" stroke="#8fb3ea" stroke-opacity=".12" />
+    </pattern>
+    <radialGradient id={`${id}-glow`} cx="70%" cy="20%" r="90%">
+      <stop offset="0" stop-color="#204697" stop-opacity=".75" />
+      <stop offset=".6" stop-color="#14306a" stop-opacity=".25" />
+      <stop offset="1" stop-color="#0a1321" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="#0b1525" />
+  <rect width="800" height="1000" fill={`url(#${id}-glow)`} />
+  <rect width="800" height="1000" fill={`url(#${id}-minor)`} />
+  <rect width="800" height="1000" fill={`url(#${id}-major)`} />
+  <g fill="none" stroke="#a4c4f6" stroke-opacity=".35">
+    <path d="M60 60h20m-10-10v20M720 60h20m-10-10v20M60 940h20m-10-10v20M720 940h20m-10-10v20" />
+  </g>
+  {kind === 'new-construction' ? (
+    <g fill="none" stroke-linejoin="miter" stroke-linecap="square">
+      {/* ground */}
+      <line x1="80" y1="760" x2="720" y2="760" stroke="#c9daf7" stroke-opacity=".55" stroke-width="2" />
+      {/* main gable */}
+      <polyline points="170,760 170,470 400,280 630,470 630,760" stroke="#ffffff" stroke-opacity=".9" stroke-width="2.5" />
+      <line x1="140" y1="495" x2="400" y2="258" stroke="#ffffff" stroke-opacity=".9" stroke-width="2.5" />
+      <line x1="400" y1="258" x2="660" y2="495" stroke="#ffffff" stroke-opacity=".9" stroke-width="2.5" />
+      {/* studs */}
+      <g stroke="#8fb3ea" stroke-opacity=".55" stroke-width="1.5">
+        {[200, 240, 280, 320, 360, 440, 480, 520, 560, 600].map((x) => (
+          <line x1={x} y1="760" x2={x} y2={x < 400 ? 470 - ((x - 170) * 190) / 230 + 10 : 470 - ((630 - x) * 190) / 230 + 10} />
+        ))}
+      </g>
+      {/* floor line and plates */}
+      <line x1="170" y1="560" x2="630" y2="560" stroke="#c9daf7" stroke-opacity=".6" stroke-width="2" />
+      <line x1="170" y1="470" x2="630" y2="470" stroke="#c9daf7" stroke-opacity=".45" stroke-width="1.5" />
+      {/* openings */}
+      <rect x="360" y="640" width="80" height="120" stroke="#ffffff" stroke-opacity=".8" stroke-width="2" />
+      <rect x="230" y="600" width="80" height="90" stroke="#ffffff" stroke-opacity=".7" stroke-width="2" />
+      <rect x="490" y="600" width="80" height="90" stroke="#ffffff" stroke-opacity=".7" stroke-width="2" />
+      <rect x="365" y="380" width="70" height="70" stroke="#ffffff" stroke-opacity=".7" stroke-width="2" />
+      {/* foundation */}
+      <rect x="160" y="760" width="480" height="40" stroke="#8fb3ea" stroke-opacity=".5" stroke-width="1.5" />
+      {/* accent */}
+      <line x1="170" y1="760" x2="170" y2="800" stroke="#df2827" stroke-width="4" />
+    </g>
+  ) : (
+    <g fill="none" stroke-linecap="square">
+      <line x1="80" y1="800" x2="720" y2="800" stroke="#c9daf7" stroke-opacity=".55" stroke-width="2" />
+      {/* main block */}
+      <rect x="180" y="250" width="440" height="550" stroke="#ffffff" stroke-opacity=".9" stroke-width="2.5" />
+      <line x1="170" y1="250" x2="630" y2="250" stroke="#ffffff" stroke-opacity=".9" stroke-width="2.5" />
+      {/* floors */}
+      <g stroke="#c9daf7" stroke-opacity=".5" stroke-width="1.5">
+        <line x1="180" y1="390" x2="620" y2="390" />
+        <line x1="180" y1="530" x2="620" y2="530" />
+        <line x1="180" y1="670" x2="620" y2="670" />
+      </g>
+      {/* windows */}
+      <g stroke="#8fb3ea" stroke-opacity=".65" stroke-width="1.5">
+        {[290, 430, 570].map((y) =>
+          [215, 305, 395, 485].map((x) => <rect x={x} y={y - 90} width="60" height="60" />),
+        )}
+      </g>
+      {/* storefront */}
+      <g stroke="#ffffff" stroke-opacity=".75" stroke-width="2">
+        <rect x="215" y="700" width="170" height="100" />
+        <rect x="415" y="700" width="170" height="100" />
+        <line x1="300" y1="700" x2="300" y2="800" />
+        <line x1="500" y1="700" x2="500" y2="800" />
+      </g>
+      {/* parapet & accent */}
+      <rect x="180" y="230" width="440" height="20" stroke="#8fb3ea" stroke-opacity=".5" stroke-width="1.5" />
+      <line x1="180" y1="800" x2="180" y2="840" stroke="#df2827" stroke-width="4" />
+    </g>
+  )}
+</svg>

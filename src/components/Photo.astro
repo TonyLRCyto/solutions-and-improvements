@@ -1,0 +1,28 @@
+---
+/** Responsive project photo (<picture> with AVIF/WebP/JPEG). Real <img> elements, never CSS backgrounds. */
+import { Picture } from 'astro:assets';
+import type { Photo as PhotoRecord } from '../data/photos';
+interface Props {
+  photo: PhotoRecord;
+  sizes: string;
+  widths?: number[];
+  priority?: boolean;
+  class?: string;
+  alt?: string;
+}
+const { photo, sizes, widths = [360, 480, 640, 800, 1000, 1280, 1600], priority = false, class: cls, alt } = Astro.props;
+const usable = widths.filter((w) => w <= photo.src.width);
+---
+<Picture
+  src={photo.src}
+  alt={alt ?? photo.alt}
+  widths={usable}
+  sizes={sizes}
+  formats={['avif', 'webp']}
+  fallbackFormat="jpg"
+  quality={72}
+  loading={priority ? 'eager' : 'lazy'}
+  decoding={priority ? 'sync' : 'async'}
+  fetchpriority={priority ? 'high' : undefined}
+  class={cls}
+/>

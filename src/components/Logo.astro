@@ -1,0 +1,23 @@
+---
+/** The original supplied logo artwork, unchanged. Only resized/re-encoded for the web. */
+import { Picture } from 'astro:assets';
+import logo from '../assets/brand/solutions-and-improvements-logo.png';
+interface Props {
+  height: number;
+  loading?: 'eager' | 'lazy';
+  alt?: string;
+}
+const { height, loading = 'eager', alt = 'Solutions and Improvements' } = Astro.props;
+const width = Math.round((logo.width / logo.height) * height);
+---
+<Picture
+  src={logo}
+  alt={alt}
+  width={width}
+  height={height}
+  densities={[1, 2]}
+  formats={['avif', 'webp']}
+  fallbackFormat="png"
+  loading={loading}
+  decoding="async"
+/>

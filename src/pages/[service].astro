@@ -1,0 +1,120 @@
+---
+/**
+ * One template for every service page, on its retained legacy path (e.g. /kitchen-remodeling, /drywall-contrator).
+ * Content comes from src/data/services.ts.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import ArchGraphic from '../components/ArchGraphic.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import ConsultCallout from '../components/ConsultCallout.astro';
+import { allServices, serviceBySlug, serviceGroups, type Service } from '../data/services';
+import { photos } from '../data/photos';
+import { cta, financing } from '../data/site';
+import { breadcrumbSchema, serviceSchema } from '../lib/seo';
+
+export function getStaticPaths() {
+  return allServices.map((service) => ({ params: { service: service.path.slice(1) }, props: { service } }));
+}
+
+const { service } = Astro.props as { service: Service };
+const isFeatured = !!service.featured || service.slug === 'commercial';
+const group = serviceGroups.find((g) => g.id === service.group);
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  ...(group ? [{ label: group.title, href: `/services#${group.id}` }] : []),
+  { label: service.name },
+];
+const heroPhoto = service.photos?.[0] ? photos[service.photos[0]] : undefined;
+const supportPhoto = service.photos?.[1] ? photos[service.photos[1]] : undefined;
+const related = (service.related ?? []).map(serviceBySlug).filter(Boolean) as Service[];
+const consultHref = `${cta.href}?service=${service.formService}&topic=${service.slug}#consultation`;
+const steps = service.process ?? [
+  { title: 'Consultation & site visit', text: 'Tell us what you need. We visit to see the work in person.' },
+  { title: 'Scope & proposal', text: 'We define the work and discuss estimate terms for your project.' },
+  { title: 'Planning & construction', text: 'We schedule the work and get it done.' },
+];
+const hasMedia = !!heroPhoto || !!service.graphic;
+---
+<BaseLayout
+  title={service.title}
+  description={service.description}
+  path={service.path}
+  schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? service.path }))), serviceSchema(service.name, service.description, service.path)]}
+>
+  <section class:list={['page-hero', { 'page-hero--split': hasMedia }]}>
+    <div class="container">
+      <div>
+        <Breadcrumbs items={crumbs} />
+        <span class="kicker">{service.kicker ?? group?.title ?? 'Service'}</span>
+        <h1>{service.h1}</h1>
+        <p class="lede">{service.intro}</p>
+        <div class="actions">
+          <a class="btn btn--primary btn--lg" href={consultHref} data-track="cta_consultation">{cta.label}<Icon name="arrow" /></a>
+          {isFeatured && <a class="link-arrow" href="/projects">View our work<Icon name="arrow" /></a>}
+        </div>
+      </div>
+      {heroPhoto && (
+        <figure class="photo-figure">
+          <div class="ph"><Photo photo={heroPhoto} priority sizes="(max-width: 832px) calc(100vw - 2.5rem), 45vw" widths={[480, 720, 960, 1280]} /></div>
+          <figcaption>{heroPhoto.caption}</figcaption>
+        </figure>
+      )}
+      {!heroPhoto && service.graphic && (
+        <figure class="photo-figure">
+          <div class="graphic-panel"><ArchGraphic kind={service.graphic} /></div>
+          <figcaption>Illustration</figcaption>
+        </figure>
+      )}
+    </div>
+  </section>
+
+  <section class="section section--white section--tight" aria-labelledby="examples-h">
+    <div class:list={['container', supportPhoto ? 'svc-body svc-body--flip' : 'svc-body']}>
+      <div>
+        <span class="kicker">{service.name}</span>
+        <h2 id="examples-h" class="h-lg mt-1">Typical projects</h2>
+        {!supportPhoto && <p class="muted mt-1" style="max-width:40ch">{service.summary} No job is too small to ask about.</p>}
+      </div>
+      <div>
+        <ul class="example-list">
+          {service.examples.map((ex, i) => <li><span>0{i + 1}</span>{ex}</li>)}
+        </ul>
+      </div>
+      {supportPhoto && (
+        <figure class="photo-figure" style="grid-column:1 / -1">
+          <div class="ph"><Photo photo={supportPhoto} sizes="(max-width: 1460px) calc(100vw - 9rem), 1320px" widths={[640, 960, 1280, 1600, 2000]} /></div>
+          <figcaption>{supportPhoto.caption}</figcaption>
+        </figure>
+      )}
+    </div>
+  </section>
+
+  <section class="section section--paper section--tight" aria-labelledby="process-h">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">How it works</span>
+        <h2 id="process-h" class="h-lg">From first call to finished work</h2>
+      </div>
+      <ProcessSteps steps={steps} />
+      {isFeatured && <p class="process-note muted">Ask us about financing through {financing.provider}.</p>}
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="section section--white section--tight" aria-labelledby="related-h">
+      <div class="container">
+        <h2 id="related-h" class="kicker" style="margin-bottom:1rem">Related services</h2>
+        <div class="related">
+          {related.map((r) => <a class="link-arrow" href={r.path}>{r.name}<Icon name="arrow" /></a>)}
+          <a class="link-arrow" href="/services">All services<Icon name="arrow" /></a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <ConsultCallout service={service.formService} topic={service.slug} />
+</BaseLayout>

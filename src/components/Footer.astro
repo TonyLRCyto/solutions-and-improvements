@@ -1,0 +1,55 @@
+---
+import Logo from './Logo.astro';
+import { company, financing, nav } from '../data/site';
+import { featuredServices, commercialService } from '../data/services';
+import { regions } from '../data/areas';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer on-dark">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="badge" href="/"><Logo height={76} alt="Solutions and Improvements home" loading="lazy" /></a>
+        <p>Construction and remodeling across Northwest Indiana and South Chicagoland. {company.sinceLine}.</p>
+      </div>
+      <div>
+        <h2>Services</h2>
+        <ul>
+          {featuredServices.map((s) => <li><a href={s.path}>{s.name}</a></li>)}
+          <li><a href={commercialService.path}>{commercialService.name}</a></li>
+          <li><a href="/services">All services</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Company</h2>
+        <ul>
+          {nav.filter((n) => n.href !== '/services').map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          {regions.map((r) => <li><a href={r.path}>{r.name}</a></li>)}
+          <li><a href="/blog">Resources</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a></li>
+          <li><a href={`mailto:${company.email}`} data-track="email_click">{company.email}</a></li>
+        </ul>
+        <address>
+          {company.adminAddress}<br />
+          <span>{company.adminAddressNote}</span>
+        </address>
+        <p class="muted mt-1" style="font-size:.9rem">
+          {financing.url ? (
+            <a href={financing.url} rel="noopener">Ask us about financing through {financing.provider}</a>
+          ) : (
+            <>Ask us about financing through {financing.provider}.</>
+          )}
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© {year} {company.name}. All rights reserved.</p>
+      <p><a href="/privacy">Privacy</a></p>
+    </div>
+  </div>
+</footer>
