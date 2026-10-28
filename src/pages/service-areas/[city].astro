@@ -58,6 +58,20 @@ const crumbs = [
     </div>
   </section>
 
+  <section class="section section--paper section--tight" aria-labelledby="planning-h">
+    <div class="container svc-body">
+      <div>
+        <span class="kicker">Before work begins</span>
+        <h2 id="planning-h" class="h-lg mt-1">Planning in {city.name}</h2>
+      </div>
+      <div>
+        <p>{city.planning.text}</p>
+        <p class="muted mt-1">{city.planning.preparation}</p>
+        <a class="link-arrow mt-1" href={city.planning.resourceUrl} rel="external">{city.planning.resourceLabel}<Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
   <section class="section section--paper section--tight" aria-labelledby="steps-h">
     <div class="container">
       <h2 id="steps-h" class="h-lg" style="margin-bottom:2rem">How projects begin</h2>

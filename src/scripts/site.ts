@@ -25,6 +25,21 @@ document.addEventListener('click', (e) => {
   if (el) track(el.dataset.track!, { path: location.pathname });
 });
 
+/* ---------- Compact header ----------
+ * The outer sticky slot keeps its height, so changing the header never shifts page content.
+ */
+const updateHeader = () => document.documentElement.classList.toggle('header-compact', window.scrollY > 40);
+let headerFrame = 0;
+window.addEventListener('scroll', () => {
+  if (headerFrame) return;
+  headerFrame = requestAnimationFrame(() => {
+    updateHeader();
+    headerFrame = 0;
+  });
+}, { passive: true });
+window.addEventListener('pageshow', updateHeader);
+updateHeader();
+
 /* ---------- Mobile menu ---------- */
 const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
 const menu = document.getElementById('mobile-menu');
@@ -38,6 +53,13 @@ if (toggle && menu) {
     else if (returnFocus) toggle.focus();
   };
   toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  toggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab' && e.shiftKey && !menu.hidden) {
+      e.preventDefault();
+      const items = menu.querySelectorAll<HTMLElement>('a, button');
+      items[items.length - 1]?.focus();
+    }
+  });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !menu.hidden) setOpen(false, true);
   });
@@ -55,7 +77,7 @@ if (toggle && menu) {
       first.focus();
     }
   });
-  matchMedia('(min-width: 60.01em)').addEventListener('change', (m) => m.matches && setOpen(false));
+  matchMedia('(min-width: 70.01em)').addEventListener('change', (m) => m.matches && setOpen(false));
 }
 
 /* ---------- Camera Settle (home opening photo) ----------

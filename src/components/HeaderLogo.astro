@@ -1,0 +1,10 @@
+---
+import { Picture } from 'astro:assets';
+import mark from '../assets/brand/solutions-star-check.png';
+import wordmark from '../assets/brand/solutions-wordmark.png';
+// Both pieces are lossless crops of the supplied artwork, composed without redrawing it.
+---
+<span class="brand-lockup" aria-hidden="true">
+  <Picture class="brand-mark" src={mark} alt="" width={76} height={70} densities={[1, 2]} formats={['avif', 'webp']} fallbackFormat="png" loading="eager" decoding="async" />
+  <Picture class="brand-wordmark" src={wordmark} alt="" width={236} height={38} densities={[1, 2]} formats={['avif', 'webp']} fallbackFormat="png" loading="eager" decoding="async" />
+</span>

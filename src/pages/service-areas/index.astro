@@ -44,7 +44,7 @@ const visibleCities = cities.filter((c) => c.indexReady || IS_PREVIEW);
     <section class="section section--paper section--tight" aria-labelledby="cities-h">
       <div class="container">
         <h2 id="cities-h" class="h-lg">Communities</h2>
-        {IS_PREVIEW && <p class="preview-flag mt-1">Preview: these six community pages are drafts and are excluded from the production build and sitemap until they have reviewed local content.</p>}
+        {IS_PREVIEW && <p class="preview-flag mt-1">Preview: these {visibleCities.length} community pages are being reviewed before launch.</p>}
         <div class="group-grid mt-2">
           {regions.map((r) => (
             <div class="group">

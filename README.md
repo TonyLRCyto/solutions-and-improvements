@@ -28,7 +28,7 @@ On Windows, run Lighthouse through `npm run lighthouse -- <label>` so the runner
 | --- | --- |
 | `src/data/site.ts` | Company facts (name, phone, email, admin address, team, approach), navigation, CTA, financing link, pending flags. **Edit business details here only.** |
 | `src/data/services.ts` | Every service page: path (legacy paths preserved), titles, descriptions, intro, examples, photos, process steps, related links, service groups. |
-| `src/data/areas.ts` | Indiana/Illinois regional pages and the six city drafts with `draft` / `indexReady` flags. |
+| `src/data/areas.ts` | Indiana/Illinois regional pages and twelve city drafts (six per state) with `draft` / `indexReady` flags. Selection and launch review are in `docs/SERVICE-AREA-LAUNCH.md`. |
 | `src/data/photos.ts` | Approved photos with factual captions and alt text. |
 | `src/data/posts.ts` | Resources/blog posts (the legacy article is a draft). |
 | `src/data/form-options.ts`, `src/lib/consultation.ts` | Form choices, limits, validation, email formatting. |

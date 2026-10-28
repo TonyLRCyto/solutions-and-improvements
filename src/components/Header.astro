@@ -1,15 +1,16 @@
 ---
-import Logo from './Logo.astro';
+import HeaderLogo from './HeaderLogo.astro';
 import Icon from './Icon.astro';
 import { nav, cta, company } from '../data/site';
 
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isCurrent = (href: string) => current === href || (href !== '/' && current.startsWith(href + '/'));
 ---
-<header class="site-header">
+<header class="header-slot">
+  <div class="site-header">
   <div class="container">
-    <a class="brand" href="/">
-      <Logo height={72} alt="Solutions and Improvements home" />
+    <a class="brand" href="/" aria-label="Solutions and Improvements home">
+      <HeaderLogo />
     </a>
     <nav class="primary-nav" aria-label="Main">
       <ul>
@@ -25,6 +26,7 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
       <span class="visually-hidden">Menu</span>
       <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
     </button>
+  </div>
   </div>
 </header>
 <div class="mobile-menu" id="mobile-menu" hidden>

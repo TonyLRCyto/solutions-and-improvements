@@ -9,7 +9,7 @@ Short list of what this preview still needs. Nothing below blocks reviewing the 
 | Acorn Finance Solutions-specific link | Text only: “Ask us about financing through Acorn Finance.” Set `PUBLIC_ACORN_URL` to turn the mention into a link. |
 | Verified New Construction photos and facts (incl. East Chicago / early addition jobs) | Original line illustration, captioned “Illustration”. |
 | Commercial / multifamily project evidence | Capability copy and illustration only. No clients, logos or counts. |
-| City page local content (Munster, St. John, Dyer, Crown Point, Mokena, Frankfort) | Drafts, preview-only, `noindex`, `indexReady: false`. Need real local material (approved local photos, owner notes). |
+| City page review: Munster, St. John, Dyer, Crown Point, Schererville, Winfield; Mokena, Frankfort, Orland Park, Tinley Park, Homewood, Flossmoor | Twelve preview-only drafts with local planning resources, `noindex`, `indexReady: false`. Review local guidance and add meaningful first-hand detail before indexed launch; see `SERVICE-AREA-LAUNCH.md`. |
 | Original blog article content | Interim rewrite on the old address, draft + `noindex`, no value/ROI claims. |
 | Fuller postal address (city/ZIP) and any business hours | Only “917 Ridge Road, Unit 3561 — Administrative office only” is shown. Address omitted from structured data. |
 | Licensing / credential wording per trade and state | No license numbers, insurance or credential claims anywhere. Electrical/plumbing/HVAC copy says work is coordinated as part of projects. |
@@ -22,8 +22,8 @@ Short list of what this preview still needs. Nothing below blocks reviewing the 
 
 | Item | Notes |
 | --- | --- |
-| GitHub repository | Not created. Steps in README. |
-| Cloudflare account / Worker / Workers Builds connection | Not created. Keep preview and production Workers separate; don’t attach the live domain before launch. |
+| GitHub repository | Created and uploaded: private `TonyLRCyto/solutions-and-improvements`. |
+| Cloudflare preview / automatic builds | Separate preview deployed. Owner chose manual updates; automatic builds remain disconnected. Keep the live domain unattached until launch approval. |
 | Email provider, verified sender, secrets | Not configured; form honestly reports “not sent”. Choose provider, verify domain (keep MX/TXT), add secrets, then do an owner-approved inbox test. |
 | Turnstile | Optional; not configured. |
 | Analytics | Hook exists (`window.siTrack`) but nothing is loaded. Choose provider and privacy approach first. |
