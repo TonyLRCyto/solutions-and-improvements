@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
+import Icon from '../components/Icon.astro';
 import { company, financing } from '../data/site';
 import { allServices } from '../data/services';
 import { breadcrumbSchema } from '../lib/seo';
@@ -53,7 +54,7 @@ const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
     <div class="container">
       <div class="section-head">
         <span class="kicker">What happens next</span>
-        <h2 id="next-h" class="h-lg">Consultation &amp; site visit → Scope &amp; proposal → Planning &amp; construction</h2>
+        <h2 id="next-h" class="h-lg">Consultation &amp; site visit <span class="visually-hidden">then </span><span class="sequence-arrow"><Icon name="arrow" /></span> Scope &amp; proposal <span class="visually-hidden">then </span><span class="sequence-arrow"><Icon name="arrow" /></span> Planning &amp; construction</h2>
       </div>
       <ProcessSteps
         steps={[
@@ -65,3 +66,16 @@ const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .sequence-arrow {
+    display: inline-flex;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.14em;
+  }
+  .sequence-arrow :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+</style>

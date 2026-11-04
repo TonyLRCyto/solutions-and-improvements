@@ -3,23 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
 import BlueprintLines from '../components/BlueprintLines.astro';
-import ArchGraphic from '../components/ArchGraphic.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
 import { photos } from '../data/photos';
 import { featuredServices, commercialService } from '../data/services';
 import { regions, cities } from '../data/areas';
 import { company, cta, financing, IS_PREVIEW } from '../data/site';
-
-const slides = [
-  { key: 'bathrooms', photo: photos.B1 },
-  { key: 'kitchens', photo: photos.K1 },
-  { key: 'additions', photo: photos.Ctall },
-  { key: 'new-construction', graphic: 'new-construction' as const, caption: 'New construction / Illustration' },
-];
-const defaultSlide = 'kitchens';
-const slideCaption = (s: (typeof slides)[number]) =>
-  s.photo ? `${featuredServices.find((f) => f.slug === s.key)?.name} / ${s.photo.caption}` : s.caption;
 
 const visibleCities = cities.filter((c) => c.indexReady || IS_PREVIEW);
 ---
@@ -33,100 +22,57 @@ const visibleCities = cities.filter((c) => c.indexReady || IS_PREVIEW);
   <!-- 1. Opening -->
   <section class="hero blueprint on-dark" aria-labelledby="hero-h">
     <BlueprintLines />
-    <span class="reg-mark" style="top:2rem;right:2rem"></span>
     <div class="container">
       <div class="hero-grid">
         <div class="hero-copy">
-          <span class="kicker">{company.tagline}</span>
-          <h1 id="hero-h" class="display">Built with intention.</h1>
-          <p class="hero-region">{company.regionLine}</p>
-          <p class="hero-services">Bathrooms, kitchens, additions and new construction.</p>
-          <p class="hero-audience">{company.audienceLine}</p>
+          <h1 id="hero-h" class="display">Construction and remodeling since 1990.</h1>
+          <p class="hero-intro">For homes and businesses across Northwest Indiana and South Chicagoland.</p>
           <div class="hero-actions">
-            <a class="btn btn--primary btn--lg" href={cta.href} data-track="cta_consultation">{cta.label}<Icon name="arrow" /></a>
-            <a class="link-arrow" href="/projects">View our work<Icon name="arrow" /></a>
+            <a class="btn btn--primary btn--lg" href={cta.href} data-track="cta_consultation">{cta.label}</a>
+            <a class="btn btn--outline btn--lg" href="/projects">View our work</a>
           </div>
-          <p class="hero-since">{company.sinceLine} · Based in Munster</p>
         </div>
         <div class="hero-media">
           <figure style="margin:0">
             <div class="plane" data-settle>
-              <span class="plane-tab" aria-hidden="true"></span>
               <div class="plane-frame">
-                <span class="inner-rule" aria-hidden="true"></span>
                 <Photo
                   photo={photos.A}
                   priority
-                  widths={[480, 600, 760, 960, 1200, 1600, 2000]}
-                  sizes="(max-width: 960px) calc(100vw - 4rem), (max-width: 1460px) 54vw, 790px"
+                  widths={[360, 480, 600, 760, 960, 1200, 1600, 2000]}
+                  sizes="(max-width: 832px) 92vw, (max-width: 1460px) 42vw, 580px"
                 />
               </div>
             </div>
-            <figcaption class="hero-caption">
-              <div>
-                <small>Selected work / Roofing</small>
-                <p>{photos.A.caption}</p>
-              </div>
-              <span class="rule" aria-hidden="true"></span>
-            </figcaption>
+            <figcaption class="hero-caption">{photos.A.caption}</figcaption>
           </figure>
         </div>
       </div>
-      <nav class="hero-strip" aria-label="Featured services">
-        <ul>
-          {featuredServices.map((s, i) => (
-            <li><a href={s.path}><span>0{i + 1}</span>{s.name}</a></li>
-          ))}
-        </ul>
-      </nav>
     </div>
   </section>
 
   <!-- 2. Services -->
-  <section class="section section--paper" aria-labelledby="svc-h">
+  <section class="section section--paper home-services" aria-labelledby="svc-h">
     <div class="container">
       <div class="section-head">
-        <span class="kicker">01 / Our services</span>
-        <h2 id="svc-h" class="h-xl">Remodel. Expand. Build.</h2>
+        <h2 id="svc-h" class="h-xl">Our services</h2>
       </div>
-      <div class="svc-feature" data-svc-feature>
-        <div>
-          <ul class="svc-list">
-            {featuredServices.map((s, i) => (
-              <li>
-                <a href={s.path} data-svc={s.slug} class:list={{ 'is-active': s.slug === defaultSlide }}>
-                  <span class="num">0{i + 1}</span>
-                  <span><span class="name">{s.name}</span><span class="desc">{s.summary}</span></span>
-                  <Icon name="arrow" />
-                </a>
-              </li>
-            ))}
-          </ul>
-          <div class="svc-more">
-            <p class="muted">Projects of all sizes welcome, including small repairs.</p>
-            <a class="link-arrow" href={commercialService.path} style="color:var(--blue);font-size:1.15rem">{commercialService.name}<Icon name="arrow" /></a>
-            <a class="link-arrow" href="/services">Explore all services<Icon name="arrow" /></a>
-          </div>
+      <ul class="svc-list svc-list--compact">
+        {featuredServices.map((s) => (
+          <li>
+            <a href={s.path}>
+              <span class="name">{s.name}</span>
+              <Icon name="arrow-up-right" />
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="svc-more">
+        <p class="muted">Projects of all sizes welcome, including small repairs.</p>
+        <div class="svc-more-links">
+          <a href={commercialService.path}>{commercialService.name}</a>
+          <a href="/services">All services</a>
         </div>
-        <figure class="svc-preview" style="margin:0">
-          <span class="frame-line" aria-hidden="true"></span>
-          <div class="stage">
-            {slides.map((s) => (
-              <div class="slide" class:list={{ 'is-active': s.key === defaultSlide }} data-slide={s.key} data-caption={slideCaption(s)} aria-hidden={s.key === defaultSlide ? undefined : 'true'}>
-                {s.photo ? (
-                  s.key === defaultSlide ? (
-                    <Photo photo={s.photo} sizes="(max-width: 832px) calc(100vw - 2.5rem), 40vw" widths={[360, 480, 640, 800, 1000]} />
-                  ) : (
-                    <template data-deferred><Photo photo={s.photo} sizes="(max-width: 832px) calc(100vw - 2.5rem), 40vw" widths={[360, 480, 640, 800, 1000]} /></template>
-                  )
-                ) : (
-                  <ArchGraphic kind={s.graphic!} />
-                )}
-              </div>
-            ))}
-          </div>
-          <figcaption data-svc-caption>{slideCaption(slides.find((s) => s.key === defaultSlide)!)}</figcaption>
-        </figure>
       </div>
     </div>
   </section>

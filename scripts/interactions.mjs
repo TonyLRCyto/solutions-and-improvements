@@ -16,7 +16,7 @@ const result = (ok, label, extra = '') => {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${label}${extra ? '  ' + extra : ''}`);
 };
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
 
 // 1. No horizontal overflow, one h1, at several widths
 for (const width of [320, 390, 768, 1024, 1440, 1920]) {
@@ -95,10 +95,11 @@ for (const width of [320, 390, 768, 1024, 1440, 1920]) {
   await page.close();
 }
 
-// 4. Service preview responds to keyboard focus
+// 4. The Services page's photo preview responds to keyboard focus.
+// The homepage now uses direct service navigation without a hover-dependent preview.
 {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-  await page.goto(BASE + '/');
+  await page.goto(BASE + '/services');
   await page.focus('[data-svc="bathrooms"]');
   await page.waitForTimeout(100);
   const r = await page.evaluate(() => ({

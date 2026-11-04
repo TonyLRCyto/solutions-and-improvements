@@ -652,65 +652,57 @@ textarea {
 
 /* ---------- Home hero ---------- */
 .hero {
-  padding-top: clamp(3rem, 2rem + 4vw, 6rem);
+  padding-block: clamp(2.5rem, 4.5vw, 5rem);
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(2rem, 4vw, 5rem);
-  align-items: start;
-}
-.hero-copy {
-  padding-top: clamp(0rem, 2vw, 1.5rem);
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 4.5rem);
+  align-items: center;
 }
 .hero-copy .display {
+  margin: 0;
+  max-width: 18ch;
+  font-size: clamp(2.25rem, 1.3rem + 2.6vw, 3.5rem);
+  line-height: 1.12;
+}
+.hero-intro {
   margin-top: 1.5rem;
-}
-.hero-region {
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: 42ch;
   color: var(--on-dark-muted);
-  font-size: 1rem;
-}
-.hero-services {
-  margin-top: 0.6rem;
-  font-size: var(--fs-md);
-  line-height: 1.45;
-  max-width: 24ch;
-}
-.hero-audience {
-  margin-top: 1.25rem;
-  font-size: var(--fs-xs);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--on-dark-kicker);
+  font-size: 1.0625rem;
+  line-height: 1.6;
 }
 .hero-actions {
-  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  margin-top: 1.75rem;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.75rem;
-}
-.hero-since {
-  margin-top: 2rem;
-  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
-  font-size: var(--fs-sm);
-  color: var(--on-dark-muted);
 }
-.hero-since::before {
-  content: '';
-  width: 2rem;
-  height: 1px;
-  background: var(--red);
+.hero-actions .btn {
+  min-height: 3.5rem;
+  justify-content: center;
+  padding: 0.875rem 1.25rem;
+  border-width: 2px;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: center;
+}
+.hero-actions .btn--outline {
+  border-color: var(--on-dark-muted);
+}
+.hero-actions .btn--outline:hover {
+  border-color: var(--white);
+  background: rgb(255 255 255 / 0.08);
+}
+.hero-actions .btn:active {
+  transform: translateY(1px);
 }
 
-/* The 4:3 photo plane with its extruded frame */
+/* Upright project photograph; the plane hook retains the subtle Camera Settle. */
 .hero-media {
   position: relative;
-  padding: 1.5rem 1.5rem 0 0;
 }
 .plane {
   position: relative;
@@ -719,40 +711,7 @@ textarea {
 }
 .plane-frame {
   position: relative;
-  padding: 10px;
-  background: linear-gradient(160deg, #2a4a86 0%, #1a3266 100%);
-  box-shadow:
-    0 40px 80px -30px rgb(0 0 0 / 0.65),
-    0 18px 30px -18px rgb(0 0 0 / 0.5);
-}
-.plane-frame::before {
-  /* top face of the plane */
-  content: '';
-  position: absolute;
-  left: 0;
-  right: -20px;
-  top: -20px;
-  height: 20px;
-  background: linear-gradient(180deg, #3d5f9e, #2c4c88);
-  clip-path: polygon(20px 0, 100% 0, calc(100% - 20px) 100%, 0 100%);
-}
-.plane-frame::after {
-  /* side face of the plane */
-  content: '';
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  bottom: 0;
-  width: 20px;
-  background: linear-gradient(90deg, #1d376e, #142a57);
-  clip-path: polygon(0 20px, 100% 0, 100% calc(100% - 20px), 0 100%);
-}
-.plane-frame .inner-rule {
-  position: absolute;
-  inset: 4px;
-  border: 1px solid rgb(185 205 240 / 0.35);
-  pointer-events: none;
-  z-index: 2;
+  overflow: hidden;
 }
 .plane img {
   width: 100%;
@@ -761,70 +720,11 @@ textarea {
   object-fit: cover;
   background: #1a2c4d;
 }
-.plane-tab {
-  position: absolute;
-  left: -12px;
-  top: 6px;
-  width: 6px;
-  height: 22px;
-  background: var(--red);
-}
 .hero-caption {
-  margin-top: 2.25rem;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: 1rem;
-  padding-left: 10px;
-}
-.hero-caption small {
-  display: block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--on-dark-kicker);
-}
-.hero-caption p {
-  margin-top: 0.4rem;
-  font-size: 1.05rem;
-}
-.hero-caption .rule {
-  width: 6rem;
-  height: 1px;
-  background: var(--blue-300);
-  opacity: 0.6;
-  margin-bottom: 0.6rem;
-}
-
-.hero-strip {
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-  border-top: 1px solid var(--line-dark);
-}
-.hero-strip ul {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-.hero-strip a {
-  display: block;
-  padding: 1.6rem 1.25rem 2.25rem 0;
-  text-decoration: none;
-  font-size: clamp(1.05rem, 0.9rem + 0.6vw, 1.45rem);
-  font-weight: 550;
-  letter-spacing: -0.015em;
-  transition: color 0.2s;
-}
-.hero-strip a span {
-  display: block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--on-dark-kicker);
-  margin-bottom: 0.65rem;
-  letter-spacing: 0.08em;
-}
-.hero-strip a:hover {
-  color: var(--blue-300);
+  margin-top: 0.75rem;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--on-dark-muted);
 }
 
 /* Camera Settle: only applied when JS is running and motion is allowed (see Hero.astro) */
@@ -837,47 +737,18 @@ textarea {
   }
 }
 
-@media (max-width: 60em) {
+@media (max-width: 52em) {
   .hero-grid {
     grid-template-columns: 1fr;
   }
   .hero-media {
-    padding: 1.25rem 1.25rem 0 0.75rem;
-  }
-  .hero-actions {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem 1.5rem;
+    width: 100%;
+    max-width: 44rem;
   }
 }
 @media (max-width: 40em) {
-  .hero-strip ul {
-    grid-template-columns: 1fr 1fr;
-  }
-  .hero-strip a {
-    padding: 1.1rem 0.75rem 1.1rem 0;
-  }
   .hero-actions .btn {
     width: 100%;
-  }
-  .plane-frame {
-    padding: 6px;
-  }
-  .plane-frame::before {
-    top: -12px;
-    right: -12px;
-    height: 12px;
-    clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
-  }
-  .plane-frame::after {
-    top: -12px;
-    right: -12px;
-    width: 12px;
-    clip-path: polygon(0 12px, 100% 0, 100% calc(100% - 12px), 0 100%);
-  }
-  .hero-caption {
-    margin-top: 1.25rem;
   }
 }
 
@@ -1061,6 +932,76 @@ textarea {
   .svc-list a {
     grid-template-columns: 2.25rem 1fr auto;
     padding-left: 0.75rem;
+  }
+}
+
+/* The homepage services are one concise navigation group. */
+.home-services {
+  padding-block: clamp(2.5rem, 5vw, 5rem);
+}
+.home-services .section-head {
+  margin-bottom: 1.75rem;
+}
+.home-services .h-xl {
+  font-size: clamp(1.75rem, 1.3rem + 1vw, 2.5rem);
+}
+.home-services .svc-list--compact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(1.5rem, 4vw, 4rem);
+  border-top: 0;
+}
+.home-services .svc-list--compact li {
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 0;
+  min-width: 0;
+}
+.home-services .svc-list--compact a {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  min-height: 4.25rem;
+  padding: 1.125rem 0;
+}
+.home-services .svc-list--compact a::before {
+  content: none;
+}
+.home-services .svc-list--compact .name {
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+.home-services .svc-list--compact svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.home-services .svc-list--compact a:hover svg,
+.home-services .svc-list--compact a:focus-visible svg {
+  transform: translate(2px, -2px);
+}
+.home-services .svc-more {
+  margin-top: 1.75rem;
+  padding: 0;
+  gap: 0.25rem;
+}
+.home-services .svc-more p {
+  margin-bottom: 0.25rem;
+}
+.svc-more-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.75rem;
+}
+.svc-more-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--blue-700);
+  font-weight: 600;
+  text-underline-offset: 0.25em;
+}
+@media (max-width: 40em) {
+  .home-services .svc-list--compact {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1318,12 +1259,12 @@ textarea {
   content: '';
   position: absolute;
   left: 0;
-  top: 0.55em;
-  width: 0.9rem;
-  height: 0.5rem;
-  border-left: 2px solid var(--red);
-  border-bottom: 2px solid var(--red);
-  transform: rotate(-45deg);
+  top: 0.15em;
+  width: 1.1rem;
+  height: 1.1rem;
+  background: var(--red);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m5 12 4 4L19 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m5 12 4 4L19 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 @media (max-width: 56em) {
   .consult {
