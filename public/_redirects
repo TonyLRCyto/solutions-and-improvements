@@ -5,9 +5,34 @@
 # Not redirected yet (launch decisions): /about (broken "Personal Construction Program" link), /cart.
 /home /  301
 /estimate /contact 301
-/sai-mechanical /services#mechanical-services 301
+/sai-mechanical /mechanical-services 301
 /new-folder-5 /newconstruction 301
 /new-folder-84 /bathroom-remodeler-contractor 301
-/fdfb38cf-6959-4384-87d8-932ec80058f3 /roofing-replacement-contractor 301
+/fdfb38cf-6959-4384-87d8-932ec80058f3 /exterior-remodeling#roofing 301
 /Service-areas /illinois-construction 301
 /More /about-us 301
+
+# 2026-11-13: smaller trades moved onto five group pages. Each old one-service page goes to its section.
+/basement-remodeling /interior-remodeling#basement-remodeling 301
+/flooring-installation /interior-remodeling#flooring-installation 301
+/drywall-contrator /interior-remodeling#drywall 301
+/painting-company /interior-remodeling#painting 301
+/new-page-35 /interior-remodeling#carpentry 301
+/roofing-replacement-contractor /exterior-remodeling#roofing 301
+/siding-replacement /exterior-remodeling#siding 301
+/window-installation-door-installtion /exterior-remodeling#windows-doors 301
+/gutters /exterior-remodeling#gutters 301
+/deck-contractor /exterior-remodeling#decks 301
+/masonry-brick-tuckpoint /exterior-remodeling#masonry 301
+/landscaping-contractor-lake-county-indiana /exterior-remodeling#landscaping 301
+/looking-for-something-else-1 /exterior-remodeling#exterior-remodeling 301
+/framing-carpentry /structural-and-site-work#framing 301
+/foundation /structural-and-site-work#foundations 301
+/concrete /structural-and-site-work#concrete 301
+/demolition-debris-removal /structural-and-site-work#demolition 301
+/hvac-services /mechanical-services#hvac 301
+/plumbing /mechanical-services#plumbing 301
+/electric /mechanical-services#electric 301
+/rehab-remodel /repairs-and-restoration#rehab-remodel 301
+/how-to-fix-building-code-violations /repairs-and-restoration#how-to-fix-building-code-violations 301
+/looking-for-something-else /repairs-and-restoration#something-else 301

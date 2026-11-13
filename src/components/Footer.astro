@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
-import { company, financing, nav } from '../data/site';
-import { featuredServices, commercialService } from '../data/services';
+import { company, financing, nav, credit } from '../data/site';
+import { featuredServices, commercialService, serviceGroups } from '../data/services';
 import { regions } from '../data/areas';
 const year = new Date().getFullYear();
 ---
@@ -10,13 +10,14 @@ const year = new Date().getFullYear();
     <div class="footer-top">
       <div class="footer-brand">
         <a class="badge" href="/"><Logo height={76} alt="Solutions and Improvements home" loading="lazy" /></a>
-        <p>Construction and remodeling across Northwest Indiana and South Chicagoland. {company.sinceLine}.</p>
+        <p>Family-owned construction and remodeling across Northwest Indiana and South Chicagoland. Licensed and insured. {company.sinceLine}.</p>
       </div>
       <div>
         <h2>Services</h2>
         <ul>
           {featuredServices.map((s) => <li><a href={s.path}>{s.name}</a></li>)}
           <li><a href={commercialService.path}>{commercialService.name}</a></li>
+          {serviceGroups.map((g) => <li><a href={g.path}>{g.title}</a></li>)}
           <li><a href="/services">All services</a></li>
         </ul>
       </div>
@@ -31,7 +32,8 @@ const year = new Date().getFullYear();
       <div>
         <h2>Contact</h2>
         <ul>
-          <li><a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a></li>
+          <li><a href={company.phoneHref} data-track="phone_click">Call {company.phoneDisplay}</a></li>
+          <li><a href={company.smsHref} data-track="sms_click">Text {company.phoneDisplay}</a></li>
           <li><a href={`mailto:${company.email}`} data-track="email_click">{company.email}</a></li>
         </ul>
         <address>
@@ -50,6 +52,7 @@ const year = new Date().getFullYear();
     <div class="footer-bottom">
       <p>© {year} {company.name}. All rights reserved.</p>
       <p><a href="/privacy">Privacy</a></p>
+      <p class="footer-credit"><a href={credit.url} rel="noopener">{credit.label}</a></p>
     </div>
   </div>
 </footer>

@@ -1,0 +1,26 @@
+---
+/**
+ * "Plan to built": a simple line elevation draws itself over the frame, then the real photo slides in.
+ * The drawing is decorative. The photo is always in the HTML and shows immediately without JS or with reduced motion.
+ */
+import Photo from './Photo.astro';
+import type { Photo as PhotoRecord } from '../data/photos';
+interface Props {
+  photo: PhotoRecord;
+  label: string;
+}
+const { photo, label } = Astro.props;
+---
+<figure class="plan" data-draw>
+  <div class="plan__frame">
+    <div class="plan__photo"><Photo photo={photo} sizes="(max-width: 900px) calc(100vw - 2.5rem), 54vw" widths={[480, 720, 960, 1024]} /></div>
+    <svg class="plan__lines" viewBox="0 0 1024 768" aria-hidden="true" focusable="false">
+      <path class="plan__draw" pathLength="1" d="M45 375 L180 280 L330 205 L430 255 M175 290 V530 M430 305 V500 M400 315 L600 197 L725 335 M455 310 V490 M700 335 V495 M770 335 L895 285 L960 375 M840 300 V490 M190 530 H440" />
+      <path class="plan__draw plan__draw--thin" pathLength="1" d="M268 338 H378 V438 H268 Z M552 365 H612 V438 H552 Z M748 380 H772 V425 H748 Z M860 403 H938 V487 H860 Z M480 455 H630 V545 H480" />
+      <g class="plan__dims">
+        <path d="M175 600 H960 M175 590 V610 M960 590 V610 M990 197 V500 M980 197 H1000 M980 500 H1000" />
+      </g>
+    </svg>
+  </div>
+  <figcaption class="plan__caption">Plan → built · {label}</figcaption>
+</figure>

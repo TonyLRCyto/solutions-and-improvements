@@ -1,0 +1,13 @@
+---
+/** Star rating drawn with partial fill, so 4.3 shows as 4.3 stars rather than rounding up. */
+interface Props {
+  rating: number;
+  size?: 'sm' | 'lg';
+}
+const { rating, size = 'sm' } = Astro.props;
+const pct = Math.max(0, Math.min(100, (rating / 5) * 100));
+---
+<span class:list={['stars', `stars--${size}`]} role="img" aria-label={`${rating} out of 5 stars`} style={`--fill:${pct}%`}>
+  <span class="stars__base" aria-hidden="true">★★★★★</span>
+  <span class="stars__fill" aria-hidden="true">★★★★★</span>
+</span>

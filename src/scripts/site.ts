@@ -80,36 +80,6 @@ if (toggle && menu) {
   matchMedia('(min-width: 70.01em)').addEventListener('change', (m) => m.matches && setOpen(false));
 }
 
-/* ---------- Camera Settle (home opening photo) ----------
- * The complete photo is visible from the first paint. When the image is ready, the plane eases from
- * scale 1.026 / 8px lower to rest over ~0.7s with uniform transforms only, then stops.
- */
-const root = document.documentElement;
-const plane = document.querySelector<HTMLElement>('[data-settle]');
-if (plane && root.classList.contains('settle-pending')) {
-  const img = plane.querySelector('img');
-  const start = () => {
-    if (!root.classList.contains('settle-pending')) return; // safety timeout already restored it
-    const from = getComputedStyle(plane).transform;
-    root.classList.remove('settle-pending');
-    try {
-      sessionStorage.setItem('si-settled', '1');
-    } catch {
-      /* private mode */
-    }
-    if (!plane.animate || from === 'none') return;
-    plane.animate([{ transform: from }, { transform: 'none' }], {
-      duration: 700,
-      easing: 'cubic-bezier(0.22, 0.61, 0.2, 1)',
-    });
-  };
-  if (!img || img.complete) requestAnimationFrame(start);
-  else {
-    img.addEventListener('load', () => (img.decode ? img.decode().catch(() => {}).then(start) : start()), { once: true });
-    img.addEventListener('error', () => root.classList.remove('settle-pending'), { once: true });
-  }
-}
-
 /* ---------- Editorial service list: swap preview on hover / focus ---------- */
 document.querySelectorAll<HTMLElement>('[data-svc-feature]').forEach((wrap) => {
   const links = wrap.querySelectorAll<HTMLAnchorElement>('[data-svc]');
@@ -135,3 +105,55 @@ document.querySelectorAll<HTMLElement>('[data-svc-feature]').forEach((wrap) => {
     l.addEventListener('focus', () => activate(l.dataset.svc!));
   });
 });
+
+/* ---------- Before / after comparison ----------
+ * A native range input sits over two stacked photos, so keyboard and screen readers get a real slider.
+ * Without JavaScript the "after" photo shows with the "before" photo beside it as a plain link.
+ */
+document.querySelectorAll<HTMLElement>('[data-compare]').forEach((box) => {
+  const input = box.querySelector<HTMLInputElement>('input[type="range"]');
+  if (!input) return;
+  box.classList.add('is-ready');
+  const set = (v: string) => box.style.setProperty('--pos', `${v}%`);
+  set(input.value);
+  input.addEventListener('input', () => {
+    box.classList.remove('is-hinting');
+    set(input.value);
+  });
+  // One gentle nudge the first time it scrolls into view, so people see it moves.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      box.classList.add('is-hinting');
+      box.addEventListener('animationend', () => box.classList.remove('is-hinting'), { once: true });
+    }, { threshold: 0.6 });
+    io.observe(box);
+  }
+});
+
+/* ---------- Scroll reveals and the plan-to-built drawing ----------
+ * Content is visible by default. Only when JS runs and motion is allowed do below-the-fold items
+ * start hidden and reveal once, as they enter the viewport.
+ */
+const motionOK = !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window;
+const revealables = document.querySelectorAll<HTMLElement>('[data-reveal], [data-draw]');
+if (motionOK) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('is-in');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+  revealables.forEach((el) => {
+    if (el.getBoundingClientRect().top < innerHeight * 0.85) {
+      el.classList.add('is-in');
+      return;
+    }
+    el.classList.add('is-waiting');
+    io.observe(el);
+  });
+} else {
+  revealables.forEach((el) => el.classList.add('is-in'));
+}

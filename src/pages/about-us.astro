@@ -2,15 +2,18 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import Stars from '../components/Stars.astro';
 import ConsultCallout from '../components/ConsultCallout.astro';
 import { company } from '../data/site';
 import { photos } from '../data/photos';
+import { reviewSummary } from '../data/reviews';
 import { breadcrumbSchema } from '../lib/seo';
 const crumbs = [{ label: 'Home', href: '/' }, { label: 'About' }];
 ---
 <BaseLayout
   title="About Us"
-  description="Solutions and Improvements has been a construction and remodeling company since 1990, based in Munster, Indiana. Meet Gabriel, Owner, and Andy, Project Manager."
+  description="Solutions and Improvements is a family-owned, licensed and insured construction and remodeling company based in Munster, Indiana, since 1990. Gabriel Lopez, Owner, and Andy Lopez, Project Manager."
   path="/about-us"
   schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? '/about-us' })))]}
 >
@@ -19,47 +22,44 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About' }];
       <div>
         <Breadcrumbs items={crumbs} />
         <span class="kicker">About</span>
-        <h1>Building and remodeling since 1990.</h1>
-        <p class="lede">A Munster-based construction company working on homes, businesses and multifamily properties across Northwest Indiana and South Chicagoland.</p>
+        <h1>A family business, building since 1990.</h1>
+        <p class="lede">Solutions and Improvements is a family-owned, licensed and insured contractor based in Munster. We build and remodel homes, businesses and multifamily properties across Northwest Indiana and South Chicagoland.</p>
       </div>
-      <p class="big-year" aria-hidden="true">1990</p>
+      <figure class="photo-figure">
+        <div class="ph"><Photo photo={photos.EC} priority sizes="(max-width: 832px) calc(100vw - 2.5rem), 45vw" widths={[480, 720, 960, 1280]} /></div>
+        <figcaption>{photos.EC.caption}</figcaption>
+      </figure>
     </div>
   </section>
 
-  <section class="section section--white section--tight" aria-labelledby="approach-h">
+  <section class="section section--white section--tight" aria-labelledby="team-h">
+    <div class="container family__grid">
+      <div>
+        <h2 id="team-h" class="h-lg">You talk to the people who run the job.</h2>
+        <p class="muted family__text">Gabriel and Andy handle every project personally, from the first visit to the final walkthrough. For each job we bring in experienced trades we work with regularly, and we coordinate them so you have one point of contact.</p>
+        <ul class="people">
+          {company.team.map((t) => <li><span class="n">{t.name}</span><span class="r">{t.role}</span></li>)}
+        </ul>
+      </div>
+      <ul class="trust-list">
+        <li><Icon name="home" /><span><b>Family-owned since {company.founded}</b>Gabriel Lopez, Owner, and Andy Lopez, Project Manager.</span></li>
+        <li><Icon name="shield" /><span><b>Licensed and insured</b>For homes, businesses and multifamily properties.</span></li>
+        <li><Stars rating={reviewSummary.rating} /><span><b>{reviewSummary.rating} stars on Google</b>From {reviewSummary.count} reviews.</span></li>
+        <li><Icon name="pencil" /><span><b>Design and renders in-house</b>You see the plan before work starts.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--paper section--tight" aria-labelledby="approach-h">
     <div class="container">
       <div class="section-head">
-        <span class="kicker">How we work</span>
-        <h2 id="approach-h" class="h-lg">Four things we hold ourselves to.</h2>
+        <h2 id="approach-h" class="h-lg">What we hold ourselves to</h2>
       </div>
       <ul class="approach">
         {company.approach.map((a) => (
           <li><h3>{a.title}</h3><p>{a.text}</p></li>
         ))}
       </ul>
-    </div>
-  </section>
-
-  <section class="section section--paper section--tight" aria-labelledby="team-h">
-    <div class="container svc-body">
-      <div>
-        <span class="kicker">Team</span>
-        <h2 id="team-h" class="h-lg mt-1">Who you’ll talk to</h2>
-      </div>
-      <ul class="team">
-        {company.team.map((t) => (
-          <li><span class="n">{t.name}</span><span class="r">{t.role}</span></li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <section class="section section--white section--tight" aria-label="Work in progress">
-    <div class="container">
-      <figure class="photo-figure">
-        <div class="ph"><Photo photo={photos.Cwide} sizes="(max-width: 1460px) calc(100vw - 9rem), 1320px" widths={[640, 960, 1280, 1600, 2000]} /></div>
-        <figcaption>{photos.Cwide.caption}</figcaption>
-      </figure>
     </div>
   </section>
 

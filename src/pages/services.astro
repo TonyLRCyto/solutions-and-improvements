@@ -3,25 +3,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
-import ArchGraphic from '../components/ArchGraphic.astro';
 import ConsultCallout from '../components/ConsultCallout.astro';
-import { featuredServices, commercialService, serviceGroups, servicesInGroup } from '../data/services';
+import { featuredServices, commercialService, serviceGroups, servicesInGroup, serviceHref } from '../data/services';
 import { photos } from '../data/photos';
 import { breadcrumbSchema } from '../lib/seo';
 
 const crumbs = [{ label: 'Home', href: '/' }, { label: 'Services' }];
-const slides = [
-  { key: 'bathrooms', photo: photos.B1 },
-  { key: 'kitchens', photo: photos.K1 },
-  { key: 'additions', photo: photos.Ctall },
-  { key: 'new-construction', graphic: 'new-construction' as const },
-];
-const caption = (s: (typeof slides)[number]) =>
-  `${featuredServices.find((f) => f.slug === s.key)?.name} / ${s.photo ? s.photo.caption : 'Illustration'}`;
+const cardPhoto = { 'new-construction': photos.EC, additions: photos.ADD, kitchens: photos.KQ, bathrooms: photos.BS } as const;
+const order = ['new-construction', 'additions', 'kitchens', 'bathrooms'];
+const mainServices = order.map((slug) => featuredServices.find((s) => s.slug === slug)!);
 ---
 <BaseLayout
   title="Construction & Remodeling Services"
-  description="Bathrooms, kitchens, additions and new construction, plus commercial and multifamily work, exteriors, structure and smaller repairs across Northwest Indiana and South Chicagoland."
+  description="New homes, additions, kitchens and bathrooms, plus commercial and multifamily work, exteriors, structure, repairs and restoration across Northwest Indiana and South Chicagoland."
   path="/services"
   schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? '/services' })))]}
 >
@@ -29,73 +23,55 @@ const caption = (s: (typeof slides)[number]) =>
     <div class="container">
       <Breadcrumbs items={crumbs} />
       <span class="kicker">Services</span>
-      <h1>Remodel. Expand. Build.</h1>
-      <p class="lede">Four things we’re known for, a long list of trades behind them, and no minimum project size.</p>
+      <h1>What we build and repair</h1>
+      <p class="lede">Four specialties, every trade behind them, and no minimum project size.</p>
     </div>
   </section>
 
   <section class="section section--white section--tight" aria-labelledby="featured-h">
     <div class="container">
-      <h2 id="featured-h" class="kicker" style="margin-bottom:1.5rem">Featured services</h2>
-      <div class="svc-feature" data-svc-feature>
-        <ul class="svc-list">
-          {featuredServices.map((s, i) => (
-            <li>
-              <a href={s.path} data-svc={s.slug} class:list={{ 'is-active': i === 0 }}>
-                <span class="num">0{i + 1}</span>
-                <span><span class="name">{s.name}</span><span class="desc">{s.summary}</span></span>
-                <Icon name="arrow" />
-              </a>
-            </li>
-          ))}
-        </ul>
-        <figure class="svc-preview" style="margin:0">
-          <span class="frame-line" aria-hidden="true"></span>
-          <div class="stage">
-            {slides.map((s, i) => (
-              <div class="slide" class:list={{ 'is-active': i === 0 }} data-slide={s.key} data-caption={caption(s)} aria-hidden={i === 0 ? undefined : 'true'}>
-                {s.photo ? (
-                  i === 0 ? (
-                    <Photo photo={s.photo} sizes="(max-width: 832px) calc(100vw - 2.5rem), 40vw" widths={[360, 480, 640, 800, 1000]} priority />
-                  ) : (
-                    <template data-deferred><Photo photo={s.photo} sizes="(max-width: 832px) calc(100vw - 2.5rem), 40vw" widths={[360, 480, 640, 800, 1000]} /></template>
-                  )
-                ) : <ArchGraphic kind={s.graphic!} />}
+      <h2 id="featured-h" class="h-lg">Our specialties</h2>
+      <ul class="svc-cards">
+        {mainServices.map((s) => (
+          <li>
+            <a href={s.path}>
+              <div class="ph"><Photo photo={cardPhoto[s.slug as keyof typeof cardPhoto]} alt="" sizes="(max-width: 560px) calc(100vw - 2.5rem), (max-width: 1000px) 46vw, 23vw" widths={[360, 480, 640, 800]} /></div>
+              <div class="svc-cards__body">
+                <h3>{s.name}</h3>
+                <p>{s.summary}</p>
+                <span class="svc-cards__go">{s.name}<Icon name="arrow" /></span>
               </div>
-            ))}
-          </div>
-          <figcaption data-svc-caption>{caption(slides[0])}</figcaption>
-        </figure>
-      </div>
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
   <section class="panel-ink on-dark" aria-labelledby="commercial-h">
     <div class="container callout">
       <div>
-        <span class="kicker">For owners and managers</span>
-        <h2 id="commercial-h" class="h-lg mt-1">{commercialService.name}</h2>
+        <h2 id="commercial-h" class="h-lg">{commercialService.name}</h2>
         <p class="muted mt-1" style="max-width:52ch">{commercialService.intro}</p>
       </div>
-      <a class="btn btn--outline btn--lg" href={commercialService.path}>Commercial & multifamily work<Icon name="arrow" /></a>
+      <a class="btn btn--light btn--lg" href={commercialService.path}>Commercial &amp; multifamily<Icon name="arrow" /></a>
     </div>
   </section>
 
   <section class="section section--paper" aria-labelledby="more-h">
     <div class="container">
-      <div class="section-head section-head--split">
-        <span class="kicker">More of what we do</span>
-        <h2 id="more-h" class="h-xl">Every trade a building needs.</h2>
+      <div class="section-head">
+        <h2 id="more-h" class="h-xl">Every other trade, too.</h2>
         <p class="muted">Small repairs welcome. If you don’t see it here, ask.</p>
       </div>
       <div class="group-grid group-grid--3">
         {serviceGroups.map((g) => (
           <div class="group" id={g.id}>
-            <h3>{g.title}</h3>
+            <h3><a href={g.path}>{g.title}</a></h3>
             <p>{g.text}</p>
             <ul>
               {servicesInGroup(g.id).map((s) => (
-                <li><a href={s.path}>{s.name}<Icon name="arrow" /></a></li>
+                <li><a href={serviceHref(s)}>{s.name}<Icon name="arrow" /></a></li>
               ))}
             </ul>
           </div>

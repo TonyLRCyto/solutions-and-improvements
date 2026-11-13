@@ -52,8 +52,8 @@ const crumbs = [
         <span class="kicker">In {city.name}</span>
         <h2 id="local-h" class="h-lg mt-1">What we do here</h2>
       </div>
-      <ul class="example-list">
-        {city.localNotes.map((n, i) => <li><span>0{i + 1}</span>{n}</li>)}
+      <ul class="check-list">
+        {city.localNotes.map((n) => <li><Icon name="check" />{n}</li>)}
       </ul>
     </div>
   </section>
