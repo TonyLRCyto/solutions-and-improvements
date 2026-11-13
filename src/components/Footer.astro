@@ -6,10 +6,20 @@ import { regions } from '../data/areas';
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer on-dark">
+  <svg class="footer-logo-filters" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="footer-logo-keyline" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+        <feMorphology in="SourceAlpha" operator="dilate" radius="1.15" result="outline" />
+        <feFlood flood-color="white" result="white" />
+        <feComposite in="white" in2="outline" operator="in" result="keyline" />
+        <feMerge><feMergeNode in="keyline" /><feMergeNode in="SourceGraphic" /></feMerge>
+      </filter>
+    </defs>
+  </svg>
   <div class="container">
     <div class="footer-top">
       <div class="footer-brand">
-        <a class="badge" href="/"><Logo height={76} alt="Solutions and Improvements home" loading="lazy" /></a>
+        <a class="badge" href="/"><Logo height={152} alt="Solutions and Improvements home" loading="lazy" /></a>
         <p>Family-owned construction and remodeling across Northwest Indiana and South Chicagoland. Licensed and insured. {company.sinceLine}.</p>
       </div>
       <div>
