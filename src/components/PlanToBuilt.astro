@@ -4,6 +4,7 @@
  * The drawing is decorative. The photo is always in the HTML and shows immediately without JS or with reduced motion.
  */
 import Photo from './Photo.astro';
+import Icon from './Icon.astro';
 import type { Photo as PhotoRecord } from '../data/photos';
 interface Props {
   photo: PhotoRecord;
@@ -22,5 +23,9 @@ const { photo, label } = Astro.props;
       </g>
     </svg>
   </div>
-  <figcaption class="plan__caption">Plan → built · {label}</figcaption>
+  <figcaption class="plan__caption">Plan <span class="visually-hidden">to </span><Icon name="arrow" /> built · {label}</figcaption>
 </figure>
+
+<style>
+  .plan__caption :global(svg) { display: inline-block; width: 1em; height: 1em; vertical-align: -0.15em; }
+</style>

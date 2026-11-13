@@ -6,8 +6,16 @@ interface Props {
 }
 const { rating, size = 'sm' } = Astro.props;
 const pct = Math.max(0, Math.min(100, (rating / 5) * 100));
+const stars = [0, 24, 48, 72, 96];
+const starPath = 'm12 2.5 2.93 5.94 6.55.95-4.74 4.62 1.12 6.53L12 17.46l-5.86 3.08 1.12-6.53L2.52 9.39l6.55-.95Z';
 ---
 <span class:list={['stars', `stars--${size}`]} role="img" aria-label={`${rating} out of 5 stars`} style={`--fill:${pct}%`}>
-  <span class="stars__base" aria-hidden="true">★★★★★</span>
-  <span class="stars__fill" aria-hidden="true">★★★★★</span>
+  <span class="stars__base" aria-hidden="true"><svg class="stars__drawing" viewBox="0 0 120 24" fill="currentColor" focusable="false" aria-hidden="true">{stars.map((x) => <path d={starPath} transform={`translate(${x} 0)`} />)}</svg></span>
+  <span class="stars__fill" aria-hidden="true"><svg class="stars__drawing" viewBox="0 0 120 24" fill="currentColor" focusable="false" aria-hidden="true">{stars.map((x) => <path d={starPath} transform={`translate(${x} 0)`} />)}</svg></span>
 </span>
+
+<style>
+  .stars { vertical-align: middle; }
+  .stars__base { display: block; }
+  .stars__drawing { display: block; width: 6em; height: 1.2em; max-width: none; }
+</style>

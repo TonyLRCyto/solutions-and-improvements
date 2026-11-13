@@ -112,11 +112,14 @@ document.querySelectorAll<HTMLElement>('[data-svc-feature]').forEach((wrap) => {
  */
 document.querySelectorAll<HTMLElement>('[data-compare]').forEach((box) => {
   const input = box.querySelector<HTMLInputElement>('input[type="range"]');
-  if (!input) return;
+  const stage = box.querySelector<HTMLElement>('.compare__stage');
+  if (!input || !stage) return;
   box.classList.add('is-ready');
-  const set = (v: string) => box.style.setProperty('--pos', `${v}%`);
+  const set = (v: string) => stage.style.setProperty('--pos', `${v}%`);
+  let interacted = false;
   set(input.value);
   input.addEventListener('input', () => {
+    interacted = true;
     box.classList.remove('is-hinting');
     set(input.value);
   });
@@ -125,6 +128,7 @@ document.querySelectorAll<HTMLElement>('[data-compare]').forEach((box) => {
     const io = new IntersectionObserver((entries) => {
       if (!entries[0].isIntersecting) return;
       io.disconnect();
+      if (interacted) return;
       box.classList.add('is-hinting');
       box.addEventListener('animationend', () => box.classList.remove('is-hinting'), { once: true });
     }, { threshold: 0.6 });
