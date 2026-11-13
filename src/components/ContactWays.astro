@@ -1,0 +1,13 @@
+---
+import Icon from './Icon.astro';
+import { company } from '../data/site';
+interface Props {
+  light?: boolean;
+}
+const { light = false } = Astro.props;
+---
+<ul class:list={['contact-ways', { 'contact-ways--light': light }]}>
+  <li><a href={company.phoneHref} data-track="phone_click"><span class="contact-ways__ic"><Icon name="phone" /></span><span><b>Call {company.phoneDisplay}</b><span>{company.replyTimes.phone}</span></span></a></li>
+  <li><a href={company.smsHref} data-track="sms_click"><span class="contact-ways__ic"><Icon name="message" /></span><span><b>Text {company.phoneDisplay}</b><span>Send a few photos of the space.</span></span></a></li>
+  <li><a href={`mailto:${company.email}`} data-track="email_click"><span class="contact-ways__ic"><Icon name="mail" /></span><span><b class="contact-ways__email">{company.email}</b><span>{company.replyTimes.email}</span></span></a></li>
+</ul>

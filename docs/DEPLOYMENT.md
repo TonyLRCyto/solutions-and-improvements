@@ -45,3 +45,22 @@ The actual Squarespace website, production domain and DNS/email records remain u
 - Hosted HTTPS checks passed for Home, Contact, Services, Projects, Winfield and Illinois: 200, one H1, correct live-domain canonical and retained noindex metadata/response header.
 - Fresh local preview Lighthouse, one run per device/page: Home Performance 99 mobile/100 desktop; Contact 100 on both. Accessibility and Best Practices 100 throughout; preview SEO 69 from the intentional indexing block. These are local regression measurements, not live-network or production scores.
 - Manual GitHub/Cloudflare updates remain in place. This updated only the existing preview Worker; production migration, live form delivery and broader art direction remain separate steps.
+
+## November 13 Direction B preview
+
+- The owner explicitly approved deployment to the existing preview after reviewing [pull request #1](https://github.com/TonyLRCyto/solutions-and-improvements/pull/1).
+- Deployed source: `4c4347ac08b895418d6db622996acd8f8829644d`, from `direction-b-2026-11-13`. The PR remains open and unmerged; manual preview deployment does not require merging it.
+- Cloudflare version: `114d31fe-c78a-4387-a373-9badb17576d2` at [the same Solutions preview](https://solutions-and-improvements-preview.gabe-tony-lr.workers.dev/).
+- Hosted header/slider checks passed at 320, 390, 768, 1120, 1121, 1280 and 1440px. Desktop starts at 112px with a 324px logo and compacts to 80px; phone/tablet header starts at 88px and compacts to 68px. Call/menu controls remain 44px and the slider responds to pointer and keyboard input.
+- Hosted motion completion, no-JavaScript fallback, menu focus, SVG rating graphics and legacy redirects passed. Nine representative phone pages passed layout checks. Home, Services, Projects, all five service hubs and Contact returned 200 with one H1 and retained noindex metadata/response headers.
+- A fresh local Lighthouse homepage check, one run per profile, scored Performance 89 mobile/97 desktop, Accessibility 100, Best Practices 100 and preview SEO 69. Mobile LCP was 3,779ms; desktop LCP 1,208ms. These are local measurements, not live-network or physical-device results. Mobile performance needs further optimization; see [the audit summary](../reports/lighthouse/2026-11-13-direction-b-preview/summary.md).
+- Existing production/Squarespace, DNS/MX, secrets and consultation delivery settings were not changed. `SITE_MODE=preview`, `MAIL_PROVIDER=none`, no custom routes and manual updates remain in place.
+
+## November 13 footer and mobile-menu refinement
+
+- Deployed source: `ba12704672325377526a5d308b259e5e24235c0d`, Cloudflare version `eaf1abee-6ebc-42b0-b6be-bf2295287068`, at the same Solutions preview URL.
+- The requested footer correction keeps the original stacked artwork, removes the cream badge, increases the logo to roughly 224×152px and draws a white contour from its alpha channel. No source artwork was regenerated or recolored.
+- Mobile navigation now uses 18px SVG arrows, 20px labels and 52px rows. This fixes the oversized default SVG viewports while retaining comfortable links and keyboard operation.
+- Hosted footer checks passed at 320, 390, 1024 and 1440px; hosted menu checks passed at 320, 390 and 768px, including no overflow/clipping, readable icon/text bounds, focus inside the open menu and Escape/focus return. Typecheck/build/diff checks also passed. See [the focused review](FOOTER-MENU-REFINEMENT-2026-11-13.md).
+- The website fonts remain Bricolage Grotesque and Figtree. Archivo, Exo 2/Source Sans 3 and Barlow comparisons, plus an alternative header-style footer arrangement, are discussion-only. No global font or footer-arrangement selection has been made.
+- PR #1 remains open/unmerged; production, DNS/MX, secrets and live email delivery remain unchanged. The earlier Direction B Lighthouse results are a baseline before these footer/menu changes, not a newly rerun benchmark.

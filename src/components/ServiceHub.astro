@@ -1,0 +1,98 @@
+---
+/**
+ * Hub page for one service group (2026-11-13). Each trade is a section with an id matching its slug,
+ * so old one-service URLs can 301 to /hub#slug.
+ */
+import Breadcrumbs from './Breadcrumbs.astro';
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import ReviewCard from './ReviewCard.astro';
+import BeforeAfter from './BeforeAfter.astro';
+import ConsultCallout from './ConsultCallout.astro';
+import { servicesInGroup, type ServiceGroup } from '../data/services';
+import { photos, type PhotoKey } from '../data/photos';
+import { reviews } from '../data/reviews';
+import { cta, company } from '../data/site';
+
+interface Props {
+  group: ServiceGroup;
+  crumbs: { label: string; href?: string }[];
+}
+const { group, crumbs } = Astro.props;
+const items = servicesInGroup(group.id);
+// Only real photos of matching work. Most trades have none yet, so most sections are text only.
+const sectionPhoto: Partial<Record<string, PhotoKey>> = {
+  'basement-remodeling': 'BAR',
+  framing: 'ADD',
+};
+// A review is shown under a trade only when the review itself describes that kind of work.
+const sectionReview: Partial<Record<string, string>> = {
+  restoration: 'luke',
+  framing: 'sonya',
+};
+const isRestoration = group.id === 'property';
+const consultHref = (s: { formService: string; slug: string }) => `${cta.href}?service=${s.formService}&topic=${s.slug}#consultation`;
+---
+<section class="page-hero">
+  <div class="container">
+    <Breadcrumbs items={crumbs} />
+    <span class="kicker">{group.title}</span>
+    <h1>{group.h1}</h1>
+    <p class="lede">{group.intro}</p>
+    <div class="actions">
+      <a class="btn btn--primary btn--lg" href={`${cta.href}#consultation`} data-track="cta_consultation">{cta.longLabel}</a>
+      <a class="btn btn--outline btn--lg" href={company.phoneHref} data-track="phone_click"><Icon name="phone" />{company.phoneDisplay}</a>
+    </div>
+    <ul class="hub-nav chips" aria-label="On this page">
+      {items.map((s) => <li><a href={`#${s.slug}`}>{s.short ?? s.name}</a></li>)}
+    </ul>
+  </div>
+</section>
+
+{isRestoration && (
+  <section class="section section--white section--tight" aria-label="Garage rebuilt after a fire">
+    <div class="container">
+      <BeforeAfter
+        before={photos.GB}
+        after={photos.GA}
+        label="Compare the Munster garage before and after the rebuild"
+        caption="Garage lost to fire, rebuilt · Munster, IN"
+      >
+        <ReviewCard review={reviews.find((r) => r.id === 'doug')!} compact slot="overlay" />
+      </BeforeAfter>
+    </div>
+  </section>
+)}
+
+<section class="section section--white" aria-label={`${group.title} services`}>
+  <div class="container">
+    {items.map((s) => {
+      const p = sectionPhoto[s.slug] ? photos[sectionPhoto[s.slug]!] : undefined;
+      const r = sectionReview[s.slug] ? reviews.find((x) => x.id === sectionReview[s.slug]) : undefined;
+      return (
+        <section class="hub-section" id={s.slug} aria-labelledby={`${s.slug}-h`}>
+          <div>
+            <h2 id={`${s.slug}-h`}>{s.h1}</h2>
+            <p class="lede muted">{s.intro}</p>
+            <div class="actions">
+              <a class="btn btn--outline" href={consultHref(s)} data-track="cta_consultation">Free consultation</a>
+            </div>
+            {r && <ReviewCard review={r} />}
+          </div>
+          <div>
+            {p && (
+              <figure>
+                <div class="ph"><Photo photo={p} sizes="(max-width: 832px) calc(100vw - 2.5rem), 45vw" widths={[480, 720, 960]} /></div>
+              </figure>
+            )}
+            <ul class="check-list" aria-label={`${s.name}: typical work`}>
+              {s.examples.map((ex) => <li><Icon name="check" />{ex}</li>)}
+            </ul>
+          </div>
+        </section>
+      );
+    })}
+  </div>
+</section>
+
+<ConsultCallout heading="No job too small." text="Tell us what you need, even if it is one repair. The consultation is free and includes a visit." />

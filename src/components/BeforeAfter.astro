@@ -1,0 +1,31 @@
+---
+/**
+ * Before/after comparison. Both photos are real <img> elements; a native range input drives the split,
+ * so it works with keyboard, touch and screen readers. Without JS the "after" photo shows alone
+ * and the caption links to the "before" view.
+ */
+import Photo from './Photo.astro';
+import type { Photo as PhotoRecord } from '../data/photos';
+interface Props {
+  before: PhotoRecord;
+  after: PhotoRecord;
+  label: string;
+  caption: string;
+  priority?: boolean;
+}
+const { before, after, label, caption, priority = false } = Astro.props;
+const sizes = '(max-width: 1460px) calc(100vw - 2.5rem), 1320px';
+const widths = [480, 720, 960, 1280, 1600];
+---
+<figure class="compare" data-compare>
+  <div class="compare__stage">
+    <div class="compare__after"><Photo photo={after} sizes={sizes} widths={widths} priority={priority} /></div>
+    <div class="compare__before"><Photo photo={before} sizes={sizes} widths={widths} priority={priority} /></div>
+    <span class="compare__tag compare__tag--before" aria-hidden="true">Before</span>
+    <span class="compare__tag compare__tag--after" aria-hidden="true">After</span>
+    <span class="compare__handle" aria-hidden="true"></span>
+    <input class="compare__range" type="range" min="0" max="100" value="50" aria-label={label} />
+    <div class="compare__overlay"><slot name="overlay" /></div>
+  </div>
+  <figcaption class="compare__caption">{caption}</figcaption>
+</figure>

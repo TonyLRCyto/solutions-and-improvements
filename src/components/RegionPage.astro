@@ -38,8 +38,8 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Service Areas', href: '/
         <h2 id="coverage-h" class="h-lg mt-1">Where we work</h2>
       </div>
       <div>
-        <ul class="example-list">
-          {region.coverage.map((c, i) => <li><span>0{i + 1}</span>{c}</li>)}
+        <ul class="check-list">
+          {region.coverage.map((c) => <li><Icon name="check" />{c}</li>)}
         </ul>
         {regionCities.length > 0 && (
           <p class="city-links">

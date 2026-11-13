@@ -10,17 +10,87 @@ export { formServices, type FormServiceValue };
 
 export type ServiceGroupId = 'interior' | 'exterior' | 'structure' | 'mechanical-services' | 'property';
 
-export const serviceGroups: { id: ServiceGroupId; title: string; text: string }[] = [
-  { id: 'interior', title: 'Interiors', text: 'Rooms, finishes and the details that make them work.' },
-  { id: 'exterior', title: 'Exteriors', text: 'The parts of a building that keep weather out and look after curb appeal.' },
-  { id: 'structure', title: 'Structure & site', text: 'Framing, foundations, concrete and clearing the way.' },
+export interface ServiceGroup {
+  id: ServiceGroupId;
+  title: string;
+  text: string;
+  /** Hub page that holds every service in the group (2026-11-13: the old one-service pages redirect here). */
+  path: string;
+  h1: string;
+  pageTitle: string;
+  description: string;
+  intro: string;
+  photo?: PhotoKey;
+}
+
+export const serviceGroups: ServiceGroup[] = [
+  {
+    id: 'interior',
+    title: 'Interiors',
+    text: 'Basements, floors, walls, paint and finish carpentry.',
+    path: '/interior-remodeling',
+    h1: 'Basements and interior remodeling',
+    pageTitle: 'Basement & Interior Remodeling in Northwest Indiana & South Chicagoland',
+    description:
+      'Basement finishing, flooring, drywall, painting and finish carpentry from Solutions and Improvements, a family-owned, licensed and insured contractor in Northwest Indiana and South Chicagoland.',
+    intro:
+      'Finished basements, new floors, walls and trim. Whether it is one room or the whole house, the work is planned with you and finished properly.',
+    photo: 'BAR',
+  },
+  {
+    id: 'exterior',
+    title: 'Exteriors',
+    text: 'Roofing, siding, windows, gutters, decks and masonry.',
+    path: '/exterior-remodeling',
+    h1: 'Roofing, siding and exterior remodeling',
+    pageTitle: 'Roofing, Siding & Exterior Remodeling in Northwest Indiana & South Chicagoland',
+    description:
+      'Roofing, siding, windows and doors, gutters, decks, masonry and landscaping from Solutions and Improvements, a family-owned, licensed and insured contractor in Northwest Indiana and South Chicagoland.',
+    intro:
+      'The outside of a building keeps the weather out and sets the first impression. We handle one trade or several together, from a roof repair to a full exterior update.',
+    photo: 'GA',
+  },
+  {
+    id: 'structure',
+    title: 'Structure & site',
+    text: 'Framing, foundations, concrete and demolition.',
+    path: '/structural-and-site-work',
+    h1: 'Framing, foundations and site work',
+    pageTitle: 'Framing, Foundations, Concrete & Demolition in Northwest Indiana & South Chicagoland',
+    description:
+      'Framing, foundations, concrete and demolition from Solutions and Improvements, the structural work behind additions, new homes and repairs in Northwest Indiana and South Chicagoland.',
+    intro:
+      'The structural work behind additions, new homes and big remodels: framing, foundations, concrete and clearing the way.',
+    photo: 'ADD',
+  },
   {
     id: 'mechanical-services',
-    title: 'Mechanical services',
-    text: 'Heating and cooling, plumbing and electrical work as part of a project.',
+    title: 'HVAC, plumbing & electrical',
+    text: 'Heating, cooling, plumbing and electrical as part of a project.',
+    path: '/mechanical-services',
+    h1: 'HVAC, plumbing and electrical',
+    pageTitle: 'HVAC, Plumbing & Electrical Work in Northwest Indiana & South Chicagoland',
+    description:
+      'Heating and cooling, plumbing and electrical work coordinated by Solutions and Improvements as part of remodels, additions and new construction in Northwest Indiana and South Chicagoland.',
+    intro:
+      'Heating, cooling, plumbing and electrical work, coordinated with the rest of your remodel, addition or new build so every trade shows up in the right order.',
   },
-  { id: 'property', title: 'Property projects', text: 'Rehabs, code corrections and the jobs that don’t fit a list.' },
+  {
+    id: 'property',
+    title: 'Repairs & restoration',
+    text: 'Storm and fire repairs, rehabs, code corrections and small jobs.',
+    path: '/repairs-and-restoration',
+    h1: 'Repairs, restoration and rehabs',
+    pageTitle: 'Storm & Fire Damage Repair, Rehabs and Small Jobs in Northwest Indiana & South Chicagoland',
+    description:
+      'Storm and fire damage repair, property rehabs, code corrections and small jobs from Solutions and Improvements in Northwest Indiana and South Chicagoland. No job too small.',
+    intro:
+      'From a garage lost to fire to a punch list before a sale, no job is too small. Tell us what happened and we will plan the repair.',
+    photo: 'GA',
+  },
 ];
+
+export const groupById = (id?: ServiceGroupId) => serviceGroups.find((g) => g.id === id);
 
 export interface ProcessStep {
   title: string;
@@ -51,6 +121,8 @@ export interface Service {
   process?: ProcessStep[];
   formService: FormServiceValue;
   related?: string[];
+  /** New section with no old address to redirect (2026-11-13). */
+  noLegacyPath?: boolean;
 }
 
 const baseProcess = (consult: string, scope: string, build: string): ProcessStep[] => [
@@ -69,7 +141,7 @@ export const featuredServices: Service[] = [
     description:
       'Bathroom remodeling from Solutions and Improvements: showers, tile, vanities and layout changes across Northwest Indiana and South Chicagoland. Free consultation with an on-site visit.',
     h1: 'Bathroom remodeling',
-    kicker: 'Featured service',
+    kicker: 'Northwest Indiana & South Chicagoland',
     intro:
       'From a tired hall bath to a complete layout change, we plan the room around how you use it, then build it carefully.',
     summary: 'Showers, tile, vanities and complete layout changes.',
@@ -79,7 +151,7 @@ export const featuredServices: Service[] = [
       'Vanities, tops, fixtures and lighting',
       'Layout changes, accessibility updates and small repairs',
     ],
-    photos: ['B1'],
+    photos: ['BS', 'B1'],
     process: baseProcess(
       'We look at the room, the plumbing and what you want to change.',
       'You get a clear scope. Estimate and design terms are discussed for your project.',
@@ -97,7 +169,7 @@ export const featuredServices: Service[] = [
     description:
       'Kitchen remodeling from Solutions and Improvements: cabinets, counters, islands, layout and finishes across Northwest Indiana and South Chicagoland. Free consultation with an on-site visit.',
     h1: 'Kitchen remodeling',
-    kicker: 'Featured service',
+    kicker: 'Northwest Indiana & South Chicagoland',
     intro:
       'Kitchens carry the most traffic in a home. We plan storage, light and workflow first, then finish the room with care.',
     summary: 'Cabinets, counters, islands, lighting and layout.',
@@ -107,7 +179,7 @@ export const featuredServices: Service[] = [
       'Lighting, flooring and finish updates',
       'Layout changes and opening walls where the structure allows',
     ],
-    photos: ['K1', 'K2'],
+    photos: ['KI', 'KQ'],
     process: baseProcess(
       'We walk the space with you and talk through layout, storage and finishes.',
       'We define the scope. Design renders are available in-house on project-specific terms.',
@@ -125,9 +197,9 @@ export const featuredServices: Service[] = [
     description:
       'Home additions from Solutions and Improvements: more room, planned to fit the existing house. Serving Northwest Indiana and South Chicagoland. Free consultation with an on-site visit.',
     h1: 'Home additions',
-    kicker: 'Featured service',
+    kicker: 'Northwest Indiana & South Chicagoland',
     intro:
-      'An addition should feel like it was always there. We plan the structure, roofline and connection to the existing house before building.',
+      'An addition should feel like it was always there. From a new bedroom to a full second floor, we plan the structure, roofline and connection to the existing house before building.',
     summary: 'More room, planned to fit the house you already have.',
     examples: [
       'Room and second-story additions',
@@ -135,7 +207,7 @@ export const featuredServices: Service[] = [
       'Foundations, framing and roof tie-ins',
       'Finishing the new space inside and out',
     ],
-    photos: ['Cwide'],
+    photos: ['ADD', 'Cwide'],
     process: baseProcess(
       'We look at the lot, the house and how the new space would connect.',
       'We define the scope. Design and renders can begin after a rendering deposit or signed contract.',
@@ -153,9 +225,9 @@ export const featuredServices: Service[] = [
     description:
       'New construction from Solutions and Improvements: residential and commercial buildings planned and built across Northwest Indiana and South Chicagoland. Free consultation with an on-site visit.',
     h1: 'New construction',
-    kicker: 'Featured service',
+    kicker: 'Northwest Indiana & South Chicagoland',
     intro:
-      'Ground-up work for homes and commercial buildings, planned from the site up with in-house design support.',
+      'Ground-up work for homes and commercial buildings, planned from the site up with in-house design support. This home in East Chicago started as an empty lot.',
     summary: 'Residential and commercial buildings, from the site up.',
     examples: [
       'Single-family homes',
@@ -163,7 +235,7 @@ export const featuredServices: Service[] = [
       'Accessory and outbuildings',
       'Site, foundation and structural work',
     ],
-    graphic: 'new-construction',
+    photos: ['EC'],
     process: baseProcess(
       'We visit the site and talk through what you want to build.',
       'We define scope and next steps. Design and renders can begin after a rendering deposit or signed contract.',
@@ -218,7 +290,7 @@ const svc = (
   ...s,
 });
 
-/** Secondary services on retained legacy paths. */
+/** Secondary services. Their legacy paths now 301 to a section of the group hub (see public/_redirects). */
 export const secondaryServices: Service[] = [
   // Interiors
   svc({
@@ -463,6 +535,18 @@ export const secondaryServices: Service[] = [
   }),
   // Property projects
   svc({
+    slug: 'restoration',
+    path: '/repairs-and-restoration',
+    noLegacyPath: true,
+    name: 'Storm & fire damage repair',
+    group: 'property',
+    intro:
+      'When a storm or a fire damages part of a building, we clear what can’t be saved, rebuild it and leave the site clean. In Munster we rebuilt a garage that was lost to fire.',
+    summary: 'Rebuilding after storm and fire damage.',
+    examples: ['Fire-damaged garages and outbuildings', 'Storm damage to roofs, siding and windows', 'Demolition and debris removal', 'Rebuilding and finishing'],
+    related: ['roofing', 'siding', 'demolition'],
+  }),
+  svc({
     slug: 'rehab-remodel',
     path: '/rehab-remodel',
     name: 'Rehab & remodel',
@@ -507,3 +591,12 @@ export const allServices: Service[] = [...featuredServices, commercialService, .
 export const serviceBySlug = (slug: string): Service | undefined => allServices.find((s) => s.slug === slug);
 
 export const servicesInGroup = (group: ServiceGroupId) => secondaryServices.filter((s) => s.group === group);
+
+/** Featured and commercial services have their own page. The others live as sections on their group's hub page. */
+export const hasOwnPage = (s: Service) => !!s.featured || s.slug === 'commercial';
+export const serviceHref = (s: Service): string => {
+  if (hasOwnPage(s)) return s.path;
+  const g = groupById(s.group);
+  return g ? `${g.path}#${s.slug}` : s.path;
+};
+export const pageServices: Service[] = [...featuredServices, commercialService];

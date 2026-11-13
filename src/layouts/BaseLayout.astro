@@ -2,7 +2,8 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { IS_PREVIEW, company } from '../data/site';
+import Icon from '../components/Icon.astro';
+import { IS_PREVIEW, company, cta } from '../data/site';
 import { absolute, businessSchema } from '../lib/seo';
 
 interface Props {
@@ -16,8 +17,6 @@ interface Props {
   noindex?: boolean;
   ogImage?: string;
   schema?: object[];
-  /** Home only: enables the Camera Settle entrance. */
-  settle?: boolean;
   /** Shown only in preview builds, for draft/review pages. */
   draftNote?: string;
 }
@@ -30,7 +29,6 @@ const {
   noindex = false,
   ogImage = '/og-image.jpg',
   schema = [],
-  settle = false,
   draftNote,
 } = Astro.props;
 
@@ -48,8 +46,9 @@ const jsonLd = [businessSchema(), ...schema];
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="robots" content={robots} />
-    <meta name="theme-color" content="#f4f2ed" />
-    <link rel="preload" href="/fonts/manrope-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="preload" href="/fonts/bricolage-grotesque-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/figtree-latin-var.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -67,20 +66,6 @@ const jsonLd = [businessSchema(), ...schema];
     <script is:inline>
       document.documentElement.classList.remove('no-js');
     </script>
-    {settle && (
-      <script is:inline>
-        (function () {
-          try {
-            var d = document.documentElement;
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('si-settled')) {
-              d.classList.add('settle-pending');
-              // Safety net: never leave the photo offset if anything below fails.
-              setTimeout(function () { d.classList.remove('settle-pending'); }, 3000);
-            }
-          } catch (e) {}
-        })();
-      </script>
-    )}
     {jsonLd.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data)} />)}
   </head>
   <body>
@@ -93,6 +78,11 @@ const jsonLd = [businessSchema(), ...schema];
       <slot />
     </main>
     <Footer />
+    <nav class="callbar" aria-label="Quick contact">
+      <a class="callbar__call" href={company.phoneHref} data-track="phone_click"><Icon name="phone" />Call</a>
+      <a class="callbar__text" href={company.smsHref} data-track="sms_click"><Icon name="message" />Text</a>
+      <a class="callbar__consult" href={cta.href} data-track="cta_consultation">{cta.label}</a>
+    </nav>
     <script>
       import '../scripts/site.ts';
     </script>

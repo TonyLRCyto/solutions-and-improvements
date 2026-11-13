@@ -4,6 +4,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
 import Icon from '../components/Icon.astro';
+import ContactWays from '../components/ContactWays.astro';
 import { company, financing } from '../data/site';
 import { allServices } from '../data/services';
 import { breadcrumbSchema } from '../lib/seo';
@@ -12,7 +13,7 @@ const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
 ---
 <BaseLayout
   title="Request a Free Consultation"
-  description="Request a free consultation with Solutions and Improvements. It includes an on-site visit. Call 219-433-4846 or email office@solutionsandimprovements.com."
+  description="Request a free consultation with Solutions and Improvements. It includes an on-site visit. Call or text (219) 433-4846 or email office@solutionsandimprovements.com."
   path="/contact"
   schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? '/contact' })))]}
 >
@@ -21,7 +22,7 @@ const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
       <Breadcrumbs items={crumbs} />
       <span class="kicker">Contact</span>
       <h1>Request a free consultation.</h1>
-      <p class="lede">The consultation includes an on-site visit. Send the form, or call or email, and we’ll follow up by phone or message to arrange it.</p>
+      <p class="lede">The consultation includes an on-site visit. Call or text for the fastest answer, or send the form and we’ll follow up to arrange it.</p>
     </div>
   </section>
 
@@ -30,11 +31,7 @@ const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
       <div class="consult-aside">
         <h2 id="form-h" class="h-md">Tell us about the project</h2>
         <p class="muted">A request doesn’t book a time automatically. We’ll reach out to schedule the visit.</p>
-        <div class="contact-alt">
-          <span class="kicker">Call or email</span>
-          <a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a>
-          <a href={`mailto:${company.email}`} data-track="email_click" style="font-size:1rem">{company.email}</a>
-        </div>
+        <ContactWays light />
         <div class="contact-alt">
           <span class="kicker">Office</span>
           <address style="font-style:normal">{company.adminAddress}<br /><span class="muted">{company.adminAddressNote}. Please call or email rather than visiting.</span></address>
