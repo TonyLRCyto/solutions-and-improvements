@@ -45,3 +45,13 @@ The actual Squarespace website, production domain and DNS/email records remain u
 - Hosted HTTPS checks passed for Home, Contact, Services, Projects, Winfield and Illinois: 200, one H1, correct live-domain canonical and retained noindex metadata/response header.
 - Fresh local preview Lighthouse, one run per device/page: Home Performance 99 mobile/100 desktop; Contact 100 on both. Accessibility and Best Practices 100 throughout; preview SEO 69 from the intentional indexing block. These are local regression measurements, not live-network or production scores.
 - Manual GitHub/Cloudflare updates remain in place. This updated only the existing preview Worker; production migration, live form delivery and broader art direction remain separate steps.
+
+## November 13 Direction B preview
+
+- The owner explicitly approved deployment to the existing preview after reviewing [pull request #1](https://github.com/TonyLRCyto/solutions-and-improvements/pull/1).
+- Deployed source: `4c4347ac08b895418d6db622996acd8f8829644d`, from `direction-b-2026-11-13`. The PR remains open and unmerged; manual preview deployment does not require merging it.
+- Cloudflare version: `114d31fe-c78a-4387-a373-9badb17576d2` at [the same Solutions preview](https://solutions-and-improvements-preview.gabe-tony-lr.workers.dev/).
+- Hosted header/slider checks passed at 320, 390, 768, 1120, 1121, 1280 and 1440px. Desktop starts at 112px with a 324px logo and compacts to 80px; phone/tablet header starts at 88px and compacts to 68px. Call/menu controls remain 44px and the slider responds to pointer and keyboard input.
+- Hosted motion completion, no-JavaScript fallback, menu focus, SVG rating graphics and legacy redirects passed. Nine representative phone pages passed layout checks. Home, Services, Projects, all five service hubs and Contact returned 200 with one H1 and retained noindex metadata/response headers.
+- A fresh local Lighthouse homepage check, one run per profile, scored Performance 89 mobile/97 desktop, Accessibility 100, Best Practices 100 and preview SEO 69. Mobile LCP was 3,779ms; desktop LCP 1,208ms. These are local measurements, not live-network or physical-device results. Mobile performance needs further optimization; see [the audit summary](../reports/lighthouse/2026-11-13-direction-b-preview/summary.md).
+- Existing production/Squarespace, DNS/MX, secrets and consultation delivery settings were not changed. `SITE_MODE=preview`, `MAIL_PROVIDER=none`, no custom routes and manual updates remain in place.
