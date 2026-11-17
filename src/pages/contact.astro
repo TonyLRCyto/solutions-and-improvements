@@ -16,19 +16,17 @@ const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
   path="/contact"
   schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? '/contact' })))]}
 >
-  <section class="page-hero">
-    <div class="container">
-      <Breadcrumbs items={crumbs} />
-      <h1>Request a free consultation</h1>
-      <p class="lede">The consultation includes an on-site visit. Call or text for the fastest answer, or send the form and we’ll follow up to arrange it.</p>
-    </div>
-  </section>
-
-  <section class="section section--white section--tight" id="consultation" aria-labelledby="form-h">
-    <div class="container consult">
-      <div class="consult-aside">
-        <h2 id="form-h" class="h-md">Tell us about the project</h2>
-        <p class="muted">A request doesn’t book a time automatically. We’ll reach out to schedule the visit.</p>
+  <section class="contact-top" id="consultation" aria-labelledby="contact-h">
+    <div class="container contact-top__grid">
+      <div class="contact-top__intro">
+        <Breadcrumbs items={crumbs} />
+        <h1 id="contact-h">Request a free consultation</h1>
+        <p class="lede">The consultation includes an on-site visit. Send the request and we will follow up to schedule it, or call or text for the quickest answer.</p>
+      </div>
+      <div class="contact-top__form">
+        <ConsultationForm idPrefix="contact" topics={topics} heading="Tell us about the project" />
+      </div>
+      <div class="contact-top__details consult-aside">
         <ContactWays light />
         <div class="contact-alt">
           <span class="kicker">Office</span>
@@ -41,7 +39,6 @@ const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
           </p>
         </div>
       </div>
-      <ConsultationForm idPrefix="contact" topics={topics} />
     </div>
   </section>
 

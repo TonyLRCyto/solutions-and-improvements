@@ -3397,3 +3397,249 @@ picture {
     order: -1;
   }
 }
+
+/* ==========================================================================
+   Round 3 (2026-11-17): calmer opening, one set of contact buttons on phones,
+   trust first, form lower on the home page for phones, grouped "Other services".
+   ========================================================================== */
+.mobile-only {
+  display: none;
+}
+@media (max-width: 62em) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-only {
+    display: block;
+  }
+}
+
+/* Opening on desktop: the photo is a framed panel at close to its own shape (4:3), so it is not over-cropped */
+@media (min-width: 62.01em) {
+  .photo-hero {
+    background: var(--paper);
+  }
+  .photo-hero__grid {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.9fr);
+    align-items: stretch;
+    gap: clamp(1.25rem, 2.5vw, 2.5rem);
+    min-height: 0;
+    padding-block: clamp(1.25rem, 2.5vw, 2.25rem) clamp(2.5rem, 4vw, 3.5rem);
+  }
+  .photo-hero__text {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 34rem;
+    padding: clamp(2rem, 3.5vw, 3.25rem);
+    border-radius: var(--radius-lg);
+  }
+  .photo-hero__bg img {
+    object-position: 50% 55%;
+  }
+  .photo-hero__bg::after {
+    background: linear-gradient(180deg, rgb(8 20 46 / 0.05) 0%, rgb(8 20 46 / 0.35) 40%, rgb(8 20 46 / 0.88) 100%);
+  }
+  .photo-hero h1 {
+    font-size: clamp(2.25rem, 1.4rem + 2.2vw, 3.6rem);
+    max-width: 18ch;
+  }
+  .photo-hero .form-card {
+    max-width: none;
+    box-shadow: 0 18px 50px -30px rgb(15 33 72 / 0.45);
+  }
+  .photo-hero__credit {
+    top: 1rem;
+    right: 1.25rem;
+    bottom: auto;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: rgb(8 20 46 / 0.5);
+  }
+}
+/* Opening on phones: photo and headline only. The bottom bar carries Call, Text and Free consultation. */
+@media (max-width: 62em) {
+  .photo-hero__grid {
+    padding-block: 0;
+  }
+  .photo-hero__text {
+    min-height: min(30rem, calc(78svh - var(--header-h)));
+    padding-block: 2rem 2.25rem;
+  }
+  .photo-hero__form {
+    display: none;
+  }
+  .photo-hero h1 {
+    font-size: clamp(2.1rem, 1.4rem + 3.5vw, 2.9rem);
+  }
+  .photo-hero__lede {
+    font-size: 1.05rem;
+  }
+}
+/* One call button on phones: the bottom bar's */
+@media (max-width: 47.5em) {
+  .header-call {
+    display: none !important;
+  }
+  .menu-toggle {
+    margin-left: auto;
+  }
+}
+
+/* Trust facts in the proof section */
+.proof__facts {
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 1.4rem;
+  color: var(--ink);
+  font-weight: 500;
+}
+.proof__facts li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.proof__facts svg {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--blue);
+}
+
+/* Other services: six plain rows/cards instead of chips */
+.other-services {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+.other-services__list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 2rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.other-services__list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 100%;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+.other-services__list a > span {
+  display: grid;
+  gap: 0.15rem;
+}
+.other-services__list b {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.other-services__list b + span {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+.other-services__list svg {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--red-700);
+  transition: transform 0.2s var(--ease-out);
+}
+.other-services__list a:hover svg {
+  transform: translateX(3px);
+}
+.other-services__list a:hover b {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+@media (max-width: 62em) {
+  .other-services__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 40em) {
+  .other-services__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Home contact band on phones holds the form */
+.contact-band__email {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--on-dark-muted);
+}
+.contact-band__email a {
+  color: #fff;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 62em) {
+  .contact-band--simple .form-card {
+    margin-top: 0.5rem;
+  }
+}
+
+/* Contact page: the form starts in the first screen */
+.contact-top {
+  padding-block: clamp(1.25rem, 2.5vw, 2.25rem) clamp(2.5rem, 4vw, 4rem);
+  background: var(--white);
+}
+.contact-top__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  grid-template-areas:
+    'intro form'
+    'details form';
+  grid-template-rows: auto 1fr;
+  gap: 1.5rem clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+.contact-top__intro {
+  grid-area: intro;
+}
+.contact-top__intro h1 {
+  margin-top: 0.75rem;
+  font-size: clamp(2.1rem, 1.5rem + 2vw, 3.25rem);
+}
+.contact-top__intro .lede {
+  margin-top: 0.85rem;
+  max-width: 42ch;
+}
+.contact-top__form {
+  grid-area: form;
+}
+.contact-top__form .form-card {
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 50px -34px rgb(15 33 72 / 0.4);
+}
+.contact-top__details {
+  grid-area: details;
+}
+.contact-top__details .contact-ways {
+  margin-top: 0;
+}
+@media (max-width: 56em) {
+  .contact-top__grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'intro'
+      'form'
+      'details';
+  }
+}
+/* Solid dark fallback behind the opening text (before the photo loads, and for contrast checks) */
+.photo-hero__text {
+  background-color: var(--ink-900);
+}
+.photo-hero__credit {
+  background: rgb(8 20 46 / 0.8);
+  color: #fff;
+}

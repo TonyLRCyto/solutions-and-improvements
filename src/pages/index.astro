@@ -9,7 +9,7 @@ import ContactWays from '../components/ContactWays.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
 import { photos } from '../data/photos';
-import { featuredServices, serviceGroups, servicesInGroup, serviceHref, commercialService } from '../data/services';
+import { featuredServices, serviceGroups, commercialService } from '../data/services';
 import { reviews, reviewSummary } from '../data/reviews';
 import { company, cta } from '../data/site';
 
@@ -17,9 +17,6 @@ const homeReviews = ['amanda', 'robert', 'luke'].map((id) => reviews.find((r) =>
 const cardPhoto = { 'new-construction': photos.EC, additions: photos.ADD, kitchens: photos.KQ, bathrooms: photos.BS } as const;
 const order = ['new-construction', 'additions', 'kitchens', 'bathrooms'];
 const mainServices = order.map((slug) => featuredServices.find((s) => s.slug === slug)!);
-const otherServices = serviceGroups.flatMap((g) =>
-  servicesInGroup(g.id).filter((s) => !['something-else', 'exterior-remodeling', 'how-to-fix-building-code-violations'].includes(s.slug)),
-);
 const strip = [photos.ADD, photos.KI, photos.BS, photos.K1, photos.BAR];
 ---
 <BaseLayout
@@ -28,33 +25,58 @@ const strip = [photos.ADD, photos.KI, photos.BS, photos.K1, photos.BAR];
   description="Family-owned, licensed and insured contractor since 1990: new homes, additions, kitchens and bathrooms across Northwest Indiana and South Chicagoland. Free on-site consultation."
   path="/"
 >
-  <!-- Opening: photo behind the headline, request form beside it (below it on phones) -->
+  <!-- Opening: project photo with the headline; on desktop the request form sits beside it -->
   <section class="photo-hero" aria-labelledby="hero-h">
     <div class="container photo-hero__grid">
       <div class="photo-hero__text">
         <div class="photo-hero__bg" aria-hidden="true">
-          <Photo photo={photos.EC} alt="" priority sizes="100vw" widths={[640, 960, 1280, 1600, 2000, 2400]} />
+          <Photo photo={photos.EC} alt="" priority sizes="(max-width: 992px) 100vw, 62vw" widths={[640, 800, 1024]} />
         </div>
-        <p class="kicker">Family-owned since {company.founded}</p>
-        <h1 id="hero-h">Construction and remodeling in Northwest Indiana and South Chicagoland</h1>
-        <p class="photo-hero__lede">New homes, additions, kitchens and bathrooms, planned and managed by our family. Licensed and insured, with a free on-site consultation.</p>
+        <p class="photo-hero__credit">{photos.EC.caption}</p>
+        <p class="kicker">Northwest Indiana &amp; South Chicagoland · Licensed and insured</p>
+        <h1 id="hero-h">Family-owned construction and remodeling since {company.founded}</h1>
+        <p class="photo-hero__lede">New homes, additions, kitchens and bathrooms, with a free on-site consultation.</p>
         <div class="actions photo-hero__actions-desktop">
           <a class="btn btn--ghost-light btn--lg" href={company.phoneHref} data-track="phone_click"><Icon name="phone" />Call or text {company.phoneDisplay}</a>
         </div>
-        <div class="actions photo-hero__actions-mobile">
-          <a class="btn btn--primary btn--lg" href="#consultation" data-track="cta_consultation">{cta.label}</a>
-          <a class="btn btn--ghost-light btn--lg" href={company.phoneHref} data-track="phone_click"><Icon name="phone" />Call</a>
-        </div>
-        <ul class="photo-hero__facts">
-          <li><Stars rating={reviewSummary.rating} /><span>{reviewSummary.rating} from {reviewSummary.count} Google reviews</span></li>
-          <li><Icon name="shield" />Licensed and insured</li>
-        </ul>
       </div>
       <div id="consultation" class="photo-hero__form">
         <ConsultationForm idPrefix="home" heading={cta.longLabel} />
       </div>
     </div>
-    <p class="photo-hero__credit">{photos.EC.caption}</p>
+  </section>
+
+  <!-- Proof: before/after and Google reviews -->
+  <section class="section section--white proof" aria-labelledby="proof-h">
+    <div class="container">
+      <div class="proof__grid">
+        <BeforeAfter
+          before={photos.GB}
+          after={photos.GA}
+          label="Compare the Munster garage before and after the rebuild"
+          caption="Garage rebuilt after a fire · Munster, IN"
+        />
+        <div>
+          <h2 id="proof-h" class="h-xl">What our clients say</h2>
+          <div class="proof__score">
+            <p class="reviews__score">{reviewSummary.rating}</p>
+            <div>
+              <Stars rating={reviewSummary.rating} size="lg" />
+              <p>from {reviewSummary.count} reviews on Google</p>
+            </div>
+          </div>
+          <ul class="proof__facts">
+            <li><Icon name="shield" />Licensed and insured</li>
+            <li><Icon name="home" />Family-owned since {company.founded}</li>
+            <li><Icon name="check" />Free on-site consultation</li>
+          </ul>
+          {reviewSummary.url && <a class="btn btn--outline mt-1" href={reviewSummary.url} rel="noopener">Read all reviews</a>}
+        </div>
+      </div>
+      <ul class="reviews__list swipe" aria-label="Client reviews" tabindex="0">
+        {homeReviews.map((r) => <li><ReviewCard review={r} /></li>)}
+      </ul>
+    </div>
   </section>
 
   <!-- Recent projects: photos only -->
@@ -94,42 +116,15 @@ const strip = [photos.ADD, photos.KI, photos.BS, photos.K1, photos.BAR];
           </li>
         ))}
       </ul>
-      <div class="trades">
-        <h3>Other services</h3>
-        <ul class="chips">
-          {otherServices.map((s) => <li><a href={serviceHref(s)}>{s.short ?? s.name}</a></li>)}
-          <li><a href={commercialService.path}>{commercialService.name}</a></li>
-          <li><a href="/services" class="chips__all">All services<Icon name="arrow" /></a></li>
+      <div class="other-services">
+        <h3 class="h-md">Other services</h3>
+        <ul class="other-services__list">
+          {serviceGroups.map((g) => (
+            <li><a href={g.path}><span><b>{g.title}</b><span>{g.text}</span></span><Icon name="arrow" /></a></li>
+          ))}
+          <li><a href={commercialService.path}><span><b>{commercialService.name}</b><span>{commercialService.summary}</span></span><Icon name="arrow" /></a></li>
         </ul>
       </div>
-    </div>
-  </section>
-
-  <!-- Proof: before/after and Google reviews -->
-  <section class="section section--white proof" aria-labelledby="proof-h">
-    <div class="container">
-      <div class="proof__grid">
-        <BeforeAfter
-          before={photos.GB}
-          after={photos.GA}
-          label="Compare the Munster garage before and after the rebuild"
-          caption="Garage rebuilt after a fire · Munster, IN"
-        />
-        <div>
-          <h2 id="proof-h" class="h-xl">What our clients say</h2>
-          <div class="proof__score">
-            <p class="reviews__score">{reviewSummary.rating}</p>
-            <div>
-              <Stars rating={reviewSummary.rating} size="lg" />
-              <p>from {reviewSummary.count} reviews on Google</p>
-            </div>
-          </div>
-          {reviewSummary.url && <a class="btn btn--outline mt-1" href={reviewSummary.url} rel="noopener">Read all reviews</a>}
-        </div>
-      </div>
-      <ul class="reviews__list swipe" aria-label="Client reviews" tabindex="0">
-        {homeReviews.map((r) => <li><ReviewCard review={r} /></li>)}
-      </ul>
     </div>
   </section>
 
@@ -158,15 +153,19 @@ const strip = [photos.ADD, photos.KI, photos.BS, photos.K1, photos.BAR];
     </div>
   </section>
 
-  <!-- Contact -->
-  <section class="contact-band contact-band--simple on-dark" aria-labelledby="consult-h">
+  <!-- Contact. On phones the request form lives here; on desktop it is in the opening. -->
+  <section class="contact-band contact-band--simple on-dark" id="request" aria-labelledby="consult-h">
     <div class="container contact-band__grid">
       <div>
         <h2 id="consult-h" class="h-xl">Talk to us about your project</h2>
         <p class="muted contact-band__intro">Call or text for the quickest answer, or send a request and we will follow up to schedule a visit.</p>
-        <a class="btn btn--light btn--lg mt-2" href="#consultation" data-track="cta_consultation">{cta.longLabel}</a>
+        <a class="btn btn--light btn--lg mt-2 desktop-only" href="#consultation" data-track="cta_consultation">{cta.longLabel}</a>
       </div>
-      <ContactWays />
+      <div class="desktop-only"><ContactWays /></div>
+      <div class="mobile-only">
+        <ConsultationForm idPrefix="home-m" heading={cta.longLabel} />
+        <p class="contact-band__email">Prefer email? <a href={`mailto:${company.email}`} data-track="email_click">{company.email}</a></p>
+      </div>
     </div>
   </section>
 </BaseLayout>
