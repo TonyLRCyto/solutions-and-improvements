@@ -322,7 +322,7 @@ export const cities: City[] = [
     region: 'illinois',
     county: 'Cook County',
     intro: 'Our team serves Homewood with interior remodeling, additions and building improvements for residential and commercial properties.',
-    localNotes: ['Kitchens and bathrooms that work better for everyday life.', 'Additions, exterior repairs and larger renovations.', 'Commercial and multifamily projects, with no minimum project size.'],
+    localNotes: ['Kitchens and bathrooms that work better for everyday life.', 'Additions, exterior repairs and larger renovations.', 'Commercial and multifamily projects.'],
     planning: {
       text: 'Homewood publishes guidance for interior remodels, additions and exterior work. Its building information also covers temporary dumpsters and tree preservation when a project affects the lot.',
       preparation: 'For an addition or exterior project, discuss material storage, dumpster placement and nearby trees during the site visit.',

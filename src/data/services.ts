@@ -83,9 +83,9 @@ export const serviceGroups: ServiceGroup[] = [
     h1: 'Repairs, restoration and rehabs',
     pageTitle: 'Storm & Fire Damage Repair, Rehabs and Small Jobs in Northwest Indiana & South Chicagoland',
     description:
-      'Storm and fire damage repair, property rehabs, code corrections and small jobs from Solutions and Improvements in Northwest Indiana and South Chicagoland. No job too small.',
+      'Storm and fire damage repair, property rehabs, code corrections and small jobs from Solutions and Improvements in Northwest Indiana and South Chicagoland.',
     intro:
-      'From a garage lost to fire to a punch list before a sale, no job is too small. Tell us what happened and we will plan the repair.',
+      'Storm and fire damage, property rehabs, code corrections and smaller repairs. We assess the damage, explain the options and plan the repair.',
     photo: 'GA',
   },
 ];
@@ -199,7 +199,7 @@ export const featuredServices: Service[] = [
     h1: 'Home additions',
     kicker: 'Northwest Indiana & South Chicagoland',
     intro:
-      'An addition should feel like it was always there. From a new bedroom to a full second floor, we plan the structure, roofline and connection to the existing house before building.',
+      'From a new bedroom to a full second floor, we plan the structure, roofline and connection to the existing house so the addition matches the home.',
     summary: 'More room, planned to fit the house you already have.',
     examples: [
       'Room and second-story additions',
@@ -577,8 +577,8 @@ export const secondaryServices: Service[] = [
     h1: 'Small jobs & something else',
     title: 'Small Jobs & Other Construction Work in Northwest Indiana & South Chicagoland',
     description:
-      'No minimum project size. Solutions and Improvements handles small repairs and unusual construction projects across Northwest Indiana and South Chicagoland. Free consultation with an on-site visit.',
-    intro: 'There’s no minimum project size. If your job isn’t listed, tell us about it and we’ll say plainly whether we’re the right fit.',
+      'Solutions and Improvements handles small repairs and unusual construction projects across Northwest Indiana and South Chicagoland. Free consultation with an on-site visit.',
+    intro: 'If your project isn’t listed, describe it to us and we will let you know whether it is work we take on.',
     summary: 'Small repairs and projects that aren’t on the list.',
     examples: ['Small repairs', 'Odd jobs that need several trades', 'Projects that don’t fit a category', 'Repairs after other work'],
     formService: 'small-repairs',

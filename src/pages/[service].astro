@@ -91,7 +91,7 @@ const hasMedia = !!heroPhoto || !!service?.graphic;
       <div class:list={['container', supportPhoto ? 'svc-body svc-body--flip' : 'svc-body']}>
         <div>
           <h2 id="examples-h" class="h-lg">Typical projects</h2>
-          <p class="muted mt-1" style="max-width:40ch">{service.summary} No job is too small to ask about.</p>
+          <p class="muted mt-1" style="max-width:40ch">{service.summary}</p>
           {review && <div class="mt-2"><ReviewCard review={review} /></div>}
         </div>
         <div>
@@ -111,7 +111,6 @@ const hasMedia = !!heroPhoto || !!service?.graphic;
     <section class="section section--paper section--tight" aria-labelledby="process-h">
       <div class="container">
         <div class="section-head">
-          <span class="kicker">How it works</span>
           <h2 id="process-h" class="h-lg">From first call to finished work</h2>
         </div>
         <ProcessSteps steps={steps} />

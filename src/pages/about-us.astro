@@ -21,7 +21,6 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About' }];
     <div class="container">
       <div>
         <Breadcrumbs items={crumbs} />
-        <span class="kicker">About</span>
         <h1>A family business, building since 1990.</h1>
         <p class="lede">Solutions and Improvements is a family-owned, licensed and insured contractor based in Munster. We build and remodel homes, businesses and multifamily properties across Northwest Indiana and South Chicagoland.</p>
       </div>
@@ -35,7 +34,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About' }];
   <section class="section section--white section--tight" aria-labelledby="team-h">
     <div class="container family__grid">
       <div>
-        <h2 id="team-h" class="h-lg">You talk to the people who run the job.</h2>
+        <h2 id="team-h" class="h-lg">Owner-led on every project</h2>
         <p class="muted family__text">Gabriel and Andy handle every project personally, from the first visit to the final walkthrough. For each job we bring in experienced trades we work with regularly, and we coordinate them so you have one point of contact.</p>
         <ul class="people">
           {company.team.map((t) => <li><span class="n">{t.name}</span><span class="r">{t.role}</span></li>)}
@@ -53,7 +52,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About' }];
   <section class="section section--paper section--tight" aria-labelledby="approach-h">
     <div class="container">
       <div class="section-head">
-        <h2 id="approach-h" class="h-lg">What we hold ourselves to</h2>
+        <h2 id="approach-h" class="h-lg">How we work</h2>
       </div>
       <ul class="approach">
         {company.approach.map((a) => (

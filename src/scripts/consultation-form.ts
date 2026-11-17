@@ -39,8 +39,10 @@ document.querySelectorAll<HTMLFormElement>('[data-consult-form]').forEach((form)
   // Preselect from ?service= (service pages link here with context). Only known values are accepted.
   const params = new URLSearchParams(location.search);
   const svc = params.get('service');
-  const select = form.querySelector<HTMLSelectElement>('select[name="service"]');
-  if (svc && select && [...select.options].some((o) => o.value === svc) && !form.dataset.preselect) select.value = svc;
+  if (svc && !form.dataset.preselect) {
+    const radio = [...form.querySelectorAll<HTMLInputElement>('input[name="service"]')].find((r) => r.value === svc);
+    if (radio) radio.checked = true;
+  }
   const topics = form.dataset.topics ? (JSON.parse(form.dataset.topics) as Record<string, string>) : {};
   const topic = params.get('topic');
   const topicInput = form.querySelector<HTMLInputElement>('input[name="topic"]');
@@ -59,6 +61,7 @@ document.querySelectorAll<HTMLFormElement>('[data-consult-form]').forEach((form)
   });
 
   const field = (name: string) => form.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${name}"]`);
+
 
   /** Inline errors only (no layout change above the button, so a click on Submit is never lost). */
   const showInline = (errors: FieldErrors) => {
@@ -95,8 +98,59 @@ document.querySelectorAll<HTMLFormElement>('[data-consult-form]').forEach((form)
       list.append(li);
     }
     summary.hidden = entries.length === 0;
+    if (entries.length && stepped) showStep(stepOf(entries[0][0]), false);
     if (entries.length && focus) summary.focus();
   };
+
+  /* ---------- Steps ----------
+   * Without JavaScript all three fieldsets show as one form. With it, one step shows at a time;
+   * "Next" checks only that step's fields. The server still validates everything.
+   */
+  const steps = [...form.querySelectorAll<HTMLFieldSetElement>('[data-step]')];
+  const back = form.querySelector<HTMLButtonElement>('[data-back]');
+  const next = form.querySelector<HTMLButtonElement>('[data-next]');
+  const progress = form.querySelector<HTMLElement>('[data-progress]');
+  const stepFields: Record<number, (keyof FieldErrors)[]> = { 1: ['service'], 2: ['location'], 3: ['name', 'email', 'phone', 'contact', 'description'] };
+  let current = 1;
+  const stepped = steps.length > 1 && !!back && !!next;
+  const showStep = (n: number, focus = true) => {
+    current = n;
+    steps.forEach((st) => (st.hidden = Number(st.dataset.step) !== n));
+    if (back) back.hidden = n === 1;
+    if (next) next.hidden = n === steps.length;
+    submit.hidden = n !== steps.length;
+    if (progress) {
+      progress.hidden = false;
+      progress.textContent = `Step ${n} of ${steps.length}`;
+    }
+    if (focus) steps[n - 1].querySelector<HTMLElement>('input, select, textarea')?.focus({ preventScroll: false });
+  };
+  const stepOf = (key: string) => Number(Object.entries(stepFields).find(([, keys]) => keys.includes(key as keyof FieldErrors))?.[0] ?? steps.length);
+  if (stepped) {
+    form.classList.add('is-stepped');
+    showStep(1, false);
+    next!.addEventListener('click', () => {
+      const { errors } = validate(Object.fromEntries(new FormData(form)));
+      const mine = Object.fromEntries(Object.entries(errors).filter(([k]) => stepFields[current].includes(k as keyof FieldErrors))) as FieldErrors;
+      if (Object.keys(mine).length) {
+        showInline(mine);
+        const firstKey = Object.keys(mine)[0];
+        (firstKey === 'service' ? form.querySelector<HTMLElement>('input[name="service"]') : field(firstKey === 'contact' ? 'phone' : firstKey))?.focus();
+        return;
+      }
+      showInline({});
+      track('form_step', { step: String(current + 1) });
+      showStep(current + 1);
+    });
+    back!.addEventListener('click', () => showStep(current - 1));
+    // Enter in a text field moves forward instead of submitting early.
+    form.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' && current < steps.length && (ev.target as HTMLElement).tagName === 'INPUT') {
+        ev.preventDefault();
+        next!.click();
+      }
+    });
+  }
 
   // Once a field has been flagged, clear its message as soon as the visitor fixes it (while typing, so the
   // layout never shifts between pressing and releasing the Submit button).
@@ -170,6 +224,7 @@ document.querySelectorAll<HTMLFormElement>('[data-consult-form]').forEach((form)
       case 'accepted':
         track('consultation_accepted', { path: location.pathname });
         form.reset();
+        if (stepped) showStep(1, false);
         started.value = String(Date.now());
         idem.value = uuid();
         setStatus('ok', `<h3>Request received</h3><p>${esc(res.message ?? '')}</p>`);

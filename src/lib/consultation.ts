@@ -17,6 +17,14 @@ export const contactPrefs = [
   { value: 'email', label: 'Email' },
 ] as const;
 
+/** When the visitor hopes to start (step 2 of the form, optional). */
+export const timings = [
+  { value: 'asap', label: 'As soon as possible' },
+  { value: '1-3-months', label: 'In 1 to 3 months' },
+  { value: '3-6-months', label: 'In 3 to 6 months' },
+  { value: 'planning', label: 'Just planning for now' },
+] as const;
+
 export const LIMITS = {
   name: 100,
   email: 254,
@@ -35,6 +43,7 @@ export const FIELD_NAMES = [
   'location',
   'service',
   'property',
+  'timing',
   'description',
   'contactPref',
   'topic',
@@ -53,6 +62,8 @@ export interface Consultation {
   serviceLabel: string;
   property: string;
   propertyLabel: string;
+  timing: string;
+  timingLabel: string;
   description: string;
   contactPref: string;
   topic: string;
@@ -82,6 +93,7 @@ export function validate(input: Record<string, unknown>): { data: Consultation; 
   const location = oneLine(input.location, LIMITS.location + 1);
   const service = oneLine(input.service, 40);
   const property = oneLine(input.property, 40);
+  const timing = oneLine(input.timing, 40);
   const description = clean(input.description, LIMITS.description.max + 1);
   const contactPref = oneLine(input.contactPref, 20);
   const topic = oneLine(input.topic, 60).replace(/[^a-z0-9-]/g, '');
@@ -104,13 +116,14 @@ export function validate(input: Record<string, unknown>): { data: Consultation; 
   const svc = formServices.find((s) => s.value === service);
   if (!svc) errors.service = 'Choose the type of project.';
 
-  if (!description) errors.description = 'Tell us briefly about the project.';
-  else if (description.length < LIMITS.description.min) errors.description = 'Add a little more detail (at least a few words).';
+  // Optional since 2026-11-17 (three-step form). If given, it must be more than a couple of characters.
+  if (description && description.length < LIMITS.description.min) errors.description = 'Add a little more detail (at least a few words).';
   else if (description.length > LIMITS.description.max)
     errors.description = `Keep it under ${LIMITS.description.max} characters. You can share more when we follow up.`;
 
   const prop = propertyTypes.find((p) => p.value === property);
   const pref = contactPrefs.find((p) => p.value === contactPref);
+  const when = timings.find((t) => t.value === timing);
 
   return {
     data: {
@@ -122,6 +135,8 @@ export function validate(input: Record<string, unknown>): { data: Consultation; 
       serviceLabel: svc?.label ?? '',
       property: prop?.value ?? '',
       propertyLabel: prop?.label ?? 'Not specified',
+      timing: when?.value ?? '',
+      timingLabel: when?.label ?? 'Not specified',
       description,
       contactPref: pref?.value ?? '',
       topic,
@@ -143,16 +158,17 @@ export function formatEmail(d: Consultation, meta: { submittedAt: string; site: 
     ['Project city / ZIP', d.location],
     ['Service', d.serviceLabel],
     ['Property type', d.propertyLabel],
+    ['Timing', d.timingLabel],
     ['Page topic', d.topic || '—'],
   ];
   const subject = `Consultation request: ${d.serviceLabel} in ${d.location}`.replace(/[\r\n]+/g, ' ').slice(0, 150);
   const text =
     rows.map(([k, v]) => `${k}: ${v}`).join('\n') +
-    `\n\nProject description:\n${d.description}\n\nSubmitted ${meta.submittedAt} via ${meta.site}/contact`;
+    `\n\nProject description:\n${d.description || '—'}\n\nSubmitted ${meta.submittedAt} via ${meta.site}/contact`;
   const html =
     `<table cellpadding="6" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">` +
     rows.map(([k, v]) => `<tr><th align="left" style="color:#555">${escapeHtml(k)}</th><td>${escapeHtml(v)}</td></tr>`).join('') +
-    `</table><p style="font-family:Arial,sans-serif;font-size:14px"><strong>Project description</strong><br>${escapeHtml(d.description).replace(/\n/g, '<br>')}</p>` +
+    `</table><p style="font-family:Arial,sans-serif;font-size:14px"><strong>Project description</strong><br>${escapeHtml(d.description || '—').replace(/\n/g, '<br>')}</p>` +
     `<p style="font-family:Arial,sans-serif;font-size:12px;color:#777">Submitted ${escapeHtml(meta.submittedAt)} via ${escapeHtml(meta.site)}/contact</p>`;
   return { subject, text, html };
 }

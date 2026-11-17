@@ -48,14 +48,14 @@ export const company = {
   ],
   /** Reply times Tony gave on 2026-11-13. */
   replyTimes: {
-    phone: 'Calls and texts are answered as fast as we can.',
+    phone: 'The quickest way to reach us.',
     email: 'Email usually gets a reply within an hour or two.',
   },
   approach: [
-    { title: 'Communication', text: 'You know who to call and what happens next.' },
+    { title: 'Communication', text: 'One point of contact and regular updates from start to finish.' },
     { title: 'Craftsmanship', text: 'Careful work, finished properly.' },
     { title: 'Value', text: 'Scope and choices that fit the project and the budget.' },
-    { title: 'Problem-solving', text: 'Practical answers when a building surprises us.' },
+    { title: 'Problem-solving', text: 'Practical solutions when existing conditions need attention.' },
   ],
 } as const;
 
