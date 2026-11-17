@@ -13,6 +13,7 @@ The owner supplied `solutions-round-2.patch` and its changed-file backup, then r
 - The form starts with a small synchronous working wizard, then hands off to the enhanced module without resetting the selected service, current step or entered details. If that module fails, Next/Back, native validation and ordinary form submission still work. With JavaScript disabled, all fields are visible together. No loading timeout or module-dependent hiding is used.
 - Error-summary links reveal the correct step before focusing their field. Rendering/deposit wording remains consistent with the confirmed contract policy.
 - `assets.run_worker_first: ["/api/*"]` ensures ordinary browser form POSTs reach the API, including when scripts are unavailable. Other requests retain static asset routing. See [Cloudflare's routing documentation](https://developers.cloudflare.com/workers/static-assets/routing/static-site-generation/).
+- All 31 existing legacy redirects also have explicit trailing-slash aliases, preserving the same targets and permanent status. This covers the hosted asset router's exact matching without sending general page traffic through the Worker.
 
 ## Verification
 
@@ -23,6 +24,7 @@ The owner supplied `solutions-round-2.patch` and its changed-file backup, then r
 - Both enhanced form journeys, optional blank note, server-error navigation, blocked/delayed module behavior and native browser submission were checked. Native preview submission returns the intended 503 HTML “Your request was not sent” response. The separate server validation suite passed all 19 checks, including malformed input, origin protection and rate limiting.
 - Local screenshots and detailed measurements are retained outside this repository in the parent project's `design-playbook/round2-review/` folder. Lighthouse results and hosted deployment verification are recorded in `DEPLOYMENT.md` after upload.
 - Final local homepage Lighthouse, one run per device: Performance 93 mobile/100 desktop, Accessibility and Best Practices 100 on both. CLS is 0.001 mobile/0 desktop, with zero blocking time. SEO 69 reflects intentional preview indexing blocks. These are lab measurements, not physical-device or production results; see `reports/lighthouse/2026-11-17-round2-archivo-final-local/summary.md`.
+- Final hosted homepage Lighthouse: Performance 99 mobile/100 desktop, Accessibility and Best Practices 100 on both, preview SEO 69. Hosted browser checks and all 62 exact redirect rules passed. Deployed source `b755ea800a584fb75596885ccbd6da81938e7636`, Cloudflare version `7ee80a74-7175-491e-b01e-7d001d813e97`. See `reports/lighthouse/2026-11-17-round2-archivo-hosted/summary.md` and the deployment record for scope and metric limits.
 
 ## Scope
 
