@@ -30,11 +30,11 @@ const strip = [photos.ADD, photos.KI, photos.BS, photos.K1, photos.BAR];
 >
   <!-- Opening: photo behind the headline, request form beside it (below it on phones) -->
   <section class="photo-hero" aria-labelledby="hero-h">
-    <div class="photo-hero__bg" aria-hidden="true">
-      <Photo photo={photos.EC} alt="" priority sizes="100vw" widths={[640, 960, 1280, 1600, 2000, 2400]} />
-    </div>
     <div class="container photo-hero__grid">
       <div class="photo-hero__text">
+        <div class="photo-hero__bg" aria-hidden="true">
+          <Photo photo={photos.EC} alt="" priority sizes="100vw" widths={[640, 960, 1280, 1600, 2000, 2400]} />
+        </div>
         <p class="kicker">Family-owned since {company.founded}</p>
         <h1 id="hero-h">Construction and remodeling in Northwest Indiana and South Chicagoland</h1>
         <p class="photo-hero__lede">New homes, additions, kitchens and bathrooms, planned and managed by our family. Licensed and insured, with a free on-site consultation.</p>
@@ -64,7 +64,7 @@ const strip = [photos.ADD, photos.KI, photos.BS, photos.K1, photos.BAR];
         <h2 id="work-h" class="h-xl">Recent projects</h2>
         <a class="link-arrow" href="/projects">View all projects<Icon name="arrow" /></a>
       </div>
-      <ul class="photo-strip" aria-label="Project photos">
+      <ul class="photo-strip" aria-label="Project photos" tabindex="0">
         {strip.map((p) => (
           <li><Photo photo={p} sizes="(max-width: 760px) 82vw, (max-width: 1320px) 48vw, 640px" widths={[400, 600, 800, 1000]} /></li>
         ))}
@@ -127,7 +127,7 @@ const strip = [photos.ADD, photos.KI, photos.BS, photos.K1, photos.BAR];
           {reviewSummary.url && <a class="btn btn--outline mt-1" href={reviewSummary.url} rel="noopener">Read all reviews</a>}
         </div>
       </div>
-      <ul class="reviews__list swipe">
+      <ul class="reviews__list swipe" aria-label="Client reviews" tabindex="0">
         {homeReviews.map((r) => <li><ReviewCard review={r} /></li>)}
       </ul>
     </div>
@@ -150,7 +150,7 @@ const strip = [photos.ADD, photos.KI, photos.BS, photos.K1, photos.BAR];
           headingLevel="h4"
           steps={[
             { title: 'Consultation and site visit', text: 'We visit, look at the space and discuss what you have in mind.' },
-            { title: 'Scope, design and proposal', text: 'We define the work, prepare renders where needed and send a proposal.' },
+            { title: 'Scope, design and proposal', text: 'We define the scope and proposal. Design begins after a rendering deposit or signed contract.' },
             { title: 'Construction and walkthrough', text: 'We schedule the trades, manage the work and review the finished job with you.' },
           ]}
         />

@@ -31,7 +31,7 @@ document.querySelectorAll<HTMLFormElement>('[data-consult-form]').forEach((form)
   const defaultLabel = label.textContent;
   const started = form.querySelector<HTMLInputElement>('[data-started]')!;
   const idem = form.querySelector<HTMLInputElement>('[data-idem]')!;
-  started.value = String(Date.now());
+  if (!started.value) started.value = String(Date.now());
   idem.value = uuid();
   let busy = false;
   let startedTracked = false;
@@ -39,7 +39,7 @@ document.querySelectorAll<HTMLFormElement>('[data-consult-form]').forEach((form)
   // Preselect from ?service= (service pages link here with context). Only known values are accepted.
   const params = new URLSearchParams(location.search);
   const svc = params.get('service');
-  if (svc && !form.dataset.preselect) {
+  if (svc && !form.dataset.preselect && !form.querySelector('input[name="service"]:checked')) {
     const radio = [...form.querySelectorAll<HTMLInputElement>('input[name="service"]')].find((r) => r.value === svc);
     if (radio) radio.checked = true;
   }
@@ -92,6 +92,7 @@ document.querySelectorAll<HTMLFormElement>('[data-consult-form]').forEach((form)
       a.textContent = msg;
       a.addEventListener('click', (ev) => {
         ev.preventDefault();
+        if (stepped) showStep(stepOf(key), false);
         target?.focus();
       });
       li.append(a);
@@ -111,10 +112,12 @@ document.querySelectorAll<HTMLFormElement>('[data-consult-form]').forEach((form)
   const next = form.querySelector<HTMLButtonElement>('[data-next]');
   const progress = form.querySelector<HTMLElement>('[data-progress]');
   const stepFields: Record<number, (keyof FieldErrors)[]> = { 1: ['service'], 2: ['location'], 3: ['name', 'email', 'phone', 'contact', 'description'] };
-  let current = 1;
+  const savedStep = Number(form.dataset.currentStep);
+  let current = Number.isInteger(savedStep) && savedStep >= 1 && savedStep <= steps.length ? savedStep : 1;
   const stepped = steps.length > 1 && !!back && !!next;
   const showStep = (n: number, focus = true) => {
     current = n;
+    form.dataset.currentStep = String(n);
     steps.forEach((st) => (st.hidden = Number(st.dataset.step) !== n));
     if (back) back.hidden = n === 1;
     if (next) next.hidden = n === steps.length;
@@ -128,7 +131,7 @@ document.querySelectorAll<HTMLFormElement>('[data-consult-form]').forEach((form)
   const stepOf = (key: string) => Number(Object.entries(stepFields).find(([, keys]) => keys.includes(key as keyof FieldErrors))?.[0] ?? steps.length);
   if (stepped) {
     form.classList.add('is-stepped');
-    showStep(1, false);
+    showStep(current, false);
     next!.addEventListener('click', () => {
       const { errors } = validate(Object.fromEntries(new FormData(form)));
       const mine = Object.fromEntries(Object.entries(errors).filter(([k]) => stepFields[current].includes(k as keyof FieldErrors))) as FieldErrors;
@@ -247,4 +250,6 @@ document.querySelectorAll<HTMLFormElement>('[data-consult-form]').forEach((form)
         setStatus('error', `<h3>Not sent</h3><p>${esc(res.message ?? 'Something went wrong.')}${altHtml(res)}</p>`);
     }
   });
+  form.dataset.formMode = 'enhanced';
+  form.dispatchEvent(new Event('consultation:enhanced'));
 });

@@ -2,39 +2,14 @@
    Solutions and Improvements — design tokens and shared styles
    ========================================================================== */
 
-/* Display: Bricolage Grotesque. Text: Figtree. Both OFL, Latin subsets, self-hosted (see LICENSES/). */
+/* Archivo: shared self-hosted Latin variable font; headings use a slightly wider cut. See LICENSES/. */
 @font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('/fonts/bricolage-grotesque-latin-var.woff2') format('woff2-variations'),
-    url('/fonts/bricolage-grotesque-latin-var.woff2') format('woff2');
-  font-weight: 200 800;
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-latin-var.woff2') format('woff2');
+  font-weight: 400 700;
+  font-stretch: 100% 110%;
   font-style: normal;
   font-display: swap;
-}
-@font-face {
-  font-family: 'Figtree';
-  src: url('/fonts/figtree-latin-var.woff2') format('woff2-variations'),
-    url('/fonts/figtree-latin-var.woff2') format('woff2');
-  font-weight: 300 900;
-  font-style: normal;
-  font-display: swap;
-}
-/* Metric-adjusted fallbacks keep text from jumping while the fonts load. */
-@font-face {
-  font-family: 'Figtree Fallback';
-  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
-  size-adjust: 101%;
-  ascent-override: 95%;
-  descent-override: 25%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: 'Bricolage Fallback';
-  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
-  size-adjust: 98%;
-  ascent-override: 93%;
-  descent-override: 26%;
-  line-gap-override: 0%;
 }
 
 :root {
@@ -67,8 +42,8 @@
   --line-dark: rgb(158 187 234 / 0.2);
 
   /* Type */
-  --font: 'Figtree', 'Figtree Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  --font-display: 'Bricolage Grotesque', 'Bricolage Fallback', 'Trebuchet MS', Arial, sans-serif;
+  --font: 'Archivo', Arial, sans-serif;
+  --font-display: 'Archivo', Arial, sans-serif;
   --fs-xs: 0.75rem;
   --fs-sm: 0.875rem;
   --fs-base: 1.0625rem;
@@ -151,13 +126,14 @@ h4 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
+  font-stretch: 105%;
   line-height: 1.06;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
 h1,
 h2 {
-  font-weight: 800;
+  font-weight: 700;
 }
 
 p {
@@ -249,7 +225,8 @@ textarea {
 
 .display {
   font-size: var(--fs-display);
-  font-weight: 800;
+  font-weight: 700;
+  font-stretch: 105%;
   line-height: 1;
   letter-spacing: -0.03em;
 }
@@ -1919,23 +1896,6 @@ fieldset.field {
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr) minmax(0, 0.9fr) minmax(0, 1.5fr);
   gap: 2.5rem;
 }
-.footer-brand .badge {
-  display: inline-block;
-  width: min(100%, 14rem);
-  background: transparent;
-  padding: 0;
-}
-.footer-brand .badge img {
-  width: 100%;
-  height: auto;
-  filter: url('#footer-logo-keyline');
-}
-.footer-logo-filters {
-  position: absolute;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
 .footer-brand p {
   margin-top: 1.25rem;
   max-width: 30ch;
@@ -2576,7 +2536,7 @@ picture {
 }
 .reviews__score {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: clamp(4rem, 3rem + 3vw, 5.75rem);
   line-height: 0.9;
   letter-spacing: -0.03em;
@@ -2780,6 +2740,10 @@ picture {
   .callbar__consult {
     background: var(--red);
     color: #fff;
+    padding: 0.5rem 0.625rem;
+    font-size: 0.875rem;
+    line-height: 1.25;
+    text-align: center;
   }
   body {
     padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
@@ -3214,11 +3178,10 @@ picture {
     color: #fff;
   }
   .photo-hero__bg {
-    bottom: auto;
-    height: min(36rem, calc(88svh - var(--header-h)));
+    height: 100%;
   }
   .photo-hero__bg::after {
-    background: linear-gradient(180deg, rgb(8 20 46 / 0.15) 0%, rgb(8 20 46 / 0.55) 45%, rgb(8 20 46 / 0.9) 100%);
+    background: linear-gradient(180deg, rgb(8 20 46 / 0.4) 0%, rgb(8 20 46 / 0.55) 45%, rgb(8 20 46 / 0.9) 100%);
   }
   .photo-hero__actions-desktop {
     display: none !important;
@@ -3291,15 +3254,17 @@ picture {
     flex: 0 0 85%;
     scroll-snap-align: start;
   }
-  .swipe-hint {
-    display: block;
-  }
 }
 .swipe-hint {
   display: none;
   margin-top: 0.75rem;
   font-size: 0.85rem;
   color: var(--text-muted);
+}
+@media (max-width: 47.5em) {
+  .swipe-hint {
+    display: block;
+  }
 }
 
 /* Home: proof (before/after + reviews) */
@@ -3425,14 +3390,7 @@ picture {
     object-position: 50% 80%;
   }
 }
-/* While the form script loads, show it as it will look at step 1 (prevents a layout shift). */
-html:not(.no-js) .consult-form:not(.is-stepped) [data-step]:not([data-step='1']),
-html:not(.no-js) .consult-form:not(.is-stepped) [data-submit] {
-  display: none;
-}
-html:not(.no-js) .consult-form:not(.is-stepped) [data-next] {
-  display: inline-flex;
-}
+/* The complete form stays usable until its step controls finish initializing. */
 /* Contact page on phones: the form comes first, contact options and office details after. */
 @media (max-width: 56em) {
   .consult > .form-card {

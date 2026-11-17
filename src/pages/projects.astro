@@ -73,9 +73,9 @@ const categories = [...new Set(galleryPhotos.map((p) => p.category))];
       <ul class="gallery">
         {galleryPhotos.map((p, i) => (
           <li data-cat={slug(p.category)} data-caption={`${p.caption} · ${p.category}`}>
-            <button type="button" data-open={i} aria-label={`Open larger view: ${p.caption}`}>
+            <button type="button" data-open={i} aria-label={`Open larger view: ${p.category} ${p.caption}`}>
               <span class="ph"><Photo photo={p} sizes="(max-width: 640px) calc(100vw - 2.5rem), (max-width: 1100px) 46vw, 30vw" widths={[300, 400, 540, 720, 900]} /></span>
-              <span class="cap"><small>{p.category}</small>{p.caption}</span>
+              <span class="cap"><small>{p.category}</small>{' '}{p.caption}</span>
             </button>
             <template data-full={i}>
               <Photo photo={p} sizes="92vw" widths={[960, 1280, 1600, 2000]} />

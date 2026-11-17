@@ -47,7 +47,7 @@ const id = (s: string) => `${idPrefix}-${s}`;
       <legend class="form-step__legend"><span class="form-step__n">Step 1 of 3</span> What is the project? <span aria-hidden="true">*</span></legend>
       <div class="tiles">
         {formServices.map((s) => (
-          <label class="tile"><input type="radio" name="service" value={s.value} required checked={s.value === service} /><span>{s.label}</span></label>
+          <label class="tile" for={id(`service-${s.value}`)}><input id={id(`service-${s.value}`)} type="radio" name="service" value={s.value} required checked={s.value === service} aria-describedby={id('service-err')} /><span>{s.label}</span></label>
         ))}
       </div>
       <p class="error" id={id('service-err')} data-error-for="service"></p>
@@ -101,7 +101,7 @@ const id = (s: string) => `${idPrefix}-${s}`;
         </p>
         <div class="field field--full">
           <label for={id('description')}>Anything we should know? <span class="opt">(optional)</span></label>
-          <textarea id={id('description')} name="description" maxlength={LIMITS.description.max} rows="3" aria-describedby={id('description-err')}></textarea>
+          <textarea id={id('description')} name="description" minlength={LIMITS.description.min} maxlength={LIMITS.description.max} rows="3" aria-describedby={id('description-err')}></textarea>
           <p class="error" id={id('description-err')} data-error-for="description"></p>
         </div>
       </div>
@@ -134,6 +134,75 @@ const id = (s: string) => `${idPrefix}-${s}`;
         <p class="preview-flag">Preview build: online delivery is not connected yet. Submitting will show an honest “not sent” message.</p>
       )}
     </div>
+    <script is:inline>
+      // A small working wizard runs during parsing, before the enhanced module loads.
+      // If that module cannot load, these controls retain native validation and submission.
+      (() => {
+        const form = document.currentScript?.closest('form');
+        if (!(form instanceof HTMLFormElement)) return;
+        const steps = [...form.querySelectorAll('[data-step]')];
+        const back = form.querySelector('[data-back]');
+        const next = form.querySelector('[data-next]');
+        const submit = form.querySelector('[data-submit]');
+        const phone = form.querySelector('[name="phone"]');
+        const email = form.querySelector('[name="email"]');
+        if (steps.length < 2 || !back || !next || !submit || !phone || !email) return;
+        const started = form.querySelector('[data-started]');
+        if (started && !started.value) started.value = String(Date.now());
+
+        const controller = new AbortController();
+        const options = { signal: controller.signal };
+        let current = 1;
+        const show = (n, focus = true) => {
+          current = n;
+          form.dataset.currentStep = String(n);
+          steps.forEach((step, index) => (step.hidden = index + 1 !== n));
+          back.hidden = n === 1;
+          next.hidden = n === steps.length;
+          submit.hidden = n !== steps.length;
+          if (focus) steps[n - 1].querySelector('input:checked, input, select, textarea')?.focus();
+        };
+        const contactValidity = () => {
+          phone.setCustomValidity(phone.value.trim() || email.value.trim() ? '' : 'Enter a phone number or an email address so we can reach you.');
+        };
+        const valid = (n) => {
+          if (n === steps.length) contactValidity();
+          const invalid = [...steps[n - 1].querySelectorAll('input, select, textarea')].find((field) => !field.validity.valid);
+          if (!invalid) return true;
+          show(n, false);
+          invalid.reportValidity();
+          return false;
+        };
+        next.addEventListener('click', () => {
+          if (valid(current)) show(current + 1);
+        }, options);
+        back.addEventListener('click', () => show(current - 1), options);
+        form.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' && current < steps.length && event.target.tagName === 'INPUT') {
+            event.preventDefault();
+            next.click();
+          }
+        }, options);
+        form.addEventListener('input', (event) => {
+          if (event.target === phone || event.target === email) contactValidity();
+        }, options);
+        form.addEventListener('submit', (event) => {
+          for (let n = 1; n <= steps.length; n++) {
+            if (!valid(n)) {
+              event.preventDefault();
+              return;
+            }
+          }
+        }, options);
+        form.addEventListener('consultation:enhanced', () => {
+          controller.abort();
+          phone.setCustomValidity('');
+        }, { ...options, once: true });
+        form.classList.add('is-stepped');
+        form.dataset.formMode = 'basic';
+        show(1, false);
+      })();
+    </script>
   </form>
 </div>
 {turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
