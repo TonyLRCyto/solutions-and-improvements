@@ -4,7 +4,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
 import ConsultCallout from '../components/ConsultCallout.astro';
-import BeforeAfter from '../components/BeforeAfter.astro';
+import PlanToBuilt from '../components/PlanToBuilt.astro';
 import ReviewCard from '../components/ReviewCard.astro';
 import { photos } from '../data/photos';
 import { reviews } from '../data/reviews';
@@ -35,28 +35,28 @@ const categories = [...new Set(galleryPhotos.map((p) => p.category))];
     <div class="container">
       <h2 id="stories-h" class="visually-hidden">Project stories</h2>
       <article class="story">
-        <BeforeAfter before={photos.GB} after={photos.GA} label="Compare the Munster garage before and after the rebuild" caption="Before and after · Munster, IN" priority />
+        <PlanToBuilt photo={photos.EC} label="New home · East Chicago, IN" />
         <div>
-          <h3>Garage rebuilt after a fire</h3>
-          <p>A garage in Munster was lost to fire. We cleared what was left and rebuilt it with new framing, siding, an overhead door and a concrete apron.</p>
-          <div class="mt-1"><ReviewCard review={doug} /></div>
-          <a class="link-arrow" href="/repairs-and-restoration">Repairs and restoration<Icon name="arrow" /></a>
+          <h3>A new home in East Chicago</h3>
+          <p>A single-family home built from the ground up, from the foundation and framing to the siding, stone and covered front porch.</p>
+          <a class="link-arrow" href="/newconstruction">New construction<Icon name="arrow" /></a>
         </div>
       </article>
       <article class="story">
         <figure style="margin:0"><div class="ph"><Photo photo={photos.ADD} sizes="(max-width: 832px) calc(100vw - 2.5rem), 55vw" widths={[480, 720, 960, 1280]} /></div></figure>
         <div>
-          <h3>A second floor, set by crane</h3>
-          <p>To add a full second story, the framing and roof trusses went up with a crane on site. Building up adds a full floor of space without giving up any of the yard.</p>
+          <h3>A second-floor addition</h3>
+          <p>A full second story added to an existing home. The framing and roof trusses were set with a crane on site.</p>
           <a class="link-arrow" href="/home-additions">Home additions<Icon name="arrow" /></a>
         </div>
       </article>
       <article class="story">
-        <figure style="margin:0"><div class="ph"><Photo photo={photos.EC} sizes="(max-width: 832px) calc(100vw - 2.5rem), 55vw" widths={[480, 720, 960, 1280]} /></div></figure>
+        <figure style="margin:0"><div class="ph"><Photo photo={photos.GA} sizes="(max-width: 832px) calc(100vw - 2.5rem), 55vw" widths={[480, 720, 960, 1280]} /></div></figure>
         <div>
-          <h3>A new home in East Chicago</h3>
-          <p>This house started as a plan and an empty lot. We built it from scratch: foundation, framing, siding, stone and the covered front porch.</p>
-          <a class="link-arrow" href="/newconstruction">New construction<Icon name="arrow" /></a>
+          <h3>Garage rebuilt after a fire</h3>
+          <p>A garage in Munster was lost to fire. We cleared the site and rebuilt it with new framing, siding, an overhead door and a concrete apron.</p>
+          <div class="mt-1"><ReviewCard review={doug} /></div>
+          <a class="link-arrow" href="/repairs-and-restoration">Repairs and restoration<Icon name="arrow" /></a>
         </div>
       </article>
     </div>

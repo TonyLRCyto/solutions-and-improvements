@@ -1,8 +1,7 @@
 ---
 import FooterLogo from './FooterLogo.astro';
 import { company, financing, nav, credit } from '../data/site';
-import { featuredServices, commercialService, serviceGroups } from '../data/services';
-import { regions } from '../data/areas';
+import { featuredServices } from '../data/services';
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer on-dark">
@@ -12,28 +11,24 @@ const year = new Date().getFullYear();
         <a class="footer-home" href="/" aria-label="Solutions and Improvements home"><FooterLogo /></a>
         <p>Family-owned construction and remodeling across Northwest Indiana and South Chicagoland. Licensed and insured. {company.sinceLine}.</p>
       </div>
-      <div>
+      <div class="footer-col">
         <h2>Services</h2>
         <ul>
           {featuredServices.map((s) => <li><a href={s.path}>{s.name}</a></li>)}
-          <li><a href={commercialService.path}>{commercialService.name}</a></li>
-          {serviceGroups.map((g) => <li><a href={g.path}>{g.title}</a></li>)}
           <li><a href="/services">All services</a></li>
         </ul>
       </div>
-      <div>
+      <div class="footer-col">
         <h2>Company</h2>
         <ul>
           {nav.filter((n) => n.href !== '/services').map((n) => <li><a href={n.href}>{n.label}</a></li>)}
-          {regions.map((r) => <li><a href={r.path}>{r.name}</a></li>)}
           <li><a href="/blog">Resources</a></li>
         </ul>
       </div>
-      <div>
+      <div class="footer-col footer-col--contact">
         <h2>Contact</h2>
         <ul>
-          <li><a href={company.phoneHref} data-track="phone_click">Call {company.phoneDisplay}</a></li>
-          <li><a href={company.smsHref} data-track="sms_click">Text {company.phoneDisplay}</a></li>
+          <li><a href={company.phoneHref} data-track="phone_click">Call or text {company.phoneDisplay}</a></li>
           <li><a href={`mailto:${company.email}`} data-track="email_click">{company.email}</a></li>
         </ul>
         <address>
@@ -59,7 +54,7 @@ const year = new Date().getFullYear();
 <style>
   .footer-home {
     display: block;
-    width: min(100%, 21.25rem);
+    width: min(100%, 18.75rem);
     padding: 4px;
     background: transparent;
   }

@@ -3657,3 +3657,246 @@ picture {
   background: rgb(8 20 46 / 0.8);
   color: #fff;
 }
+
+/* ==========================================================================
+   Round 4 (2026-11-18): desktop opening photo behind headline and form again,
+   compact footer, service-area city links, plan-to-built story on Projects.
+   ========================================================================== */
+@media (min-width: 62.01em) {
+  .photo-hero {
+    background: var(--ink-900);
+  }
+  .photo-hero__grid {
+    align-items: center;
+    gap: clamp(2rem, 4vw, 4.5rem);
+    padding-block: clamp(2.5rem, 4.5vw, 4rem);
+  }
+  .photo-hero__text {
+    position: static;
+    overflow: visible;
+    min-height: 0;
+    padding: 0;
+    border-radius: 0;
+    background-color: transparent;
+    isolation: auto;
+    z-index: auto;
+  }
+  .photo-hero__form {
+    position: relative;
+  }
+  .photo-hero__bg img {
+    object-position: 50% 62%;
+  }
+  .photo-hero__bg::after {
+    background: linear-gradient(90deg, rgb(8 20 46 / 0.9) 0%, rgb(8 20 46 / 0.74) 45%, rgb(8 20 46 / 0.4) 100%);
+  }
+  .photo-hero h1 {
+    font-size: clamp(2.4rem, 1.5rem + 2.4vw, 3.9rem);
+  }
+  .photo-hero .form-card {
+    box-shadow: 0 30px 70px -30px rgb(0 0 0 / 0.55);
+  }
+}
+
+/* Footer: shorter lists, and on phones Services and Company sit side by side */
+.site-footer {
+  padding-block: clamp(2.75rem, 5vw, 4.5rem) 1.5rem;
+}
+.footer-bottom {
+  margin-top: 2rem;
+}
+@media (max-width: 30em) {
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem 1.25rem;
+  }
+  .footer-brand,
+  .footer-col--contact {
+    grid-column: 1 / -1;
+  }
+  .site-footer ul {
+    gap: 0;
+  }
+  .site-footer li a {
+    min-height: 2rem;
+    font-size: 0.92rem;
+  }
+  .footer-brand p {
+    max-width: none;
+    font-size: 0.9rem;
+  }
+  .site-footer address {
+    margin-top: 0.25rem;
+  }
+  .site-footer h2 {
+    margin-bottom: 0.5rem;
+  }
+  .footer-brand p {
+    margin-top: 1rem;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+}
+/* Service areas: one card per region, with community links that are real buttons */
+.area-card--merged {
+  background: var(--paper);
+}
+.area-card__sub {
+  margin-top: 0.25rem;
+  font-family: var(--font);
+  font-size: 0.8rem !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.area-card ul.city-buttons li {
+  padding: 0;
+  border: 0;
+}
+.city-buttons a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.95rem;
+  border: 1.5px solid var(--line-strong, #d8d2c4);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.city-buttons a:hover {
+  border-color: var(--ink);
+  background: var(--sky);
+}
+.city-buttons svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--red-700);
+}
+.area-card__coverage {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+.area-card__coverage b {
+  color: var(--ink);
+}
+.area-card--merged .btn {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* Plan to built (Projects page): the outline draws on navy, then the photo of the finished house wipes in */
+.plan {
+  margin: 0;
+}
+.plan__frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+.plan__photo,
+.plan__photo picture,
+.plan__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.plan__photo img {
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+.plan__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+}
+.plan__draw {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.plan__draw--thin {
+  stroke-width: 1.2;
+  stroke: rgb(255 255 255 / 0.65);
+}
+.plan__dims path {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 1.8;
+}
+.plan__caption {
+  margin-top: 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-dark-muted);
+}
+/* Only animate when JS has queued it (is-waiting) or it's already on screen. */
+@media (prefers-reduced-motion: no-preference) {
+  .plan.is-waiting .plan__photo,
+  .plan.is-in .plan__photo {
+    clip-path: inset(0 100% 0 0);
+  }
+  .plan.is-in .plan__photo {
+    animation: plan-photo 1.4s cubic-bezier(0.7, 0, 0.2, 1) 1.5s forwards;
+  }
+  .plan.is-in .plan__lines {
+    animation: plan-lines 4.6s ease forwards;
+  }
+  .plan.is-in .plan__draw {
+    animation: plan-draw 1.7s ease-out forwards;
+  }
+}
+@keyframes plan-photo {
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes plan-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes plan-lines {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+
+.plan__frame {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--ink-900);
+}
+.plan__photo img {
+  border-radius: 0;
+}
+.story .plan__caption {
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.areas-section {
+  padding-top: 0;
+}
+.area-card--merged {
+  display: flex;
+  flex-direction: column;
+}
+.area-card--merged > .btn {
+  margin-top: auto;
+  align-self: flex-start;
+}
+.area-card--merged > .area-card__coverage {
+  margin-bottom: 1.5rem;
+}

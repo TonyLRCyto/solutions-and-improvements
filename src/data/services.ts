@@ -211,7 +211,7 @@ export const featuredServices: Service[] = [
     process: baseProcess(
       'We look at the lot, the house and how the new space would connect.',
       'We define the scope. Design and renders can begin after a rendering deposit or signed contract.',
-      'Permits and planning come first, then foundation, framing, enclosure and finishes.',
+      'Construction follows the agreed plan: foundation, framing, enclosure and finishes.',
     ),
     formService: 'additions',
     related: ['new-construction', 'framing', 'foundations'],
@@ -239,7 +239,7 @@ export const featuredServices: Service[] = [
     process: baseProcess(
       'We visit the site and talk through what you want to build.',
       'We define scope and next steps. Design and renders can begin after a rendering deposit or signed contract.',
-      'Permits, scheduling and construction follow the agreed plan.',
+      'Scheduling and construction follow the agreed plan.',
     ),
     formService: 'new-construction',
     related: ['additions', 'commercial', 'foundations'],

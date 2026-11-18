@@ -1,47 +1,15 @@
 ---
 import { Picture } from 'astro:assets';
-import mark from '../assets/brand/solutions-star-check.png';
-import wordmark from '../assets/brand/solutions-wordmark.png';
-// Original supplied artwork, composed horizontally without redrawing either piece.
+import lockup from '../assets/brand/solutions-footer-lockup.png';
+// The supplied star mark and wordmark, composed side by side with a white keyline baked into the image.
+// A pre-rendered image avoids the clipped edges an SVG filter can produce in some browsers.
 ---
-<svg class="footer-keyline-defs" width="0" height="0" aria-hidden="true" focusable="false">
-  <defs>
-    <filter id="footer-lockup-keyline" x="-10%" y="-20%" width="120%" height="140%" color-interpolation-filters="sRGB">
-      <feMorphology in="SourceAlpha" operator="dilate" radius="3.25" result="outline" />
-      <feFlood flood-color="white" result="white" />
-      <feComposite in="white" in2="outline" operator="in" result="keyline" />
-      <feMerge><feMergeNode in="keyline" /><feMergeNode in="SourceGraphic" /></feMerge>
-    </filter>
-  </defs>
-</svg>
-<span class="footer-lockup" aria-hidden="true">
-  <Picture class="footer-lockup__mark" src={mark} alt="" width={80} height={73} densities={[1, 2]} formats={['avif', 'webp']} fallbackFormat="png" loading="lazy" decoding="async" />
-  <Picture class="footer-lockup__wordmark" src={wordmark} alt="" width={252} height={41} densities={[1, 2]} formats={['avif', 'webp']} fallbackFormat="png" loading="lazy" decoding="async" />
-</span>
+<Picture class="footer-lockup" src={lockup} alt="" width={300} height={71} densities={[1, 2]} formats={['avif', 'webp']} fallbackFormat="png" loading="lazy" decoding="async" />
 <style>
-  .footer-keyline-defs {
-    position: absolute;
-    width: 0;
-    height: 0;
-    pointer-events: none;
-  }
-  .footer-lockup {
-    display: grid;
-    grid-template-columns: minmax(0, 80fr) minmax(0, 252fr);
-    align-items: center;
-    gap: 0;
-    width: 100%;
-    filter: url('#footer-lockup-keyline');
-  }
-  .footer-lockup :global(picture),
-  .footer-lockup :global(img) {
+  :global(.footer-lockup),
+  :global(.footer-lockup img) {
     display: block;
     width: 100%;
     height: auto;
-  }
-  /* The crops include clear space: overlap those bounds so the shared keyline joins. */
-  .footer-lockup :global(.footer-lockup__wordmark) {
-    width: 108%;
-    margin-left: -8%;
   }
 </style>
