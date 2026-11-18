@@ -16,7 +16,10 @@ The owner requested the supplied `solutions-round-3.patch` using the established
 - Astro check: 58 files, zero errors, warnings or hints. Preview build and source diff checks passed.
 - Browser layout checks at 320, 390, 760, 761, 768, 992, 993, 1024, 1120, 1121 and 1440px; exactly one visible homepage form, unique IDs, header/bar/menu behavior, hero bounds and six service destinations passed.
 - Contact checked at six widths; the form starts in the first screen and contextual consultation links reach the correct section. Three visible-form journeys, slider input, no-JavaScript and reduced-motion views passed.
+- Both responsive homepage forms passed blocked-module native submission and delayed enhancement tests without losing the current step or entries. Back-button text/border, hover colors and keyboard focus were checked at 390, 897 and 992px. Sixteen accessibility audits across representative pages and form states reported zero violations.
 - Local screenshots and detailed measurements are retained in the parent project's `design-playbook/round3-review/` folder. Hosted deployment and Lighthouse results are recorded in `DEPLOYMENT.md` after upload.
+- Hosted Home/Contact checks passed at 390 and 1440px, including form placement, branding, navigation, CTA destinations, native fallback and the checked legacy redirects. Deployed source `ff02d0705dc6de636b80e7a44983d46f4f004c71`, Cloudflare version `eb56dc1d-7fe1-46ca-8443-5c6e41dfd50e`.
+- A single hosted Lighthouse run per device scored Performance, Accessibility and Best Practices 100 on mobile and desktop, CLS 0 and blocking time 0ms. Preview SEO 69 is expected from noindex. See `reports/lighthouse/2026-11-17-round3-hosted/summary.md` for the lab measurements and deployment notes for scope limits.
 
 ## Scope
 
