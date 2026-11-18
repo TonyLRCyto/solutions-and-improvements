@@ -3581,6 +3581,20 @@ picture {
   color: #fff;
   overflow-wrap: anywhere;
 }
+/* The form keeps its light-surface controls inside the dark contact section. */
+.on-dark .form-card .btn--outline {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: transparent;
+}
+.on-dark .form-card .btn--outline:hover {
+  border-color: var(--ink);
+  color: #fff;
+  background: var(--ink);
+}
+.on-dark .form-card :focus-visible {
+  outline-color: var(--blue);
+}
 @media (max-width: 62em) {
   .contact-band--simple .form-card {
     margin-top: 0.5rem;
