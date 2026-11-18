@@ -18,6 +18,8 @@ The owner requested the supplied round-four update through the existing GitHub/m
 - Local browser checks passed at eleven homepage and six contact widths, plus 21 affected-page layouts. The footer image and phone columns, full-width hero, larger header, compact menu, forms, two region cards and all twelve community destinations passed. Ten main-page accessibility audits reported zero violations.
 - Projects reveal completed on phone and desktop; no-JavaScript, blocked-script and reduced-motion views immediately showed the photo. Gallery filtering/lightbox and the home comparison passed. Footer PNG transparency, encoded-image edges and visible white contour were inspected.
 - Detailed local and hosted screenshots/measurements are retained outside this repository in the parent project's `design-playbook/round4-review/` folder. Final runtime and Lighthouse results are recorded in `DEPLOYMENT.md` after deployment.
+- Hosted affected-page, footer, form, city-link and animation checks passed on phone and desktop. Final image selection at 1024px used the actual 1024×768 source and covered the full hero. Deployed code `cfc3a953287004481f88e7a0584084906474d3e9`, Cloudflare version `5aa51899-a897-4305-841f-7f15a619118c`.
+- Hosted Lighthouse, one run per device/page: Home Performance 95 mobile/100 desktop; Projects 100 on both. Accessibility and Best Practices 100, CLS 0 and blocking time 0ms on all four profiles. SEO 69 is expected for the noindex preview. Detailed results and measurement limits are in `reports/lighthouse/2026-11-18-round4-hosted/summary.md` and the deployment record.
 
 ## Scope
 
