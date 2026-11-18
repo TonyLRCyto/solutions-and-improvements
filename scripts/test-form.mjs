@@ -40,7 +40,7 @@ await check('malformed JSON -> 400', { method: 'POST', headers: json, body: '{' 
 if (process.env.EXPECT_TURNSTILE_MISCONFIGURED === '1') {
   await check('public Turnstile key without secret fails closed before mail delivery', { method: 'POST', headers: json, body: JSON.stringify(valid) }, 503, (b) => b.status === 'unavailable' && /form isn’t fully configured/.test(b.message));
 }
-await check('missing required fields -> 422 with field errors', { method: 'POST', headers: json, body: JSON.stringify({ name: '' }) }, 422, (b) => b.errors?.name && b.errors?.contact && b.errors?.location && b.errors?.service && b.errors?.description);
+await check('missing required fields -> 422 with field errors (description optional)', { method: 'POST', headers: json, body: JSON.stringify({ name: '' }) }, 422, (b) => b.errors?.name && b.errors?.contact && b.errors?.location && b.errors?.service && !b.errors?.description);
 await check('phone only is enough', { method: 'POST', headers: json, body: JSON.stringify({ ...valid, email: '', phone: '(219) 555-0123' }) }, 503);
 await check('preferred contact email without email -> 422', { method: 'POST', headers: json, body: JSON.stringify({ ...valid, email: '', phone: '219-555-0123', contactPref: 'email' }) }, 422, (b) => !!b.errors?.email);
 await check('unknown service value -> 422', { method: 'POST', headers: json, body: JSON.stringify({ ...valid, service: 'pool' }) }, 422, (b) => !!b.errors?.service);

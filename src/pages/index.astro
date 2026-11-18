@@ -2,180 +2,169 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
-import BlueprintLines from '../components/BlueprintLines.astro';
-import ProcessSteps from '../components/ProcessSteps.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import Stars from '../components/Stars.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import ContactWays from '../components/ContactWays.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
 import { photos } from '../data/photos';
-import { featuredServices, commercialService } from '../data/services';
-import { regions, cities } from '../data/areas';
-import { company, cta, financing, IS_PREVIEW } from '../data/site';
+import { featuredServices, serviceGroups, commercialService } from '../data/services';
+import { reviews, reviewSummary } from '../data/reviews';
+import { company, cta } from '../data/site';
 
-const visibleCities = cities.filter((c) => c.indexReady || IS_PREVIEW);
+const homeReviews = ['amanda', 'robert', 'luke'].map((id) => reviews.find((r) => r.id === id)!);
+const cardPhoto = { 'new-construction': photos.EC, additions: photos.ADD, kitchens: photos.KQ, bathrooms: photos.BS } as const;
+const order = ['new-construction', 'additions', 'kitchens', 'bathrooms'];
+const mainServices = order.map((slug) => featuredServices.find((s) => s.slug === slug)!);
+const strip = [photos.ADD, photos.KI, photos.BS, photos.K1, photos.BAR];
 ---
 <BaseLayout
   title="Solutions and Improvements | Construction & Remodeling in Northwest Indiana & South Chicagoland"
   fullTitle
-  description="Construction and remodeling since 1990: bathrooms, kitchens, additions and new construction for homes, commercial and multifamily properties across Northwest Indiana and South Chicagoland."
+  description="Family-owned, licensed and insured contractor since 1990: new homes, additions, kitchens and bathrooms across Northwest Indiana and South Chicagoland. Free on-site consultation."
   path="/"
-  settle
 >
-  <!-- 1. Opening -->
-  <section class="hero blueprint on-dark" aria-labelledby="hero-h">
-    <BlueprintLines />
-    <div class="container">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <h1 id="hero-h" class="display">Construction and remodeling since 1990.</h1>
-          <p class="hero-intro">For homes and businesses across Northwest Indiana and South Chicagoland.</p>
-          <div class="hero-actions">
-            <a class="btn btn--primary btn--lg" href={cta.href} data-track="cta_consultation">{cta.label}</a>
-            <a class="btn btn--outline btn--lg" href="/projects">View our work</a>
-          </div>
+  <!-- Opening: project photo with the headline; on desktop the request form sits beside it -->
+  <section class="photo-hero" aria-labelledby="hero-h">
+    <div class="container photo-hero__grid">
+      <div class="photo-hero__text">
+        <div class="photo-hero__bg" aria-hidden="true">
+          <Photo photo={photos.EC} alt="" priority sizes="100vw" widths={[640, 800, 1024]} />
         </div>
-        <div class="hero-media">
-          <figure style="margin:0">
-            <div class="plane" data-settle>
-              <div class="plane-frame">
-                <Photo
-                  photo={photos.A}
-                  priority
-                  widths={[360, 480, 600, 760, 960, 1200, 1600, 2000]}
-                  sizes="(max-width: 832px) 92vw, (max-width: 1460px) 42vw, 580px"
-                />
-              </div>
-            </div>
-            <figcaption class="hero-caption">{photos.A.caption}</figcaption>
-          </figure>
+        <p class="kicker">Northwest Indiana &amp; South Chicagoland · Licensed and insured</p>
+        <h1 id="hero-h">Family-owned construction and remodeling since {company.founded}</h1>
+        <p class="photo-hero__lede">New homes, additions, kitchens and bathrooms, with a free on-site consultation.</p>
+        <div class="actions photo-hero__actions-desktop">
+          <a class="btn btn--ghost-light btn--lg" href={company.phoneHref} data-track="phone_click"><Icon name="phone" />Call or text {company.phoneDisplay}</a>
         </div>
+      </div>
+      <div id="consultation" class="photo-hero__form">
+        <ConsultationForm idPrefix="home" heading={cta.longLabel} />
       </div>
     </div>
   </section>
 
-  <!-- 2. Services -->
-  <section class="section section--paper home-services" aria-labelledby="svc-h">
+  <!-- Proof: before/after and Google reviews -->
+  <section class="section section--white proof" aria-labelledby="proof-h">
+    <div class="container">
+      <div class="proof__grid">
+        <BeforeAfter
+          before={photos.GB}
+          after={photos.GA}
+          label="Compare the Munster garage before and after the rebuild"
+          caption="Garage rebuilt after a fire · Munster, IN"
+        />
+        <div>
+          <h2 id="proof-h" class="h-xl">What our clients say</h2>
+          <div class="proof__score">
+            <p class="reviews__score">{reviewSummary.rating}</p>
+            <div>
+              <Stars rating={reviewSummary.rating} size="lg" />
+              <p>from {reviewSummary.count} reviews on Google</p>
+            </div>
+          </div>
+          <ul class="proof__facts">
+            <li><Icon name="shield" />Licensed and insured</li>
+            <li><Icon name="home" />Family-owned since {company.founded}</li>
+            <li><Icon name="check" />Free on-site consultation</li>
+          </ul>
+          {reviewSummary.url && <a class="btn btn--outline mt-1" href={reviewSummary.url} rel="noopener">Read all reviews</a>}
+        </div>
+      </div>
+      <ul class="reviews__list swipe" aria-label="Client reviews" tabindex="0">
+        {homeReviews.map((r) => <li><ReviewCard review={r} /></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Recent projects: photos only -->
+  <section class="section section--white" aria-labelledby="work-h">
+    <div class="container">
+      <div class="section-head section-head--row">
+        <h2 id="work-h" class="h-xl">Recent projects</h2>
+        <a class="link-arrow" href="/projects">View all projects<Icon name="arrow" /></a>
+      </div>
+      <ul class="photo-strip" aria-label="Project photos" tabindex="0">
+        {strip.map((p) => (
+          <li><Photo photo={p} sizes="(max-width: 760px) 82vw, (max-width: 1320px) 48vw, 640px" widths={[400, 600, 800, 1000]} /></li>
+        ))}
+      </ul>
+      <p class="swipe-hint">Swipe for more photos</p>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section section--paper" aria-labelledby="svc-h">
     <div class="container">
       <div class="section-head">
-        <h2 id="svc-h" class="h-xl">Our services</h2>
+        <h2 id="svc-h" class="h-xl">Services</h2>
+        <p class="muted">Our four main services, plus repairs and specialty trades for homes and commercial properties.</p>
       </div>
-      <ul class="svc-list svc-list--compact">
-        {featuredServices.map((s) => (
+      <ul class="svc-cards">
+        {mainServices.map((s) => (
           <li>
             <a href={s.path}>
-              <span class="name">{s.name}</span>
-              <Icon name="arrow-up-right" />
+              <div class="ph"><Photo photo={cardPhoto[s.slug as keyof typeof cardPhoto]} alt="" sizes="(max-width: 560px) calc(100vw - 2.5rem), (max-width: 1000px) 46vw, 23vw" widths={[360, 480, 640, 800]} /></div>
+              <div class="svc-cards__body">
+                <h3>{s.name}</h3>
+                <p>{s.summary}</p>
+                <span class="svc-cards__go">Learn more<span class="visually-hidden"> about {s.name.toLowerCase()}</span><Icon name="arrow" /></span>
+              </div>
             </a>
           </li>
         ))}
       </ul>
-      <div class="svc-more">
-        <p class="muted">Projects of all sizes welcome, including small repairs.</p>
-        <div class="svc-more-links">
-          <a href={commercialService.path}>{commercialService.name}</a>
-          <a href="/services">All services</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3. Selected project views -->
-  <section class="section section--white" aria-labelledby="work-h">
-    <div class="container">
-      <div class="section-head section-head--split">
-        <span class="kicker">02 / Selected work</span>
-        <h2 id="work-h" class="h-xl">The work is the evidence.</h2>
-        <div class="stack">
-          <p class="muted">A few views from recent work, from finished rooms to framing.</p>
-          <a class="link-arrow" href="/projects">See all projects<Icon name="arrow" /></a>
-        </div>
-      </div>
-      <div class="work-grid">
-        <figure class="work-item work-item--a">
-          <a href="/projects#kitchens"><div class="ph"><Photo photo={photos.K2} sizes="(max-width: 704px) calc(100vw - 2.5rem), 56vw" /></div>
-          <figcaption><small>Kitchens</small>{photos.K2.caption}</figcaption></a>
-        </figure>
-        <figure class="work-item work-item--b">
-          <a href="/projects#bathrooms"><div class="ph"><Photo photo={photos.B1} sizes="(max-width: 704px) 46vw, 38vw" widths={[300, 400, 540, 720, 960]} /></div>
-          <figcaption><small>Bathrooms</small>{photos.B1.caption}</figcaption></a>
-        </figure>
-        <figure class="work-item work-item--c">
-          <a href="/projects#kitchens"><div class="ph"><Photo photo={photos.K1} sizes="(max-width: 704px) 46vw, 38vw" widths={[300, 400, 540, 720, 960]} /></div>
-          <figcaption><small>Kitchens</small>{photos.K1.caption}</figcaption></a>
-        </figure>
-        <figure class="work-item work-item--d">
-          <a href="/projects#in-progress"><div class="ph"><Photo photo={photos.C} sizes="(max-width: 704px) calc(100vw - 2.5rem), 56vw" /></div>
-          <figcaption><small>In progress</small>{photos.C.caption}</figcaption></a>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. How projects begin -->
-  <section class="blueprint on-dark process-panel" aria-labelledby="process-h" style="padding-block:var(--section)">
-    <BlueprintLines variant="process" />
-    <div class="container">
-      <div class="section-head section-head--split">
-        <span class="kicker">03 / How projects begin</span>
-        <h2 id="process-h" class="h-xl">Start with a visit, not a guess.</h2>
-        <p class="muted">The free consultation includes an on-site visit, so the scope is based on your actual space.</p>
-      </div>
-      <ProcessSteps
-        steps={[
-          { title: 'Consultation & site visit', text: 'Tell us about the project, then we visit to see the space and talk it through.' },
-          { title: 'Scope & proposal', text: 'We define the work. Whether a detailed estimate is free or paid depends on the project, and we tell you up front.' },
-          { title: 'Planning & construction', text: 'In-house design and renders where needed, then scheduling and building.' },
-        ]}
-      />
-      <p class="process-note muted">Design work can begin after a rendering deposit or a signed construction contract. Ask us about financing through {financing.provider}.</p>
-    </div>
-  </section>
-
-  <!-- 5. Service areas -->
-  <section class="section section--paper" aria-labelledby="areas-h">
-    <div class="container">
-      <div class="section-head section-head--split">
-        <span class="kicker">04 / Service areas</span>
-        <h2 id="areas-h" class="h-xl">Both sides of the state line.</h2>
-        <p class="muted">Founded in 1990 and based in Munster, working across Northwest Indiana and the south Chicago suburbs.</p>
-      </div>
-      <div class="areas-grid">
-        {regions.map((r) => (
-          <article class:list={['area-card', { 'area-card--il': r.slug === 'illinois' }]}>
-            <span class="kicker">{r.short}</span>
-            <h3>{r.name}</h3>
-            <ul>{r.coverage.map((c) => <li>{c}</li>)}</ul>
-            <a class="link-arrow" href={r.path}>{r.short} service area<Icon name="arrow" /></a>
-          </article>
-        ))}
-      </div>
-      {visibleCities.length > 0 && (
-        <p class="city-links">
-          <span class="muted">Communities:</span>
-          {visibleCities.map((c) => <a href={c.path}>{c.name}, {c.state}</a>)}
-          <a href="/service-areas">All service areas</a>
-        </p>
-      )}
-    </div>
-  </section>
-
-  <!-- 6. Consultation -->
-  <section class="section section--white" id="consultation" aria-labelledby="consult-h">
-    <div class="container consult">
-      <div class="consult-aside">
-        <span class="kicker">05 / Free consultation</span>
-        <h2 id="consult-h" class="h-xl">Tell us what you’re planning.</h2>
-        <p class="lede muted">The consultation is free and includes an on-site visit. We’ll follow up by phone or message to arrange it.</p>
-        <ul class="checks">
-          <li>No minimum project size</li>
-          <li>Homes, commercial and multifamily</li>
-          <li>Design and renders in-house</li>
+      <div class="other-services">
+        <h3 class="h-md">Other services</h3>
+        <ul class="other-services__list">
+          {serviceGroups.map((g) => (
+            <li><a href={g.path}><span><b>{g.title}</b><span>{g.text}</span></span><Icon name="arrow" /></a></li>
+          ))}
+          <li><a href={commercialService.path}><span><b>{commercialService.name}</b><span>{commercialService.summary}</span></span><Icon name="arrow" /></a></li>
         </ul>
-        <div class="contact-alt">
-          <span class="kicker">Prefer to call?</span>
-          <a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a>
-          <a href={`mailto:${company.email}`} data-track="email_click" style="font-size:1rem">{company.email}</a>
-        </div>
       </div>
-      <ConsultationForm idPrefix="home" />
+    </div>
+  </section>
+
+  <!-- Company and process -->
+  <section class="section section--paper company" aria-labelledby="family-h">
+    <div class="container company__grid">
+      <div>
+        <h2 id="family-h" class="h-xl">A family business since {company.founded}</h2>
+        <p class="muted family__text">Solutions and Improvements is owned by Gabriel Lopez, with Andy Lopez managing projects day to day. You work directly with them from the first visit to the final walkthrough.</p>
+        <ul class="people">
+          {company.team.map((t) => <li><span class="n">{t.name}</span><span class="r">{t.role}</span></li>)}
+        </ul>
+        <a class="link-arrow" href="/about-us">About the company<Icon name="arrow" /></a>
+      </div>
+      <div>
+        <h3 class="h-md">How a project works</h3>
+        <ProcessSteps
+          headingLevel="h4"
+          steps={[
+            { title: 'Consultation and site visit', text: 'We visit, look at the space and discuss what you have in mind.' },
+            { title: 'Scope, design and proposal', text: 'We define the scope and proposal. Design begins after a rendering deposit or signed contract.' },
+            { title: 'Construction and walkthrough', text: 'We schedule the trades, manage the work and review the finished job with you.' },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact. On phones the request form lives here; on desktop it is in the opening. -->
+  <section class="contact-band contact-band--simple on-dark" id="request" aria-labelledby="consult-h">
+    <div class="container contact-band__grid">
+      <div>
+        <h2 id="consult-h" class="h-xl">Talk to us about your project</h2>
+        <p class="muted contact-band__intro">Call or text for the quickest answer, or send a request and we will follow up to schedule a visit.</p>
+        <a class="btn btn--light btn--lg mt-2 desktop-only" href="#consultation" data-track="cta_consultation">{cta.longLabel}</a>
+      </div>
+      <div class="desktop-only"><ContactWays /></div>
+      <div class="mobile-only">
+        <ConsultationForm idPrefix="home-m" heading={cta.longLabel} />
+        <p class="contact-band__email">Prefer email? <a href={`mailto:${company.email}`} data-track="email_click">{company.email}</a></p>
+      </div>
     </div>
   </section>
 </BaseLayout>

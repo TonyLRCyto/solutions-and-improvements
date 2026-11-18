@@ -5,8 +5,8 @@
  */
 import Icon from './Icon.astro';
 import { formServices } from '../data/form-options';
-import { propertyTypes, contactPrefs, LIMITS } from '../lib/consultation';
-import { company, cta, turnstileSiteKey, IS_PREVIEW } from '../data/site';
+import { propertyTypes, timings, LIMITS } from '../lib/consultation';
+import { company, turnstileSiteKey, IS_PREVIEW } from '../data/site';
 
 interface Props {
   idPrefix?: string;
@@ -15,8 +15,10 @@ interface Props {
   topicLabel?: string;
   /** slug -> name map so /contact can show which page the visitor came from. */
   topics?: Record<string, string>;
+  /** Optional heading shown at the top of the card (home hero). */
+  heading?: string;
 }
-const { idPrefix = 'cf', service = '', topic = '', topicLabel = '', topics } = Astro.props;
+const { idPrefix = 'cf', service = '', topic = '', topicLabel = '', topics, heading } = Astro.props;
 const id = (s: string) => `${idPrefix}-${s}`;
 ---
 <div class="form-card">
@@ -30,9 +32,9 @@ const id = (s: string) => `${idPrefix}-${s}`;
     data-topics={topics ? JSON.stringify(topics) : undefined}
     aria-describedby={id('intro')}
   >
+    {heading && <h2 class="form-title" id={id('title')}>{heading}</h2>}
     <p class="form-context" id={id('intro')}>
-      Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.
-      We need an email <em>or</em> a phone number.
+      Three short steps. Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.
     </p>
     <p class="form-context" data-topic-note hidden={!topicLabel}>About: <strong>{topicLabel}</strong></p>
 
@@ -41,65 +43,69 @@ const id = (s: string) => `${idPrefix}-${s}`;
       <ul></ul>
     </div>
 
-    <div class="form-grid">
-      <div class="field field--full">
-        <label for={id('name')}>Name <span aria-hidden="true">*</span></label>
-        <input id={id('name')} name="name" type="text" autocomplete="name" required maxlength={LIMITS.name} aria-describedby={id('name-err')} />
-        <p class="error" id={id('name-err')} data-error-for="name"></p>
+    <fieldset class="form-step" data-step="1" aria-describedby={id('service-err')}>
+      <legend class="form-step__legend"><span class="form-step__n">Step 1 of 3</span> What is the project? <span aria-hidden="true">*</span></legend>
+      <div class="tiles">
+        {formServices.map((s) => (
+          <label class="tile" for={id(`service-${s.value}`)}><input id={id(`service-${s.value}`)} type="radio" name="service" value={s.value} required checked={s.value === service} aria-describedby={id('service-err')} /><span>{s.label}</span></label>
+        ))}
       </div>
+      <p class="error" id={id('service-err')} data-error-for="service"></p>
+    </fieldset>
 
-      <div class="field">
-        <label for={id('email')}>Email</label>
-        <input id={id('email')} name="email" type="email" autocomplete="email" inputmode="email" maxlength={LIMITS.email} aria-describedby={id('contact-hint') + ' ' + id('email-err')} />
-        <p class="error" id={id('email-err')} data-error-for="email"></p>
-      </div>
-      <div class="field">
-        <label for={id('phone')}>Phone</label>
-        <input id={id('phone')} name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength={LIMITS.phone} aria-describedby={id('contact-hint') + ' ' + id('phone-err')} />
-        <p class="error" id={id('phone-err')} data-error-for="phone"></p>
-      </div>
-      <p class="field--full hint" id={id('contact-hint')} style="margin-top:-.5rem;font-size:.85rem;color:var(--text-muted)">
-        Email or phone is required. <span class="error" data-error-for="contact" id={id('contact-err')}></span>
-      </p>
-
-      <div class="field">
-        <label for={id('location')}>Project city or ZIP <span aria-hidden="true">*</span></label>
-        <input id={id('location')} name="location" type="text" autocomplete="address-level2" required maxlength={LIMITS.location} aria-describedby={id('location-err')} />
-        <p class="error" id={id('location-err')} data-error-for="location"></p>
-      </div>
-      <div class="field">
-        <label for={id('service')}>Project type <span aria-hidden="true">*</span></label>
-        <select id={id('service')} name="service" required aria-describedby={id('service-err')}>
-          <option value="" selected={!service}>Choose one</option>
-          {formServices.map((s) => <option value={s.value} selected={s.value === service}>{s.label}</option>)}
-        </select>
-        <p class="error" id={id('service-err')} data-error-for="service"></p>
-      </div>
-
-      <div class="field field--full">
-        <label for={id('property')}>Property type <span class="opt">(optional)</span></label>
-        <select id={id('property')} name="property">
-          <option value="">Choose one</option>
-          {propertyTypes.map((p) => <option value={p.value}>{p.label}</option>)}
-        </select>
-      </div>
-
-      <div class="field field--full">
-        <label for={id('description')}>About the project <span aria-hidden="true">*</span></label>
-        <textarea id={id('description')} name="description" required minlength={LIMITS.description.min} maxlength={LIMITS.description.max} rows="5" aria-describedby={id('description-hint') + ' ' + id('description-err')}></textarea>
-        <p class="hint" id={id('description-hint')}>A few sentences is plenty: what you want to change, and anything we should know.</p>
-        <p class="error" id={id('description-err')} data-error-for="description"></p>
-      </div>
-
-      <fieldset class="field field--full">
-        <legend>Best way to reach you <span class="opt">(optional)</span></legend>
-        <div class="radio-row">
-          {contactPrefs.map((p) => (
-            <label><input type="radio" name="contactPref" value={p.value} /> {p.label}</label>
-          ))}
+    <fieldset class="form-step" data-step="2">
+      <legend class="form-step__legend"><span class="form-step__n">Step 2 of 3</span> Where and when?</legend>
+      <div class="form-grid">
+        <div class="field field--full">
+          <label for={id('location')}>Project city or ZIP <span aria-hidden="true">*</span></label>
+          <input id={id('location')} name="location" type="text" autocomplete="address-level2" required maxlength={LIMITS.location} aria-describedby={id('location-err')} />
+          <p class="error" id={id('location-err')} data-error-for="location"></p>
         </div>
-      </fieldset>
-    </div>
+        <div class="field">
+          <label for={id('timing')}>When would you like to start? <span class="opt">(optional)</span></label>
+          <select id={id('timing')} name="timing">
+            <option value="">Choose one</option>
+            {timings.map((t) => <option value={t.value}>{t.label}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for={id('property')}>Property type <span class="opt">(optional)</span></label>
+          <select id={id('property')} name="property">
+            <option value="">Choose one</option>
+            {propertyTypes.map((p) => <option value={p.value}>{p.label}</option>)}
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="form-step" data-step="3">
+      <legend class="form-step__legend"><span class="form-step__n">Step 3 of 3</span> How can we reach you?</legend>
+      <div class="form-grid">
+        <div class="field field--full">
+          <label for={id('name')}>Name <span aria-hidden="true">*</span></label>
+          <input id={id('name')} name="name" type="text" autocomplete="name" required maxlength={LIMITS.name} aria-describedby={id('name-err')} />
+          <p class="error" id={id('name-err')} data-error-for="name"></p>
+        </div>
+        <div class="field">
+          <label for={id('phone')}>Phone</label>
+          <input id={id('phone')} name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength={LIMITS.phone} aria-describedby={id('contact-hint') + ' ' + id('phone-err')} />
+          <p class="error" id={id('phone-err')} data-error-for="phone"></p>
+        </div>
+        <div class="field">
+          <label for={id('email')}>Email</label>
+          <input id={id('email')} name="email" type="email" autocomplete="email" inputmode="email" maxlength={LIMITS.email} aria-describedby={id('contact-hint') + ' ' + id('email-err')} />
+          <p class="error" id={id('email-err')} data-error-for="email"></p>
+        </div>
+        <p class="field--full hint form-hint" id={id('contact-hint')}>
+          A phone number or an email is required. <span class="error" data-error-for="contact" id={id('contact-err')}></span>
+        </p>
+        <div class="field field--full">
+          <label for={id('description')}>Anything we should know? <span class="opt">(optional)</span></label>
+          <textarea id={id('description')} name="description" minlength={LIMITS.description.min} maxlength={LIMITS.description.max} rows="3" aria-describedby={id('description-err')}></textarea>
+          <p class="error" id={id('description-err')} data-error-for="description"></p>
+        </div>
+      </div>
+    </fieldset>
 
     <div class="hp-field" aria-hidden="true">
       <label for={id('website')}>Leave this field empty</label>
@@ -113,17 +119,90 @@ const id = (s: string) => `${idPrefix}-${s}`;
 
     <div class="form-foot">
       <div class="form-status" role="status" aria-live="polite" tabindex="-1" hidden data-status></div>
-      <button class="btn btn--primary btn--lg" type="submit" data-submit>
-        <span data-label>{cta.label}</span><Icon name="arrow" />
-      </button>
+      <div class="form-nav">
+        <button class="btn btn--outline" type="button" hidden data-back>Back</button>
+        <button class="btn btn--primary btn--lg" type="button" hidden data-next>Next<Icon name="arrow" /></button>
+        <button class="btn btn--primary btn--lg" type="submit" data-submit>
+          <span data-label>Send my request</span><Icon name="arrow" />
+        </button>
+      </div>
       <p class="form-privacy">
-        Submitting doesn’t book an appointment. We’ll follow up by phone or message. We use your details only to respond to this request; see our <a href="/privacy">privacy note</a>.
-        Prefer to talk? Call <a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a>.
+        We’ll follow up to arrange the visit. Your details are used only to respond to this request (<a href="/privacy">privacy note</a>).
+        Prefer to talk? Call or text <a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a>.
       </p>
       {IS_PREVIEW && (
         <p class="preview-flag">Preview build: online delivery is not connected yet. Submitting will show an honest “not sent” message.</p>
       )}
     </div>
+    <script is:inline>
+      // A small working wizard runs during parsing, before the enhanced module loads.
+      // If that module cannot load, these controls retain native validation and submission.
+      (() => {
+        const form = document.currentScript?.closest('form');
+        if (!(form instanceof HTMLFormElement)) return;
+        const steps = [...form.querySelectorAll('[data-step]')];
+        const back = form.querySelector('[data-back]');
+        const next = form.querySelector('[data-next]');
+        const submit = form.querySelector('[data-submit]');
+        const phone = form.querySelector('[name="phone"]');
+        const email = form.querySelector('[name="email"]');
+        if (steps.length < 2 || !back || !next || !submit || !phone || !email) return;
+        const started = form.querySelector('[data-started]');
+        if (started && !started.value) started.value = String(Date.now());
+
+        const controller = new AbortController();
+        const options = { signal: controller.signal };
+        let current = 1;
+        const show = (n, focus = true) => {
+          current = n;
+          form.dataset.currentStep = String(n);
+          steps.forEach((step, index) => (step.hidden = index + 1 !== n));
+          back.hidden = n === 1;
+          next.hidden = n === steps.length;
+          submit.hidden = n !== steps.length;
+          if (focus) steps[n - 1].querySelector('input:checked, input, select, textarea')?.focus();
+        };
+        const contactValidity = () => {
+          phone.setCustomValidity(phone.value.trim() || email.value.trim() ? '' : 'Enter a phone number or an email address so we can reach you.');
+        };
+        const valid = (n) => {
+          if (n === steps.length) contactValidity();
+          const invalid = [...steps[n - 1].querySelectorAll('input, select, textarea')].find((field) => !field.validity.valid);
+          if (!invalid) return true;
+          show(n, false);
+          invalid.reportValidity();
+          return false;
+        };
+        next.addEventListener('click', () => {
+          if (valid(current)) show(current + 1);
+        }, options);
+        back.addEventListener('click', () => show(current - 1), options);
+        form.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' && current < steps.length && event.target.tagName === 'INPUT') {
+            event.preventDefault();
+            next.click();
+          }
+        }, options);
+        form.addEventListener('input', (event) => {
+          if (event.target === phone || event.target === email) contactValidity();
+        }, options);
+        form.addEventListener('submit', (event) => {
+          for (let n = 1; n <= steps.length; n++) {
+            if (!valid(n)) {
+              event.preventDefault();
+              return;
+            }
+          }
+        }, options);
+        form.addEventListener('consultation:enhanced', () => {
+          controller.abort();
+          phone.setCustomValidity('');
+        }, { ...options, once: true });
+        form.classList.add('is-stepped');
+        form.dataset.formMode = 'basic';
+        show(1, false);
+      })();
+    </script>
   </form>
 </div>
 {turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}

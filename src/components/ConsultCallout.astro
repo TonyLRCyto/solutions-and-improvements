@@ -1,5 +1,4 @@
 ---
-import Icon from './Icon.astro';
 import { cta, company } from '../data/site';
 interface Props {
   heading?: string;
@@ -20,8 +19,8 @@ const href = `${cta.href}${q.size ? `?${q}` : ''}#consultation`;
       <p class="muted mt-1" style="max-width:52ch">{text}</p>
     </div>
     <div class="stack">
-      <a class="btn btn--primary btn--lg" href={href} data-track="cta_consultation">{cta.label}<Icon name="arrow" /></a>
-      <p class="muted" style="font-size:.95rem">Or call <a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a></p>
+      <a class="btn btn--primary btn--lg" href={href} data-track="cta_consultation">{cta.longLabel}</a>
+      <p class="muted" style="font-size:.95rem">Or call or text <a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a></p>
     </div>
   </div>
 </section>

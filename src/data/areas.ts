@@ -40,8 +40,8 @@ export const regions: Region[] = [
         text: 'Our free consultation includes an on-site visit to understand the project and discuss the next steps.',
       },
       {
-        title: 'Local permits',
-        text: 'Each town and county sets its own permit process. We confirm what applies to your project during planning.',
+        title: 'One point of contact',
+        text: 'The owner and project manager handle your project directly, from the first visit to the final walkthrough.',
       },
       {
         title: 'Homes and businesses',
@@ -67,8 +67,8 @@ export const regions: Region[] = [
         text: 'Lansing is minutes from our Munster base, so Illinois projects get the same team and the same follow-up.',
       },
       {
-        title: 'Local permits',
-        text: 'Illinois villages and cities have their own building departments. We confirm requirements for each project.',
+        title: 'One point of contact',
+        text: 'The owner and project manager handle your project directly, from the first visit to the final walkthrough.',
       },
       {
         title: 'Remodeling to new builds',
@@ -111,7 +111,6 @@ export const cities: City[] = [
     localNotes: [
       'Close to our base, so site visits and follow-up are simple to arrange.',
       'Remodeling, additions and exterior work for homes, plus commercial and multifamily projects.',
-      'We confirm local permit requirements for each project during planning.',
     ],
     planning: {
       text: 'Munster has a dedicated application for one- and two-family remodels, alterations and accessory structures. A clear scope helps identify the right review path before work starts.',
@@ -134,7 +133,6 @@ export const cities: City[] = [
     localNotes: [
       'Kitchens, bathrooms, basements and additions.',
       'Exterior work such as roofing, siding, windows and decks.',
-      'We confirm local permit requirements for each project during planning.',
     ],
     planning: {
       text: 'St. John publishes guidance for additions, remodels, roofs, decks and new construction. Its deck guidance also distinguishes town requirements from subdivision or HOA rules.',
@@ -157,7 +155,6 @@ export const cities: City[] = [
     localNotes: [
       'Interior remodeling, additions and exterior updates.',
       'Small repairs as well as larger projects.',
-      'We confirm local permit requirements for each project during planning.',
     ],
     planning: {
       text: 'Dyer’s building and zoning application asks for the project location, subdivision, work description and contractor information. We start with the actual scope and property rather than a one-size-fits-all plan.',
@@ -180,7 +177,6 @@ export const cities: City[] = [
     localNotes: [
       'Remodeling, additions and new construction.',
       'Commercial and multifamily work as well as homes.',
-      'We confirm local permit requirements for each project during planning.',
     ],
     planning: {
       text: 'Crown Point’s inspection guidance separates building, electrical, plumbing and mechanical inspections. Work that involves several trades needs those stages included in the schedule.',
@@ -241,7 +237,6 @@ export const cities: City[] = [
     localNotes: [
       'Kitchens, bathrooms, additions and new construction.',
       'Exterior work and repairs.',
-      'We confirm village permit requirements for each project during planning.',
     ],
     planning: {
       text: 'Mokena’s Community Development team oversees permit review and construction inspections, with separate guidance for different permit types and work exempt from permitting.',
@@ -264,7 +259,6 @@ export const cities: City[] = [
     localNotes: [
       'Interior remodeling, additions and new construction.',
       'Commercial and multifamily projects.',
-      'We confirm village permit requirements for each project during planning.',
     ],
     planning: {
       text: 'Frankfort’s residential construction guide calls for coordinated plans and site information, with developer or HOA approval where applicable. Those documents are worth discussing early for a new build.',
@@ -322,7 +316,7 @@ export const cities: City[] = [
     region: 'illinois',
     county: 'Cook County',
     intro: 'Our team serves Homewood with interior remodeling, additions and building improvements for residential and commercial properties.',
-    localNotes: ['Kitchens and bathrooms that work better for everyday life.', 'Additions, exterior repairs and larger renovations.', 'Commercial and multifamily projects, with no minimum project size.'],
+    localNotes: ['Kitchens and bathrooms that work better for everyday life.', 'Additions, exterior repairs and larger renovations.', 'Commercial and multifamily projects.'],
     planning: {
       text: 'Homewood publishes guidance for interior remodels, additions and exterior work. Its building information also covers temporary dumpsters and tree preservation when a project affects the lot.',
       preparation: 'For an addition or exterior project, discuss material storage, dumpster placement and nearby trees during the site visit.',

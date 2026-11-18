@@ -18,48 +18,43 @@ const visibleCities = cities.filter((c) => c.indexReady || IS_PREVIEW);
   <section class="page-hero">
     <div class="container">
       <Breadcrumbs items={crumbs} />
-      <span class="kicker">Service areas</span>
-      <h1>Northwest Indiana and South Chicagoland.</h1>
-      <p class="lede">Founded in 1990 and based in Munster. We work east through South Bend and west across the state line to Mokena, and in the communities between.</p>
+      <h1>Service areas</h1>
+      <p class="lede">Based in Munster since 1990, we work across Northwest Indiana, east through South Bend, and west across the state line to Mokena, Illinois.</p>
     </div>
   </section>
 
-  <section class="section section--white section--tight" aria-label="Regions">
+  <section class="section section--white section--tight areas-section" aria-label="Regions and communities">
     <div class="container">
+      {IS_PREVIEW && visibleCities.length > 0 && <p class="preview-flag" style="margin-bottom:1.5rem">Preview: the {visibleCities.length} community pages are being reviewed before launch.</p>}
       <div class="areas-grid">
-        {regions.map((r) => (
-          <article class:list={['area-card', { 'area-card--il': r.slug === 'illinois' }]} style="background:var(--paper)">
-            <span class="kicker">{r.short}</span>
-            <h2 class="h-lg">{r.name}</h2>
-            <p class="muted">{r.intro}</p>
-            <ul>{r.coverage.map((c) => <li style="background:#fff">{c}</li>)}</ul>
-            <a class="link-arrow" href={r.path}>About working in {r.short}<Icon name="arrow" /></a>
-          </article>
-        ))}
+        {regions.map((r) => {
+          const regionCities = visibleCities.filter((c) => c.region === r.slug);
+          // Filter towns individually so a ready city does not hide its unready neighbor.
+          const otherAreas = r.coverage
+            .flatMap((item) => item.split(' & '))
+            .filter((item) => !regionCities.some((c) => item.includes(c.name)));
+          return (
+            <article class:list={['area-card', 'area-card--merged', { 'area-card--il': r.slug === 'illinois' }]}>
+              <h2 class="h-lg">{r.name}</h2>
+              <p class="muted">{r.intro}</p>
+              {regionCities.length > 0 && (
+                <>
+                  <h3 class="area-card__sub">Communities</h3>
+                  <ul class="city-buttons">
+                    {regionCities.map((c) => <li><a href={c.path}>{c.name}, {c.state}<Icon name="arrow" /></a></li>)}
+                  </ul>
+                </>
+              )}
+              {otherAreas.length > 0 && (
+                <p class="area-card__coverage"><b>{regionCities.length > 0 ? 'Also serving:' : 'Communities we serve:'}</b> {otherAreas.join(', ')}.</p>
+              )}
+              <a class="btn btn--outline" href={r.path}>Working in {r.short}<Icon name="arrow" /></a>
+            </article>
+          );
+        })}
       </div>
     </div>
   </section>
-
-  {visibleCities.length > 0 && (
-    <section class="section section--paper section--tight" aria-labelledby="cities-h">
-      <div class="container">
-        <h2 id="cities-h" class="h-lg">Communities</h2>
-        {IS_PREVIEW && <p class="preview-flag mt-1">Preview: these {visibleCities.length} community pages are being reviewed before launch.</p>}
-        <div class="group-grid mt-2">
-          {regions.map((r) => (
-            <div class="group">
-              <h3>{r.name}</h3>
-              <ul>
-                {visibleCities.filter((c) => c.region === r.slug).map((c) => (
-                  <li><a href={c.path}>{c.name}, {c.state}<Icon name="arrow" /></a></li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )}
 
   <ConsultCallout text="Not sure if you’re in our area? Ask. We cover the broader region, not just the towns listed here." />
 </BaseLayout>

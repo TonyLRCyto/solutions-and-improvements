@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { IS_PREVIEW, SITE_URL } from '../data/site';
-import { allServices } from '../data/services';
+import { pageServices, serviceGroups } from '../data/services';
 import { regions, cities } from '../data/areas';
 import { posts } from '../data/posts';
 
@@ -11,7 +11,8 @@ export const GET: APIRoute = () => {
     : [
         '/',
         '/services',
-        ...allServices.map((s) => s.path),
+        ...pageServices.map((s) => s.path),
+        ...serviceGroups.map((g) => g.path),
         '/projects',
         '/service-areas',
         ...regions.map((r) => r.path),

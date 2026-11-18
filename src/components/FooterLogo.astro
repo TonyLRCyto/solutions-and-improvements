@@ -1,0 +1,15 @@
+---
+import { Picture } from 'astro:assets';
+import lockup from '../assets/brand/solutions-footer-lockup.png';
+// The supplied star mark and wordmark, composed side by side with a white keyline baked into the image.
+// A pre-rendered image avoids the clipped edges an SVG filter can produce in some browsers.
+---
+<Picture class="footer-lockup" src={lockup} alt="" width={300} height={71} densities={[1, 2]} formats={['avif', 'webp']} fallbackFormat="png" loading="lazy" decoding="async" />
+<style>
+  :global(.footer-lockup),
+  :global(.footer-lockup img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

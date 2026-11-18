@@ -47,6 +47,7 @@ export default defineConfig({
       'import.meta.env.PUBLIC_SITE_URL': JSON.stringify(process.env.PUBLIC_SITE_URL || ''),
       'import.meta.env.PUBLIC_ACORN_URL': JSON.stringify(process.env.PUBLIC_ACORN_URL || ''),
       'import.meta.env.PUBLIC_TURNSTILE_SITE_KEY': JSON.stringify(process.env.PUBLIC_TURNSTILE_SITE_KEY || ''),
+      'import.meta.env.PUBLIC_GOOGLE_REVIEWS_URL': JSON.stringify(process.env.PUBLIC_GOOGLE_REVIEWS_URL || ''),
     },
   },
   devToolbar: { enabled: false },

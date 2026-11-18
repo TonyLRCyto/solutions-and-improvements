@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
-import Icon from '../components/Icon.astro';
+import ContactWays from '../components/ContactWays.astro';
 import { company, financing } from '../data/site';
 import { allServices } from '../data/services';
 import { breadcrumbSchema } from '../lib/seo';
@@ -12,29 +12,22 @@ const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
 ---
 <BaseLayout
   title="Request a Free Consultation"
-  description="Request a free consultation with Solutions and Improvements. It includes an on-site visit. Call 219-433-4846 or email office@solutionsandimprovements.com."
+  description="Request a free consultation with Solutions and Improvements. It includes an on-site visit. Call or text (219) 433-4846 or email office@solutionsandimprovements.com."
   path="/contact"
   schema={[breadcrumbSchema(crumbs.map((c) => ({ label: c.label, href: c.href ?? '/contact' })))]}
 >
-  <section class="page-hero">
-    <div class="container">
-      <Breadcrumbs items={crumbs} />
-      <span class="kicker">Contact</span>
-      <h1>Request a free consultation.</h1>
-      <p class="lede">The consultation includes an on-site visit. Send the form, or call or email, and we’ll follow up by phone or message to arrange it.</p>
-    </div>
-  </section>
-
-  <section class="section section--white section--tight" id="consultation" aria-labelledby="form-h">
-    <div class="container consult">
-      <div class="consult-aside">
-        <h2 id="form-h" class="h-md">Tell us about the project</h2>
-        <p class="muted">A request doesn’t book a time automatically. We’ll reach out to schedule the visit.</p>
-        <div class="contact-alt">
-          <span class="kicker">Call or email</span>
-          <a href={company.phoneHref} data-track="phone_click">{company.phoneDisplay}</a>
-          <a href={`mailto:${company.email}`} data-track="email_click" style="font-size:1rem">{company.email}</a>
-        </div>
+  <section class="contact-top" id="consultation" aria-labelledby="contact-h">
+    <div class="container contact-top__grid">
+      <div class="contact-top__intro">
+        <Breadcrumbs items={crumbs} />
+        <h1 id="contact-h">Request a free consultation</h1>
+        <p class="lede">The consultation includes an on-site visit. Send the request and we will follow up to schedule it, or call or text for the quickest answer.</p>
+      </div>
+      <div class="contact-top__form">
+        <ConsultationForm idPrefix="contact" topics={topics} heading="Tell us about the project" />
+      </div>
+      <div class="contact-top__details consult-aside">
+        <ContactWays light />
         <div class="contact-alt">
           <span class="kicker">Office</span>
           <address style="font-style:normal">{company.adminAddress}<br /><span class="muted">{company.adminAddressNote}. Please call or email rather than visiting.</span></address>
@@ -46,15 +39,13 @@ const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
           </p>
         </div>
       </div>
-      <ConsultationForm idPrefix="contact" topics={topics} />
     </div>
   </section>
 
   <section class="section section--paper section--tight" aria-labelledby="next-h">
     <div class="container">
       <div class="section-head">
-        <span class="kicker">What happens next</span>
-        <h2 id="next-h" class="h-lg">Consultation &amp; site visit <span class="visually-hidden">then </span><span class="sequence-arrow"><Icon name="arrow" /></span> Scope &amp; proposal <span class="visually-hidden">then </span><span class="sequence-arrow"><Icon name="arrow" /></span> Planning &amp; construction</h2>
+        <h2 id="next-h" class="h-lg">What happens next</h2>
       </div>
       <ProcessSteps
         steps={[
@@ -66,16 +57,3 @@ const topics = Object.fromEntries(allServices.map((s) => [s.slug, s.name]));
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .sequence-arrow {
-    display: inline-flex;
-    width: 1em;
-    height: 1em;
-    vertical-align: -0.14em;
-  }
-  .sequence-arrow :global(svg) {
-    width: 100%;
-    height: 100%;
-  }
-</style>

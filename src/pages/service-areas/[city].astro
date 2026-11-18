@@ -52,8 +52,8 @@ const crumbs = [
         <span class="kicker">In {city.name}</span>
         <h2 id="local-h" class="h-lg mt-1">What we do here</h2>
       </div>
-      <ul class="example-list">
-        {city.localNotes.map((n, i) => <li><span>0{i + 1}</span>{n}</li>)}
+      <ul class="check-list">
+        {city.localNotes.map((n) => <li><Icon name="check" />{n}</li>)}
       </ul>
     </div>
   </section>
@@ -79,7 +79,7 @@ const crumbs = [
         steps={[
           { title: 'Consultation & site visit', text: `We come out to ${city.name} to see the space and talk it through.` },
           { title: 'Scope & proposal', text: 'We define the work and discuss estimate terms for your project.' },
-          { title: 'Planning & construction', text: 'Permits, scheduling and the build itself.' },
+          { title: 'Planning & construction', text: 'Scheduling and the build itself.' },
         ]}
       />
     </div>

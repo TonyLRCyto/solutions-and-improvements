@@ -1,0 +1,16 @@
+---
+import Stars from './Stars.astro';
+import type { Review } from '../data/reviews';
+interface Props {
+  review: Review;
+  /** Shorter card that sits on top of the before/after photo. */
+  compact?: boolean;
+}
+const { review, compact = false } = Astro.props;
+const quote = compact && review.short ? review.short : review.quote;
+---
+<figure class:list={['review-card', { 'review-card--compact': compact }]}>
+  <Stars rating={review.stars} />
+  <blockquote><p>“{quote}”</p></blockquote>
+  <figcaption><b>{review.name}</b> · {review.project}{review.town && `, ${review.town}`}<span class="review-card__src"> · Google review</span></figcaption>
+</figure>
