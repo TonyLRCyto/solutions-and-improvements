@@ -6,6 +6,7 @@ The owner requested the supplied round-four update through the existing GitHub/m
 
 - The shorter footer uses one supplied horizontal logo image with its white contour baked in. The browser SVG filter is removed. The PNG retains alpha transparency and edge padding; original branding remains intact. Services and Company sit side by side on phones, and contact information is more compact.
 - On desktop the home photo again covers the entire opening behind the headline and form. The location tag is removed; phone placement, Archivo and the larger initial header remain intact.
+- The homepage image's `sizes` now matches its full-width background, replacing the former panel-width hint so medium desktop screens do not select an undersized image.
 - Projects starts with the East Chicago home and the restored SVG drawing-to-photo reveal. The garage story retains its review with a still photo; the before/after control remains on Home.
 - Service Areas has two regional cards with community links and nonrepeating additional coverage. City buttons retain preview/indexReady gating. A focused follow-up splits combined coverage entries before filtering so a ready Mokena page cannot inadvertently remove unready Frankfort from coverage.
 - Permit-service promises are removed from region/city notes and service steps. Existing municipal planning links remain, as supplied.
