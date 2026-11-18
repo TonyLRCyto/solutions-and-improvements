@@ -29,8 +29,10 @@ const visibleCities = cities.filter((c) => c.indexReady || IS_PREVIEW);
       <div class="areas-grid">
         {regions.map((r) => {
           const regionCities = visibleCities.filter((c) => c.region === r.slug);
-          // Don't repeat towns that already have their own button.
-          const otherAreas = r.coverage.filter((item) => !regionCities.some((c) => item.includes(c.name)));
+          // Filter towns individually so a ready city does not hide its unready neighbor.
+          const otherAreas = r.coverage
+            .flatMap((item) => item.split(' & '))
+            .filter((item) => !regionCities.some((c) => item.includes(c.name)));
           return (
             <article class:list={['area-card', 'area-card--merged', { 'area-card--il': r.slug === 'illinois' }]}>
               <h2 class="h-lg">{r.name}</h2>
